@@ -1,4 +1,4 @@
-# Solve insurence risk groups using machine learning
+# Solve insurance risk groups using machine learning
 
 ## Installation
 
