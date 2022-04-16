@@ -1,5 +1,8 @@
 name: mlops-workshop
 
+channels:
+    - conda-forge
+
 dependencies:
   - python
   - scikit-learn
@@ -11,4 +14,4 @@ dependencies:
   - numpy
   - matplotlib
   - evidently
-  - prometheus-client
+  - prometheus_client
