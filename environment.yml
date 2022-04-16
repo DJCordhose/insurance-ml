@@ -1,0 +1,14 @@
+name: mlops-workshop
+
+dependencies:
+  - python
+  - scikit-learn
+  - pandas
+  - seaborn
+  - jupyter
+  - tensorflow
+  - notebook
+  - numpy
+  - matplotlib
+  - evidently
+  - prometheus-client
