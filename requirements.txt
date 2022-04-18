@@ -1,4 +1,3 @@
-tensorflow
 jupyter
 notebook
 numpy
@@ -8,3 +7,9 @@ seaborn
 scikit-learn
 evidently
 prometheus-client
+mlflow
+tensorflow
+Flask
+Werkzeug
+requests
+pyyaml

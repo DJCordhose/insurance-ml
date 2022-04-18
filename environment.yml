@@ -4,14 +4,21 @@ channels:
     - conda-forge
 
 dependencies:
+  - pip
+  - pip:
+    - tensorflow
   - python
   - scikit-learn
   - pandas
   - seaborn
   - jupyter
-  - tensorflow
   - notebook
   - numpy
   - matplotlib
   - evidently
   - prometheus_client
+  - mlflow
+  - Flask
+  - Werkzeug
+  - requests
+  - pyyaml

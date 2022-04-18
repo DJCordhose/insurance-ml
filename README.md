@@ -15,6 +15,7 @@ The workshop requires the following packages:
 - matplotlib
 - evidently
 - prometheus-client
+- mlflow
 
 ### Install via Docker
 
@@ -31,9 +32,6 @@ docker-compose up --build
 *If you see errors it may be because you still have the previous version of the application running and therefore might be using the same port as you are now trying to access with Docker. Or the ports interfere with local installations. A local Grafana installation probably runs on port 3000 as a service.*
 
 You should then be able to access the Prometheus dashboard on `http://localhost:9090` and Grafana on `http://localhost:3000`.
-
-
-
 
 ### Local install
 
