@@ -10,6 +10,7 @@ prometheus-client
 mlflow
 tensorflow
 Flask
+flask_cors
 Werkzeug
 requests
 pyyaml

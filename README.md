@@ -35,7 +35,7 @@ You should then be able to access the Prometheus dashboard on `http://localhost:
 
 ### Local install
 
-Installation via Docker is sufficient, buy local installation of a Python environment might be convenient. Local installation is sufficient if you don't want to run [Prometheus](https://prometheus.io) or [Grafana](http://grafana.com). 
+Installation via Docker is sufficient, but local installation of a [Python](https://www.python.org/downloads/) environment might be convenient. Local installation is sufficient if you don't want to run [Prometheus](https://prometheus.io) or [Grafana](http://grafana.com). 
 
 We provide both `requirements.txt` and `environment.yml` to install packages.
 

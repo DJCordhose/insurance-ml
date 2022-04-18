@@ -7,7 +7,7 @@ dependencies:
   - pip
   - pip:
     - tensorflow
-  - python
+  - python=3.8
   - scikit-learn
   - pandas
   - seaborn
@@ -19,6 +19,7 @@ dependencies:
   - prometheus_client
   - mlflow
   - Flask
+  - flask_cors
   - Werkzeug
   - requests
   - pyyaml
