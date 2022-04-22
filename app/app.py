@@ -4,6 +4,8 @@ from flask_cors import CORS
 # from sklearn_prediction import predict
 from tf_prediction import predict
 
+from prometheus_client import MetricsHandler, Counter
+
 app = Flask(__name__)
 CORS(app)
 

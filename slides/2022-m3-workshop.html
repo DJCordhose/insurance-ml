@@ -34,7 +34,7 @@
   * Code im Server
   * Grafana Dashboards
 * Aus 2022-oop-ml.html und 2021-wjax-mlops.html Notebooks und Struktur übernehmen 	
-* Datensatz erzeugen, der Außerhalb des Trainingsbereichs testet
+* Datensatz erzeugen, der Außerhalb des Trainingsbereichs testete
 * Untetschiedliche Arten von Produktion
   * TF Serve
   * Dedicated Server
@@ -43,6 +43,24 @@
   * Java 
 	</section>
 	
+
+<section data-markdown class="local preparation hide">
+## Hands-On
+
+### Phase I
+1. Ein gutes Modell mit TensorFlow entwickeln
+1. Logik bauen die bestimmt, ob man dem Ergebnis traut, also ob man es nimmt oder einen Fallback
+
+### Phase II
+1. Dinge in Module auslagern und auch im Notebook nutzen
+1. Trainiertes Modell mit Flask Server zum Laufen bringen
+1. JS-Client nutzt das Modell per REST (oder Java Server?) 
+
+### Phase III
+1. Metriken exportieren
+1. Requests gegen den Server simulieren
+1. Alert in Grafana anlegen
+</section>
 
 
 <section data-markdown class="local preparation hide">
@@ -435,7 +453,7 @@ https://twitter.com/DavidSKrueger/status/1487391569028296710
 
 ### Entscheidende Teile in Bibliotheken auslagern
 
-https://colab.research.google.com/github/DJCordhose/ml-resources/blob/main/notebooks/process/2_train.ipynb
+https://colab.research.google.com/github/DJCordhose/insurance-ml/blob/main/notebooks/2_train.ipynb
 </textarea>
 	</section>
 

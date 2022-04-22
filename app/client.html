@@ -5,14 +5,18 @@
 </head>
 
 <body>
-
+    <h1>Fetching Prediction for <span id="data"></span></h1>
+    <h2>Prediction: <span id="pred"></span></h2>
     <script>
+        const elPred = document.getElementById('pred');
+        const elData = document.getElementById('data');
         const data = { 'speed': 100, 'age': 51, 'miles': 10 };
+        elData.innerText = JSON.stringify(data);
 
         // https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
         (async () => {
 
-            const result = await fetch(' http://localhost:8080/predict', {
+            const result = await fetch('http://localhost:8080/predict', {
                 body: JSON.stringify(data),
                 headers: {
                     'content-type': 'application/json'
@@ -23,6 +27,7 @@
 
             const json = await result.json();
             console.log(json);
+            elPred.innerText = JSON.stringify(json);
         })();
 
     </script>

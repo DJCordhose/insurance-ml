@@ -2,21 +2,6 @@
 
 ## Running the tutorial locally
 
-### Dependencies
-
-The workshop requires the following packages:
-
-- scikit-learn
-- pandas
-- seaborn
-- jupyter
-- tensorflow
-- numpy
-- matplotlib
-- evidently
-- prometheus-client
-- mlflow
-
 ### Install via Docker
 
 For this workshop you will need [Docker](https://docs.docker.com/get-docker/) and [Docker Compose](https://docs.docker.com/compose/install/) running on your machine. *(on mac os and Windows docker-compose is by default installed with Docker)*
