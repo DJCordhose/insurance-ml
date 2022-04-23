@@ -1,0 +1,1 @@
+javac -cp ".:lib/*" Predict.java
