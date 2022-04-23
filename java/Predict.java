@@ -16,27 +16,14 @@ class ResponseDTO {
     List<List<Double>> predictions;
 }
 
-class DataSet {
-    public int age;
-    public int maxSpeed;
-    public int milesPerYear;
-    public int clazz;
+record DataSet(int age, int maxSpeed, int milesPerYear, int clazz) {
 }
 
-class Prediction {
+record Prediction(double percentageRed, double percentageYellow, double percentageGreen) {
+
     public static int RED = 0;
     public static int YELLOW = 1;
     public static int GREEN = 2;
-
-    public double percentageRed;
-    public double percentageYellow;
-    public double percentageGreen;
-
-    public Prediction(double percentageRed, double percentageYellow, double percentageGreen) {
-        this.percentageRed = percentageRed;
-        this.percentageYellow = percentageYellow;
-        this.percentageGreen = percentageGreen;
-    }
 
     public int predictionClass() {
         if (percentageRed > percentageYellow && percentageRed > percentageGreen) {
@@ -72,8 +59,8 @@ public class Predict {
         // System.exit(0);
 
         // main.predict(datasets);
-        // var predictions = main.predictFromRules(dataSets);
-        var predictions = main.predictFromServer(dataSets);
+        var predictions = main.predictFromRules(dataSets);
+        // var predictions = main.predictFromServer(dataSets);
         for (var prediction : predictions) {
             System.out.println(prediction.predictionClass());
         }
@@ -88,7 +75,7 @@ public class Predict {
         var total = groundTruth.size();
         var correct = 0;
         for (var i = 0; i < groundTruth.size(); i++) {
-            if (groundTruth.get(i).clazz == detectedTruth.get(i).predictionClass()) {
+            if (groundTruth.get(i).clazz() == detectedTruth.get(i).predictionClass()) {
                 correct++;
             }
         }
@@ -98,11 +85,8 @@ public class Predict {
     public List<DataSet> convertCsv(List<List<String>> rows) {
         var dataSets = new ArrayList<DataSet>();
         for (var row : rows) {
-            var dataSet = new DataSet();
-            dataSet.age = (int) Double.parseDouble(row.get(1));
-            dataSet.maxSpeed = (int) Double.parseDouble(row.get(0));
-            dataSet.milesPerYear = (int) Double.parseDouble(row.get(2));
-            dataSet.clazz = (int) Double.parseDouble(row.get(3));
+            var dataSet = new DataSet((int) Double.parseDouble(row.get(1)), (int) Double.parseDouble(row.get(0)),
+                    (int) Double.parseDouble(row.get(2)), (int) Double.parseDouble(row.get(3)));
             dataSets.add(dataSet);
         }
         return dataSets;
@@ -139,8 +123,8 @@ public class Predict {
         var sb = new StringBuilder();
         boolean first = true;
         for (var dataSet : dataSets) {
-            var age = dataSet.age;
-            var maxSpeed = dataSet.maxSpeed;
+            var age = dataSet.age();
+            var maxSpeed = dataSet.maxSpeed();
             if (first) {
                 first = false;
             } else {
