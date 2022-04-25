@@ -38,7 +38,7 @@ Reveal.initialize({
     Reveal.configure({ controls: false, fragments: true });
 
     // every 'li' should become a fragment
-    document.querySelectorAll("li").forEach((n) => n.classList.add("fragment"));
+    document.querySelectorAll(".fragments li").forEach((n) => n.classList.add("fragment"));
 
     // when using code blocks with markdown like this:
     //  ```java fragment
@@ -67,8 +67,10 @@ Reveal.initialize({
 
     // remove presenter "demo" marks (children of demo)
     document.querySelectorAll(".demo .demo").forEach((n) => n.remove());
-    // remove todos
+    // remove todos and other local stuff
     document.querySelectorAll(".todo").forEach((n) => n.remove());
+    document.querySelectorAll(".local").forEach((n) => n.remove());
+    document.querySelectorAll(".hide").forEach((n) => n.remove());
   }
 
   // Changes for both public and presenter version

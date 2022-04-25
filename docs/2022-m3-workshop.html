@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=10.0, user-scalable=yes">
 
-	<title>Entwicklungsprozess</title>
+	<title>MLOps M3 2022</title>
 
 	<link rel="stylesheet" href="revealjs/reveal.js/dist/reset.css" />
     <link rel="stylesheet" href="revealjs/reveal.js/dist/reveal.css" />
@@ -71,7 +71,7 @@
 - Grundlagen und Installation
 
 ### Phase I
-1. Ein gutes Modell mit TensorFlow oder sklearn entwickeln
+1. Ein gutes Modell mit TensorFlow entwickeln
 1. Überblick Metriken: was passt gut? Wie benchmarked man
 1. Generalization
 1. Logik bauen die bestimmt, ob man dem Ergebnis traut, also ob man es nimmt oder einen Fallback
@@ -133,7 +133,7 @@ Folien: https://djcordhose.github.io/insurance-ml/2022-m3-workshop.html
     </textarea>
 			</section>
 
-<section data-markdown>
+<section data-markdown class="fragments">
 ### Was ist MLOps?
 
 * MLOps ist abgeleitet von DevOps
@@ -280,45 +280,15 @@ _Idee implemented in so called "notebooks"_
 
 	<section data-markdown style="font-size: x-large;">
 		<textarea data-template>
-## Schritt \#1 - Live Coding - Notebooks, interaktive Skripte
+## Hands-On - Ein Modell erzeugen
 
-### Wie fühlt sich Arbeit in Notebooks an?
+1. Wir gehen zusammen durch das Notebook
+1. Starte einen lokalen Notebook-Server und starte das Notebbok in `notebooks/1_all.ipynb`
+1. Erzeuge ein gutes Modell
+1. In welchem Bereich ist das Modell zu gebrauchen?
+1. Erzeuge eine Klasse, die nur in diesem Berereich eine Vorhersage liefert
 
-https://colab.research.google.com/github/DJCordhose/insurance-ml/blob/main/notebooks/1_all.ipynb
-
-</textarea>
-	</section>
-
-	<section data-markdown style="font-size: x-large;">
-		<textarea data-template>
-## Schritt \#2 - Live Coding
-
-### Wir bringen unser Modell in Produktion
-
-https://colab.research.google.com/github/DJCordhose/insurance-ml/blob/main/notebooks/3_serve.ipynb
-</textarea>
-	</section>
-
-	<section data-markdown>
-		<textarea data-template>
-## Daten passen prima zu der Vorhersage
-
-<img src='img/insurance-new/insurance-pred.png' class="fragment">
-
-</textarea>
-	</section>
-
-	<section data-markdown>
-		<textarea data-template>
-# Fertig!
-
-</textarea>
-	</section>
-
-
-	<section data-markdown>
-		<textarea data-template>
-# Oder?
+<!-- https://colab.research.google.com/github/DJCordhose/insurance-ml/blob/main/notebooks/1_all.ipynb -->
 
 </textarea>
 	</section>
