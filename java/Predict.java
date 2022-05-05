@@ -59,8 +59,8 @@ public class Predict {
         // System.exit(0);
 
         // main.predict(datasets);
-        var predictions = main.predictFromRules(dataSets);
-        // var predictions = main.predictFromServer(dataSets);
+        // var predictions = main.predictFromRules(dataSets);
+        var predictions = main.predictFromServer(dataSets);
         for (var prediction : predictions) {
             System.out.println(prediction.predictionClass());
         }
@@ -146,7 +146,7 @@ public class Predict {
         var url = String.format("http://localhost:8501/%s/models/%s:predict", version, model);
         var uri = URI.create(url);
         // var url = "http://localhost:8080/predict";
-        System.out.println(uri);
+        // System.out.println(uri);
         var request = HttpRequest.newBuilder()
                 .uri(uri)
                 .header("Content-Type", "application/json")
@@ -156,15 +156,15 @@ public class Predict {
 
         var client = HttpClient.newHttpClient();
         var response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        System.out.println(response.statusCode());
-        System.out.println(response.body());
+        // System.out.println(response.statusCode());
+        // System.out.println(response.body());
 
         var responseDTO = new Gson().fromJson(response.body(), ResponseDTO.class);
-        System.out.println(responseDTO.predictions);
+        // System.out.println(responseDTO.predictions);
 
         List<Prediction> predictions = new ArrayList<>();
         for (var prediction : responseDTO.predictions) {
-            System.out.println(prediction);
+            // System.out.println(prediction);
             double percentageRed = prediction.get(0);
             double percentageYellow = prediction.get(1);
             double percentageGreen = prediction.get(2);
