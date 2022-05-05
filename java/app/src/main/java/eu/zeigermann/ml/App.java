@@ -35,7 +35,8 @@ public class App {
             var myFunction = savedModelBundle.function("serving_default");
             Map<String, Tensor> outputTensorMap = myFunction.call(inputTensorMap);
             var prediction = outputTensorMap.get("output");
-            // overly complicated way to get the prediction, but so far found so better way
+            
+            // overly complicated way to get the prediction, but so far found no better way
             var probas = prediction.asRawTensor().data().asFloats();
             float redProba = probas.getFloat(0);
             float yellowProba = probas.getFloat(1);
