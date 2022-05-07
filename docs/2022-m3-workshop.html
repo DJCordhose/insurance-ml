@@ -131,8 +131,35 @@ ca. 17:00 Uhr: Ende
 * Phase II
   * Diskussion in der Gruppe: wo sollte man was dokumentieren?
     * Dann mit allen besprechen, dann umsetzen
- -->
 
+
+
+---
+
+Data2Day
+https://www.data2day.de/cfp.php
+
+MLOps mit Python
+
+Viele Unternehmen haben die Phase des reinen Experimentierens mit Machine Learning hinter sich gelassen und fragen sich
+nun, wie man ein Machine Learning Modell so betreibt wie ein traditionelles Stück Software. Also wie man es in Produktion bringt und dort
+erfolgreich hält. MLOps ist der Name für diesen Ansatz. 
+
+In diesem Workshop werden wir uns anhand eines durchgängigen Beispiel durch die Phasen eines Machine Learning Projekts bewegen:
+- Exploration: Entwicklung eines Modells mit Jupyter Notebooks und TensorFlow
+- Professionalisierung: Refactoring in Module
+- Produktion und Monitoring: Produktivsetzung mit Flask und Docker, Monitoring mit Prometheus, Evidently und Grafana
+
+Als ML Werkzeug werden wir TensorFlow nutzen, allerdings ist dies nur ein Beispiel und alles gezeigte gilt auch für alle
+anderen Frameworks. Es wird lediglich Erfahrung mit Python und ein Verständnis für ein Machine Learning Projekt
+vorausgesetzt. Alles andere wird - soweit nötig - im Workshop eingeführt.
+
+Lernziel:
+Teilnehmer sollen anhand eines in sich stimmigen Satzes von Werkzeugen die Konzepte und Ansätze im Bereich MLOps kennen lernen und diskutieren können.
+
+-->
+
+ 
 
 <section data-markdown class="local preparation hide">
 </section>
@@ -170,10 +197,6 @@ Als nächstes
   * C++
   * Java 
 	</section>
-
-<section data-markdown class="local preparation hide">
-# Monitoring ist eine Art Predictive Maintainace
-</section>
 
 <section data-markdown class="local preparation hide">
 ## Hands-On
@@ -430,17 +453,6 @@ https://djcordhose.github.io/ml-resources/html/calculator.html</a></small>
 	</section>
 
 
-<section data-markdown class="todo">
-### Man hat immer Verzögerung bis man weiß, ob die Vorhersagen gut waren
-
-* Wenn man warten kann bis die da sind hat man einen Vorteil
-* manchmal erst nach Jahren
-  * Insurance
-* Und manchmal weiß man es aber nie
-  * Objekt Detection
-</section>
-
-
 <section data-markdown class="fragments">
 ### Was ist MLOps?
 
@@ -505,7 +517,7 @@ https://www.mihaileric.com/posts/mlops-is-a-mess/
 <section data-markdown class="fragments">
 ### Ansatz des Workshops
 
-* Der Bereich MLOps ist bisher weder im Bereich Framework noch im Konzeptionell standardisiert
+* Der Bereich MLOps ist bisher weder im Bereich Framework noch konzeptionell standardisiert
 * Ich zeige *eine* Mögliche Lösung für eine Problemstellung
 * Meine eigene Erfahrung ist dafür Grundlage
 * Jeder gezeigte Ansatz kann von uns kritisch hinterfragt und bewertet werden
@@ -894,12 +906,23 @@ https://github.com/DJCordhose/insurance-ml/blob/main/README.md
 </textarea>
 	</section>
 
- <section data-markdown>
+	<section data-markdown>
 	<textarea data-template>
-## Monitoring
-	</textarea>
+# Agenda
+
+* Phase 0: Grundlagen MLOps, Unser Beispiel, Installation
+* Phase 1: Exploration
+* Phase 2: Professionalisierung
+* _Phase 3b: Produktion / Monitoring_
+
+</textarea>
 </section>
 
+<section data-markdown class="todo">
+### Monitoring ist eine Art Predictive Maintainace
+</section>
+	
+	
 <section data-markdown class="todo">
 ### Grundregel
 
@@ -913,6 +936,17 @@ https://github.com/DJCordhose/insurance-ml/blob/main/README.md
 
 </section>
 	
+<section data-markdown class="todo">
+### Man hat immer Verzögerung bis man weiß, ob die Vorhersagen gut waren
+
+* Wenn man warten kann bis die da sind hat man einen Vorteil
+* manchmal erst nach Jahren
+  * Insurance
+* Und manchmal weiß man es aber nie
+  * Objekt Detection
+</section>
+
+
 
 <section data-markdown class="todo">
 ### Die vier goldenen Regeln des traditionellen Monitorings
