@@ -47,3 +47,7 @@ You might also only update your current environment using:
 ```
 $ conda env update --prefix ./env --file environment.yml  --prune
 ```
+
+## Links
+
+* http://scikit-learn.org/stable/auto_examples/linear_model/plot_tweedie_regression_insurance_claims.html
