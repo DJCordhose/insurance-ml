@@ -16,6 +16,8 @@
         // https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
         (async () => {
 
+            // 5000 is flask default server
+            // const result = await fetch('http://localhost:5000/predict', {
             const result = await fetch('http://localhost:8080/predict', {
                 body: JSON.stringify(data),
                 headers: {
