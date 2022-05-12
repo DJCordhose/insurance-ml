@@ -164,14 +164,58 @@ Teilnehmer sollen anhand eines in sich stimmigen Satzes von Werkzeugen die Konze
 <section data-markdown class="local preparation hide">
 </section>
 
+<section data-markdown class="todo">
+### Jetzt
+1. Zum laufen bringen https://github.com/evidentlyai/evidently/tree/main/examples/integrations/grafana_monitoring_service
+  * https://evidentlyai.com/
+1. Metric konfig übernehmen
+  * https://github.com/ecosia/pycon22-prometheus-workshop
+1. Script für Requests klauen
+* Unsere APP served einfach das Modell, aber wir kriegen auch Metrics über Anfragen und Antworten
+* einbauen, dass wir unsere Metriken wie Drift und so monitoren können
+* Alert einbauen bei irgendwas
 
+Für die geshifteten Daten: https://github.com/embarced/notebooks/blob/master/mlops/3_mlops_shift.ipynb
+
+Zusammen machen, weil zu komplex
+1. Metrics zum laufen bringen
+2. Mit Prometheus tracken
+3. In Prometheus angesehen
+4. Prometheus als Data Source für Grafana
+5. Einfaches Dashboard bauen
+6. 
+
+Aufgabe:
+2. Metrik vorbereiten
+
+
+
+1. Erst normale Daten gegen den Server
+1. Dann die geschifteten
+
+</section>
+	
 <section data-markdown class="todo">
 ### Konkrete Todos	
 
-Als nächstes
+Ganz Wichtig
 * Monitoring am Ende nur noch zeigen
   * Prometheus einbauen
-* Monitoring: WrapperKlasse bauen und weiter mit Phase II
+* Setup aus Evidently Beispiel klauen
+  * https://github.com/evidentlyai/evidently/tree/main/examples/integrations/grafana_monitoring_service
+  * Code im Server
+  * Grafana Dashboards
+  * Classification Dashboard mit anderem Datensatz zum zucken bringen
+  * Script für Requests klauen
+
+* tf_prediction auf insurance_model.py umstellen
+
+
+Mittel wichtig
+* Unit Tests:
+  * Check range
+* Smoke Tests:
+  * Invariants  
 * Fehler-Szenario für Prod:
   * als 1. Beispiel für Monitoring
   * Wertebereich checken und Typ der Argumente
@@ -179,14 +223,6 @@ Als nächstes
 	* bei Insurance: normalisiert vs nicht normalisiert
   * Monitoring der Input: distribution, falsche Kodierung, Modell schlägt heimlich fehl
 
-* Classification Dashboard mit anderem Datensatz zum zucken bringen
-* Script für Requests klauen
-* Setup aus Evidently Beispiel klauen
-  * Code im Server
-  * Grafana Dashboards
-
-
-* 
 
 ### Nice to have  
 * Datensatz erzeugen, der Außerhalb des Trainingsbereichs testete
@@ -263,27 +299,6 @@ Als nächstes
 https://developers.google.com/machine-learning/guides/rules-of-ml		
 Hidden Technical Debt in Machine Learning Systems: https://proceedings.neurips.cc/paper/2015/file/86df7dcfd896fcaf2674f757a2463eba-Paper.pdf	
 </section>
-
-<section data-markdown class="todo">
-###	Hauptarbeit, Metric Server mit Grafana etc. bauen
-
-* Können wir damit Alerts triggern?
-  * https://evidentlyai.com/
-
-</section>
-	
-<section data-markdown class="todo">
-
-
-* conda install dazu: https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#creating-an-environment-from-an-environment-yml-file
-* https://github.com/ecosia/pycon22-prometheus-workshop
-* Docker nutzen optional
-* Unsere APP served einfach das Modell, aber wir kriegen auch Metrics über Anfragen und Antworten
-  * einbauen, dass wir unsere Metriken wie Drift und so monitoren können
-  * Alert einbauen bei irgendwas
-</section>
-
-
 
 
 <section data-markdown class="todo">
@@ -614,9 +629,10 @@ _Idee implemented in so called "notebooks"_
 
 ### Modell Exploration  
 1. Erzeuge ein gutes Modell
-   1. Wenn du willst und kannst, musst du nicht TensorFlow nutzen
+1. Wenn du willst und kannst, musst du nicht TensorFlow nutzen
 1. In welchem Bereich ist das Modell zu gebrauchen?
-1. Erzeuge eine Klasse, die nur in diesem Berereich eine Vorhersage liefert
+1. Sorge dafür, dass das Modell nur in diesem Bereich eine Vorhersage liefert
+1. Wie könnte man sinnvoll mit einer Anfrage außerhalb des Wertebereichts umgehen?
 
 </textarea>
 	</section>
@@ -750,10 +766,9 @@ https://twitter.com/DavidSKrueger/status/1487391569028296710
 </textarea>
 	</section>
 
-	<section data-markdown style="font-size: x-large;">
+	<section data-markdown style="font-size: x-large;" class="hands-on">
 		<textarea data-template>
 ## Hands-On II - Entscheidende Teile in Bibliotheken auslagern
-
 
 *Arbeite weiter in deinem Notebook und erzeuge Checkpoints und Commits nach jeder Änderung*
 
@@ -882,7 +897,7 @@ https://twitter.com/SamuelDataT/status/1488150832742899718
 		</textarea>
 	</section>
 
-	<section data-markdown>
+	<section data-markdown class="hands-on">
 		<textarea data-template>
 ## Hands-On IIIa - Intro der Produktionsumgebung
 
@@ -894,7 +909,7 @@ https://twitter.com/SamuelDataT/status/1488150832742899718
 </textarea>
 	</section>
 
-	<section data-markdown>
+	<section data-markdown class="hands-on">
 		<textarea data-template>
 ## Hands-On IIIa - Intro Docker Umgebung
 
@@ -903,13 +918,13 @@ https://twitter.com/SamuelDataT/status/1488150832742899718
    * baut und startet den Server
    * started Prometheus und Grafana
    * Definition in `docker-compose.yaml`
-1. `docker-compose down` bringt alle Services wieder runter   
+1. `docker-compose down` stopt alle Services wieder   
 
 https://github.com/DJCordhose/insurance-ml/blob/main/README.md   
 </textarea>
 	</section>
 
-	<section data-markdown>
+	<section data-markdown class="hands-on">
 		<textarea data-template>
 ## Hands-On IIIa - Das Modell in Produktion bringen
 
@@ -1147,7 +1162,7 @@ Wenn die Welt sich ändert, ist Drift zu erwarten und damit ok
 </section>
 
 	
-	<section data-markdown class="todo">
+	<section data-markdown class="todo hands-on">
 		<textarea data-template>
 ## Hands-On IIIb - Monitoring und Sinn daraus machen
 

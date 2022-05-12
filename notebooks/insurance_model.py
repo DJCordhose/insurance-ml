@@ -5,12 +5,14 @@ from data import RiskGroup, DataType
 import tensorflow as tf
 
 class Model:
-    def __init__(self, model, data, batch_size=32, keras_format=True):
+    def __init__(self, model, data, batch_size=32, age_range=(10, 150), max_speed_range=(50, 250), keras_format=True):
         self.model = model
         self.data = data
         self.batch_size = batch_size
         self.history = None
         self.keras_format = keras_format
+        self.age_range = age_range
+        self.max_speed_range = max_speed_range
 
     def train(self, epochs=50, plot_curve=True):
         if not self.keras_format:
@@ -83,11 +85,20 @@ class Model:
         else:
             self.model.save(model_path, save_format='tf')
 
+    def check_range(self, age, speed, throw=False):
+        min_age, max_age = self.age_range 
+        min_speed, max_speed = self.max_speed_range 
+        valid = age >= min_age and age <= max_age and speed >= min_speed and speed <= max_speed
+        if throw and not valid:
+            raise Exception(f'age {age} and/or max_speed {max_speed} outside of valid range')
+        return valid
+
     def predict(self, age, max_speed):
         probas = self.predict_proba(age, max_speed)
         return probas.argmax()
 
     def predict_proba(self, age, max_speed):
+        self.check_range(age, max_speed, throw=True)
         X = [[age, max_speed]]
         return self.model.predict(X)
 
