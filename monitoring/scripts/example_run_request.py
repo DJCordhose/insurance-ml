@@ -84,7 +84,7 @@ if __name__ == "__main__":
         "-t",
         "--timeout",
         type=float,
-        default=2,
+        default=0.1,
         help="Sleep timeout between data send tries in seconds.",
     )
     args = parser.parse_args()

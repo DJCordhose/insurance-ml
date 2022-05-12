@@ -43,6 +43,18 @@ datasets:
       - data_drift
       - regression_performance
       - num_target_drift
+  insurance:
+    column_mapping:
+      categorical_features: [ ]
+      numerical_features:
+        - speed
+        - age
+      target: group
+    data_format:
+      header: true
+      separator: ','
+    monitors:
+      - data_drift
   kdd_k_neighbors_classifier:
     column_mapping:
       categorical_features: [ ]
