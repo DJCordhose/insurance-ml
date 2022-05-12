@@ -161,94 +161,32 @@ Teilnehmer sollen anhand eines in sich stimmigen Satzes von Werkzeugen die Konze
 
  
 
-<section data-markdown class="local preparation hide">
-</section>
+<!-- <section data-markdown class="local preparation hide">
+</section> -->
 
 <section data-markdown class="todo">
-### Jetzt
-1. Zum laufen bringen https://github.com/evidentlyai/evidently/tree/main/examples/integrations/grafana_monitoring_service
-  * https://evidentlyai.com/
-1. Metric konfig übernehmen
-  * https://github.com/ecosia/pycon22-prometheus-workshop
-1. Script für Requests klauen
-* Unsere APP served einfach das Modell, aber wir kriegen auch Metrics über Anfragen und Antworten
-* einbauen, dass wir unsere Metriken wie Drift und so monitoren können
-* Alert einbauen bei irgendwas
-- Alert
-- anlegen auf Panel
-- Liste der Alerts in Dashboard hinzufügen
-
-
-Für die geshifteten Daten: https://github.com/embarced/notebooks/blob/master/mlops/3_mlops_shift.ipynb
-
-https://docs.evidentlyai.com/reports/data-drift
-https://docs.evidentlyai.com/user-guide/customization/options-for-data-target-drift
-https://docs.evidentlyai.com/user-guide/customization/options-for-statistical-tests
-### Aufgabe für Teilnehmer
-1. Das Beispiel zum laufen bringen
-2. Das passende Dashboard finden und daraus Sinn machen
-3. Was könnte auf einen schlechten Vorlauf hindeuten
-4. Dazu einen Alert einbauen
-
-
-Zusammen machen, weil zu komplex
-1. Metrics zum laufen bringen
-2. Mit Prometheus tracken
-3. In Prometheus angesehen
-4. Prometheus als Data Source für Grafana
-5. Einfaches Dashboard bauen
-6. 
-
-Aufgabe:
-2. Metrik vorbereiten
-
-
-
-1. Erst normale Daten gegen den Server
-1. Dann die geschifteten
-
+* tf_prediction auf insurance_model.py umstellen
+* Monitoring
+  * monitoring/run_example.py auf Windows zum laufen bringen
+    * bat?
+  * Alert in Grafana
+    - anlegen auf Panel
+    - Liste der Alerts in Dashboard hinzufügen
+  * Parameter und Art des Signifikanz-Tests änderbar machen
+  https://github.com/embarced/notebooks/blob/master/mlops/3_mlops_shift.ipynb
+  https://github.com/embarced/notebooks/blob/master/mlops/5_mlops_tfdv_skew.ipynb
+  https://en.wikipedia.org/wiki/Jensen%E2%80%93Shannon_divergence
 </section>
 	
 <section data-markdown class="todo">
-### Konkrete Todos	
-
-Ganz Wichtig
-* Monitoring am Ende nur noch zeigen
-  * Prometheus einbauen
-* Setup aus Evidently Beispiel klauen
-  * https://github.com/evidentlyai/evidently/tree/main/examples/integrations/grafana_monitoring_service
-  * Code im Server
-  * Grafana Dashboards
-  * Classification Dashboard mit anderem Datensatz zum zucken bringen
-  * Script für Requests klauen
-
-* tf_prediction auf insurance_model.py umstellen
-
-
 Mittel wichtig
 * Unit Tests:
-  * Check range
+	* Check range Code
 * Smoke Tests:
-  * Invariants  
-* Fehler-Szenario für Prod:
-  * als 1. Beispiel für Monitoring
-  * Wertebereich checken und Typ der Argumente
-    * bei Bild float 0..1 vs int 0..255
-	* bei Insurance: normalisiert vs nicht normalisiert
-  * Monitoring der Input: distribution, falsche Kodierung, Modell schlägt heimlich fehl
+	* Invariants  
+</section>
 
-
-### Nice to have  
-* Datensatz erzeugen, der Außerhalb des Trainingsbereichs testete
-* Untetschiedliche Arten von Produktion
-  * TF Serve
-  * Dedicated Server
-  * JS
-  * C++
-  * Java 
-	</section>
-
-<section data-markdown class="local preparation hide">
+<!-- <section data-markdown class="local preparation hide">
 ## Hands-On
 
 ### Phase I
@@ -306,9 +244,9 @@ Mittel wichtig
     - anlegen auf Panel
 	- Liste der Alerts in Dashboard hinzufügen
 - Dinge ausprobieren: https://play.grafana.org/
-</section>
+</section> -->
 
-<section data-markdown class="todo">
+<!-- <section data-markdown class="todo">
 
 https://developers.google.com/machine-learning/guides/rules-of-ml		
 Hidden Technical Debt in Machine Learning Systems: https://proceedings.neurips.cc/paper/2015/file/86df7dcfd896fcaf2674f757a2463eba-Paper.pdf	
@@ -322,7 +260,7 @@ Hidden Technical Debt in Machine Learning Systems: https://proceedings.neurips.c
 
 Hardest part is having a dataset that reflects reality. Time delays, simple dismissals, incentives, clerical errors, term ambiguity, on and on
 (https://twitter.com/normonics/status/1511021293969235975?t=spHs38A9j38gdGASJMt1AA&s=03) 
-</section>
+</section> -->
 
 <section data-markdown>
 	<textarea data-template>
@@ -425,7 +363,7 @@ Head of AI@OpenKnowledge
 </textarea>
 	</section>
 
-	<section data-markdown style="font-size: x-large;">
+	<section data-markdown style="font-size: x-large;" class="hands-on">
 		<textarea data-template>
 ## Hands-On 0 - Die Arbeitsumgebung überprüfen und kennen lernen
 
@@ -439,38 +377,6 @@ Head of AI@OpenKnowledge
 falls es Installationsprobleme gibt: https://colab.research.google.com/github/DJCordhose/insurance-ml/blob/main/workspace/insurance_ml.ipynb
 
 
-</textarea>
-	</section>
-
-	<section data-markdown>
-		<textarea data-template>
-## Unser Beispiel: Vorhersage von Risiken
-
-* Wir sind CTO einer hochinnovativen Kfz-Versicherungsgesellschaft
-* Anders als andere Versicherungsgesellschaften bestimmen wir den Tarif anhand der geschätzen Anzahl von Unfällen pro Kunde
-* Zielsetzung: Wie viele Unfälle werden die potenziellen Kunden haben?
-
-<img src='img/pixabay/accident-151668_1280.png' style="height: 230px">
-</textarea>
-	</section>
-
-	<section>
-		<h3>Klassifizierung basierend auf bekannten Daten</h3>
-		<img src="img/insurance-new/train-data.png" height="500px" class="fragment">
-	</section>
-
-
-	<section data-markdown>
-		<textarea data-template>
-### Vorhersage von Risiken für potenzielle Kunden
-
-<a href='html/calculator.html'>
-<img src='img/calculator.png' height="400">
-</a>
-<p><small>
-<a href='html/calculator.html' target="_blank">
-https://djcordhose.github.io/ml-resources/html/calculator.html</a></small>
-</small></p>
 </textarea>
 	</section>
 
@@ -555,6 +461,39 @@ https://www.mihaileric.com/posts/mlops-is-a-mess/
 </section>
 
 
+<section data-markdown>
+	<textarea data-template>
+## Unser Beispiel: Vorhersage von Risiken
+
+* Wir sind CTO einer hochinnovativen Kfz-Versicherungsgesellschaft
+* Anders als andere Versicherungsgesellschaften bestimmen wir den Tarif anhand der geschätzen Anzahl von Unfällen pro Kunde
+* Zielsetzung: Wie viele Unfälle werden die potenziellen Kunden haben?
+
+<img src='img/pixabay/accident-151668_1280.png' style="height: 230px">
+</textarea>
+</section>
+
+<section>
+	<h3>Klassifizierung basierend auf bekannten Daten</h3>
+	<img src="img/insurance-new/train-data.png" height="500px" class="fragment">
+</section>
+
+
+<section data-markdown>
+	<textarea data-template>
+### Vorhersage von Risiken für potenzielle Kunden
+
+<a href='html/calculator.html'>
+<img src='img/calculator.png' height="400">
+</a>
+<p><small>
+<a href='html/calculator.html' target="_blank">
+https://djcordhose.github.io/ml-resources/html/calculator.html</a></small>
+</small></p>
+</textarea>
+</section>
+
+
 	<section data-markdown>
 		<textarea data-template>
 # Agenda
@@ -579,6 +518,15 @@ If you don't correct those mistakes, you're doing it really wrong.
 If you can't accept that you're mistaken, you're not doing it at all.
 
 https://twitter.com/ProfFeynman/status/1523317198168936448 	
+</section>
+
+<section data-markdown>
+    <textarea data-template>
+### Machine Learning können in Phasen strukturiert werden
+
+<img src='img/sketch/phases-ml.png'>
+
+</textarea>
 </section>
 
 	<section data-markdown class="fragments">
@@ -630,7 +578,7 @@ _Idee implemented in so called "notebooks"_
 </textarea>
 </section>
 
-	<section data-markdown style="font-size: x-large;">
+	<section data-markdown style="font-size: x-large;" class="hands-on">
 		<textarea data-template>
 ## Hands-On I - Ein Modell erzeugen
 
@@ -734,7 +682,7 @@ _wer will Scripte in Produktion?_
 </section>
 
 
-	<section data-markdown>
+	<!-- <section data-markdown>
 		<textarea data-template>
 <img src='img/ml-bad.png'>					
 
@@ -745,7 +693,7 @@ https://twitter.com/DavidSKrueger/status/1487391569028296710
 
 		</textarea>
 	</section>
-
+ -->
 	<section data-markdown class="fragments">
 ### Phase 2: Professionalisierung
 
@@ -830,7 +778,7 @@ https://twitter.com/karpathy/status/1486215976559398915
 </textarea>
 	</section>
 
-	<section data-markdown>
+	<!-- <section data-markdown>
 		<textarea data-template>
 <img src='img/twitter-taylor-ml-deployment.png'>
 
@@ -840,7 +788,7 @@ https://twitter.com/SamuelDataT/status/1488150832742899718
 </small>
 
 </textarea>
-	</section>
+	</section> -->
 
 	<section data-markdown class="fragments">
 ### Phase 3: Produktion / Betrieb
@@ -961,12 +909,79 @@ https://github.com/DJCordhose/insurance-ml/blob/main/README.md
 </textarea>
 </section>
 
-<section data-markdown class="todo">
+<!-- <section data-markdown class="todo">
 ### Monitoring ist eine Art Predictive Maintainace
+</section> -->
+	
+<section data-markdown class="fragments">
+	<textarea data-template>
+### Wir lassen das System ein bisschen in Produktion laufen
+
+Mal sehen wie sich das System macht
+
+- Information über Schadensfälle neuer Kunden kommen nur verzögert
+- Aber neue Meldungen über Schandensmeldungen kommen permanent
+- Wir haben keine explizite Kontrolle darüber, wer bei uns versichert werden will und wessen Unfalldaten wir bekommen
+- Es gibt aber eine Tendenz dahin, dasss eher Kunden mit guten Konditionen kommen
+
+<small>
+
+https://colab.research.google.com/github/DJCordhose/ml-resources/blob/main/notebooks/mlops/3_mlops_shift.ipynb
+</small>
+
+</textarea>
 </section>
+
+
+<section data-markdown>
+	<textarea data-template>
+
+<!-- <img src='img/6monts-later.jpg' height="600px"> -->
+<img src='img/2year-later.jpg' height="600px">
+
+</textarea>
+</section>
+
+
+<section data-markdown data-transition="none">
+	<textarea data-template>
+## Ergebnis des Modells nach zwei Jahren
+
+<img src='img/insurance-new/insurance-after-shift.png' class="fragment">
+
+</textarea>
+</section>
+
+
+<section data-markdown data-transition="none">
+	<textarea data-template>
+## Ursprüngliche Daten zum direkten Vergleich
+
+<img src='img/insurance-new/insurance-pred.png'>
+
+</textarea>
+</section>
+
+<section data-markdown class="fragments">
+	<textarea data-template>
+### Was ist hier passiert? 
+
+*Die Welt steht nicht still - Model und Welt laufen auseinander, aus 70%  Genauigkeit werden 65%*
+
+* Elektroautos finden weitere Verbreitung
+* potente Elektroautos haben allgemein deutlich geringere Höchstgeschwindigkeit 
+* aber super Beschleunigung
+* Gute Beschleunigung ist viel eher Ursache für rasante Fahrweise, Unfallwahrscheinlichkeit ist hoch
+* Wir haben aber nur Höchstgeschwindigkeit als Daten (seht im Fahrzeugschein), Korrelation war angenommen
+* Der Cluster mit jungen, schlechten Fahrern ist nach unten gerutscht
+* _Wird nun fälschlich als gut vorhergesagt und werden günstig versichert_
+<!-- * Tatsächlich sehen wir aber viele Unfälle -->
+<!-- - Faherer vielleicht ein bisschen älter geworden -->
+</textarea>
+</section>
+
 	
-	
-<section data-markdown class="todo">
+<section data-markdown>
 ### Grundregel
 
 * Alle haben Probleme in Produktion
@@ -979,25 +994,38 @@ https://github.com/DJCordhose/insurance-ml/blob/main/README.md
 
 </section>
 	
-<section data-markdown class="todo">
+<section data-markdown>
 ### Man hat immer Verzögerung bis man weiß, ob die Vorhersagen gut waren
 
 * Wenn man warten kann bis die da sind hat man einen Vorteil
 * manchmal erst nach Jahren
-  * Insurance
 * Und manchmal weiß man es aber nie
-  * Objekt Detection
-</section>
-
-
-
-<section data-markdown class="todo">
-### Die vier goldenen Regeln des traditionellen Monitorings
-* 
-	https://sre.google/sre-book/monitoring-distributed-systems/	
 </section>
 
 <section data-markdown>
+### Die vier goldenen Regeln des traditionellen Monitorings
+
+* Latency
+* Traffic
+* Errors
+* Saturation
+
+https://sre.google/sre-book/monitoring-distributed-systems/	
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+### Monitoring für ML muss komplexer sein
+
+<img src="img/google-ml-monitoring.png">
+
+
+Long: https://static.googleusercontent.com/media/research.google.com/en//pubs/archive/aad9f93b86b7addfea4c419b9100c6cdd26cacea.pdf
+Short: https://storage.googleapis.com/pub-tools-public-publication-data/pdf/45742.pdf
+</textarea>
+</section>
+
+<section data-markdown class="fragments";>
 ## Welche Metriken kann man in ML Systemen überwachen?
 
 Entscheidend ist die Performance des Systems
@@ -1014,7 +1042,7 @@ Entscheidend ist die Performance des Systems
 
 </section>
 
-<section data-markdown>
+<section data-markdown class="fragments">
 ## Das reicht meist nicht
 
 * Ground Truth liegt erst sehr spät vor
@@ -1031,19 +1059,7 @@ Entscheidend ist die Performance des Systems
 </section>
 
 
-<section data-markdown>
-	<textarea data-template>
-### Monitoring für ML muss komplexer sein
-
-<img src="img/google-ml-monitoring.png">
-
-
-Long: https://static.googleusercontent.com/media/research.google.com/en//pubs/archive/aad9f93b86b7addfea4c419b9100c6cdd26cacea.pdf
-Short: https://storage.googleapis.com/pub-tools-public-publication-data/pdf/45742.pdf
-</textarea>
-</section>
-
-<section data-markdown>
+<section data-markdown class="fragments">
 ## Was kann man machen: Frühes Monitoring
 
 * Qualität der Daten
@@ -1069,7 +1085,7 @@ Short: https://storage.googleapis.com/pub-tools-public-publication-data/pdf/4574
   * Korrelationen zwischen Features
 </section>
 	
-<section data-markdown>
+<!-- <section data-markdown>
 ## Drift Detection
 </section>
 
@@ -1087,7 +1103,7 @@ Short: https://storage.googleapis.com/pub-tools-public-publication-data/pdf/4574
   * KL Divergence
   * Kolmogorow-Smirnow-Test  	
 </section>
-
+ -->
 <section data-markdown>
 ## Data Drift
 
@@ -1100,13 +1116,13 @@ Short: https://storage.googleapis.com/pub-tools-public-publication-data/pdf/4574
   * Wichtigkeit der driftenden Features
   * Anzahl der driftenden Features
   * Ausmaß des Drifts
-* Dafür wichtig
+<!-- * Dafür wichtig
   * Vernünftige Tests anhand der Metriken
-  * Vernünftige Konfidenzintervalle
+  * Vernünftige Konfidenzintervalle -->
 
 </section>
 
-<section data-markdown>
+<!-- <section data-markdown>
 ## Vernünftige Tests: Nicht-Parametrische Tests
 
 </section>
@@ -1125,7 +1141,7 @@ Short: https://storage.googleapis.com/pub-tools-public-publication-data/pdf/4574
     * Z-Test, T-Test des Mittelwerts (m = m0)
     * Z-Test für eine Proportion https://statologie.de/z-test-eine-proportion/ (p = p0)
 </section>
-
+ -->
 <section data-markdown >
 	<textarea data-template>
 ## Drift erfordert Interpretation
@@ -1158,16 +1174,14 @@ Wenn die Welt sich ändert, ist Drift zu erwarten und damit ok
 
 </section>
 
-
-
-<section data-markdown class="todo">
-### Grafana
-	
- https://play.grafana.org/
+<section data-markdown>
+## Technische Umsetzung	
 </section>
 
-<section data-markdown class="todo">
+<section data-markdown>
 ### Prometheus
+
+Metric Server
 
 * https://prometheus.io/
 * https://prometheus.io/docs/prometheus/latest/getting_started/
@@ -1175,12 +1189,37 @@ Wenn die Welt sich ändert, ist Drift zu erwarten und damit ok
 
 </section>
 
+
+<section data-markdown>
+### Grafana
+
+Visualisierung mit Dashboards
 	
-	<section data-markdown class="todo hands-on">
+https://play.grafana.org/
+</section>
+
+<section data-markdown>
+### Evidently
+
+ML Performance Monitoring
+	
+* https://docs.evidentlyai.com/reports/data-drift
+* https://docs.evidentlyai.com/user-guide/customization/options-for-data-target-drift
+* https://docs.evidentlyai.com/user-guide/customization/options-for-statistical-tests
+
+https://evidentlyai.com/
+</section>
+	
+	<section data-markdown class="hands-on">
 		<textarea data-template>
 ## Hands-On IIIb - Monitoring und Sinn daraus machen
 
-
+1. Fahre deine bisherige Docker Umgebung herunter
+1. Starte die Monitoring Umgebung in `monitoring` über `run_example.py`
+1. Hier werden nun Anfragen simuliert und in Grafana dargestellt
+1. Das Readme enthält Details und wie du auf die passenden Dashboards kommst
+1. Erzeuge einen passenden Grafana Alert 
+1. Zusatzaufgabe: p-value und/oder Art des Tests anpassen
 
 </textarea>
 	</section>
@@ -1228,72 +1267,6 @@ https://en.wikipedia.org/wiki/Survivorship_bias
 	</section>
 -->
 
-	<section data-markdown class="fragments">
-		<textarea data-template>
-### Wir lassen das System ein bisschen in Produktion laufen
-
-Mal sehen wie sich das System macht
-
-- Information über Schadensfälle neuer Kunden kommen nur verzögert
-- Aber neue Meldungen über Schandensmeldungen kommen permanent
-- Wir haben keine explizite Kontrolle darüber, wer bei uns versichert werden will und wessen Unfalldaten wir bekommen
-- Es gibt aber eine Tendenz dahin, dasss eher Kunden mit guten Konditionen kommen
-
-<small>
-
-https://colab.research.google.com/github/DJCordhose/ml-resources/blob/main/notebooks/mlops/3_mlops_shift.ipynb
-</small>
-
-</textarea>
-	</section>
-
-
-	<section data-markdown>
-		<textarea data-template>
-
-<!-- <img src='img/6monts-later.jpg' height="600px"> -->
-<img src='img/2year-later.jpg' height="600px">
-
-</textarea>
-	</section>
-
-
-	<section data-markdown data-transition="none">
-		<textarea data-template>
-## Ergebnis des Modells nach zwei Jahren
-
-<img src='img/insurance-new/insurance-after-shift.png' class="fragment">
-
-</textarea>
-	</section>
-
-
-	<section data-markdown data-transition="none">
-		<textarea data-template>
-## Ursprüngliche Daten zum direkten Vergleich
-
-<img src='img/insurance-new/insurance-pred.png'>
-
-</textarea>
-	</section>
-
-	<section data-markdown class="fragments">
-		<textarea data-template>
-### Was ist hier passiert? 
-
-*Die Welt steht nicht still - Model und Welt laufen auseinander, aus 70%  Genauigkeit werden 65%*
-
-* Elektroautos finden weitere Verbreitung
-* potente Elektroautos haben allgemein deutlich geringere Höchstgeschwindigkeit 
-* aber super Beschleunigung
-* Gute Beschleunigung ist viel eher Ursache für rasante Fahrweise, Unfallwahrscheinlichkeit ist hoch
-* Wir haben aber nur Höchstgeschwindigkeit als Daten (seht im Fahrzeugschein), Korrelation war angenommen
-* Der Cluster mit jungen, schlechten Fahrern ist nach unten gerutscht
-* _Wird nun fälschlich als gut vorhergesagt und werden günstig versichert_
-<!-- * Tatsächlich sehen wir aber viele Unfälle -->
-<!-- - Faherer vielleicht ein bisschen älter geworden -->
-</textarea>
-	</section>
 
 	<!-- <section data-markdown>
 		<textarea data-template>
@@ -1327,6 +1300,25 @@ https://twitter.com/chipro/status/1313921889061015557
 </small>
 </textarea>
 	</section> -->			
+
+	<section data-markdown>
+### Ein vielleicht noch weiter verbreitetes Fehlerbild
+
+Nicht die Welt ändert sich, sondern unsere Kodierung davon
+
+* Beispiel Bild-Daten
+  * float 0..1 vs int 0..255
+  * wie viele Farbkanäle
+* insbesondere Neuronale Netze haben "silent failure"
+* also: Wertebereich checken und Typ der Argumente
+* bei unseren Beispiel: normalisiert vs nicht normalisiert
+* Was monitoren
+  * Verteilung
+  * Kodierung
+
+</section>
+
+
 
 	<section data-markdown class="fragments">
 		<textarea data-template>
