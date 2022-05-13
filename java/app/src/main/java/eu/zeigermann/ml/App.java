@@ -23,7 +23,7 @@ import org.tensorflow.ndarray.IntNdArray;
 public class App {
 
     public static void main(String[] args) throws Exception {
-        try (var savedModelBundle = SavedModelBundle.load("C:/Users/olive/Development/insurance-ml/app/classifier",
+        try (var savedModelBundle = SavedModelBundle.load("/home/olli/insurance-ml/app/classifier",
                 "serve")) {
 
             var input_matrix = NdArrays.ofFloats(Shape.of(1, 2));
