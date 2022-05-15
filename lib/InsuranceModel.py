@@ -32,7 +32,7 @@ class InsuranceModel:
         min_speed, max_speed = self.max_speed_range 
         valid = age >= min_age and age <= max_age and speed >= min_speed and speed <= max_speed
         if throw and not valid:
-            raise Exception(f'age {age} and/or max_speed {max_speed} outside of valid range')
+            raise ValueError(f'age {age} and/or max_speed {max_speed} outside of valid range')
         return valid
 
     def predict(self, age, max_speed):

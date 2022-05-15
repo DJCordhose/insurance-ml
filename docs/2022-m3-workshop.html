@@ -165,7 +165,6 @@ Teilnehmer sollen anhand eines in sich stimmigen Satzes von Werkzeugen die Konze
 </section> -->
 
 <section data-markdown class="todo">
-* lib erzeugen, InsuranceModel wird basemodel	
 * Monitoring
   * monitoring/run_example.py auf Windows zum laufen bringen
     * bat?
@@ -177,75 +176,6 @@ Teilnehmer sollen anhand eines in sich stimmigen Satzes von Werkzeugen die Konze
   https://github.com/embarced/notebooks/blob/master/mlops/5_mlops_tfdv_skew.ipynb
   https://en.wikipedia.org/wiki/Jensen%E2%80%93Shannon_divergence
 </section>
-	
-<section data-markdown class="todo">
-Mittel wichtig
-* Unit Tests:
-	* Check range Code
-* Smoke Tests:
-	* Invariants  
-* Einen besseren Client.html bauen	
-</section>
-
-<!-- <section data-markdown class="local preparation hide">
-## Hands-On
-
-### Phase I
-1. Ein gutes Modell mit TensorFlow entwickeln
-1. Logik bauen die bestimmt, ob man dem Ergebnis traut, also ob man es nimmt oder einen Fallback
-
-### Phase II
-1. Dinge in Module auslagern und auch im Notebook nutzen
-1. Trainiertes Modell mit Flask Server zum Laufen bringen
-1. JS-Client nutzt das Modell per REST (oder Java Server?) 
-
-### Phase III
-1. Metriken exportieren
-1. Requests gegen den Server simulieren
-1. Alert in Grafana anlegen
-</section>
-
-
-<section data-markdown class="local preparation hide">
-## Story
-
-### Phase 0
-- Grundlagen und Installation
-
-### Phase I
-1. Ein gutes Modell mit TensorFlow entwickeln
-1. Überblick Metriken: was passt gut? Wie benchmarked man
-1. Generalization
-1. Logik bauen die bestimmt, ob man dem Ergebnis traut, also ob man es nimmt oder einen Fallback
-   - bauen:
-     - check
-	 - Fallback in Regeln
- 1. 1b Notebook und auch Alternative mit lattice zeigen
- 
-### Phase II
-- Dinge in Module auslagern und auch im Notebook nutzen
-  - Autoreload im Notebook
-  - prediction
-  - präprocessing
-    - SKlearn pipeline
-	- Normalize 
-  - post processing
-    - Denormalize
-	- Plausibility
-- Erste Version des Servers haben
-  - Gerürst von app.py vorgeben mit Tracking Code etc.  
-
-### Phase III
-- Version mit Evidently zum laufen bringen
-- Requests aus Test Satz schicken
-  - Dashboard: alles gut
-- Requests aus Shift Satz schicken
-  - Dashboard: Shift
-  - Alert
-    - anlegen auf Panel
-	- Liste der Alerts in Dashboard hinzufügen
-- Dinge ausprobieren: https://play.grafana.org/
-</section> -->
 
 <!-- <section data-markdown class="todo">
 
@@ -747,6 +677,10 @@ https://twitter.com/DavidSKrueger/status/1487391569028296710
 ### Intro (gemeinsam): Ein Stück Code aus dem Notebook herausziehen
 1. https://ipython.org/ipython-doc/3/config/extensions/autoreload.html
 1. Ein Python Modul erzeugen und im Notebook importieren
+1. Tests und Debugging
+   * mit https://docs.pytest.org/en/7.1.x/getting-started.html
+   * von der Kommandozeile
+   * in der IDE
 
 ### Kandidaten für das auslagern in Module ausmachen und auslagern
 1. Was brauchen wir für Produktion?

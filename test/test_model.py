@@ -16,3 +16,7 @@ def test_known_low_category():
 def test_known_high_category():
     _, category = insurance_model.predict(30, 150)
     assert category == RiskGroup.HIGH.value    
+
+def test_invalid_range():
+    with pytest.raises(ValueError):
+        insurance_model.predict(500, 500)
