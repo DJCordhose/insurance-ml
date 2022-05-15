@@ -2,6 +2,9 @@
 
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+import sys 
+sys.path.append('../lib')    
+# print(sys.path)
 
 # from sklearn_prediction import predict
 # from tf_prediction import predict
@@ -18,9 +21,7 @@ logging.basicConfig(filename='req.log')
 
 data_logger = logging.getLogger('DataLogger')
 data_logger.setLevel(logging.INFO)
-
-file_handler = logging.FileHandler('data.log', )
-
+file_handler = logging.FileHandler('data.log')
 data_logger.addHandler(file_handler)
 
 @app.route("/ping")
