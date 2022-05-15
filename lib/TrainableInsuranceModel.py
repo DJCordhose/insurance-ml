@@ -3,16 +3,15 @@ from lrcurve import KerasLearningCurve
 from viz import plot_metric_over_time, plot_decision_boundaries
 from data import RiskGroup, DataType
 import tensorflow as tf
+from InsuranceModel import InsuranceModel
 
-class Model:
-    def __init__(self, model, data=None, batch_size=32, age_range=(10, 150), max_speed_range=(50, 250), keras_format=True):
+class TrainableInsuranceModel(InsuranceModel):
+    def __init__(self, model, data, batch_size=32, **kwargs):
+        InsuranceModel.__init__(self, model, **kwargs)
         self.model = model
         self.data = data
         self.batch_size = batch_size
         self.history = None
-        self.keras_format = keras_format
-        self.age_range = age_range
-        self.max_speed_range = max_speed_range
 
     def train(self, epochs=50, plot_curve=True):
         if not self.keras_format:
@@ -65,47 +64,12 @@ class Model:
                               self.history.history['accuracy'], self.history.history['val_accuracy'],
                               y_label='accuracy')
 
-    # https://keras.io/guides/serialization_and_saving/
-    def load_model(self, model_path='classifier', keras_format=None):
-        if keras_format is None:
-            keras_format = self.keras_format
-
-        if keras_format:
-            self.model = tf.keras.models.load_model(f'{model_path}.h5')
-        else:
-            self.model = tf.saved_model.load(model_path)
-        return self.model
-
-    def save_model(self, model_path='classifier', keras_format=None):
-        if keras_format is None:
-            keras_format = self.keras_format
-
-        if keras_format:
-            self.model.save(f'{model_path}.h5', save_format='h5')
-        else:
-            self.model.save(model_path, save_format='tf')
-
-    def check_range(self, age, speed, throw=False):
-        min_age, max_age = self.age_range 
-        min_speed, max_speed = self.max_speed_range 
-        valid = age >= min_age and age <= max_age and speed >= min_speed and speed <= max_speed
-        if throw and not valid:
-            raise Exception(f'age {age} and/or max_speed {max_speed} outside of valid range')
-        return valid
-
-    def predict(self, age, max_speed):
-        probas = self.predict_proba(age, max_speed)
-        return probas.argmax()
-
-    def predict_proba(self, age, max_speed):
-        self.check_range(age, max_speed, throw=True)
-        X = [[age, max_speed]]
-        return self.model.predict(X)
-
     # should better be a unit test
     def check_model_invariants(self):
-        assert self.predict(48, 100) == RiskGroup.LOW.value
-        assert self.predict(30, 150) == RiskGroup.HIGH.value
+        _, category = self.predict(48, 100)
+        assert category == RiskGroup.LOW.value
+        _, category = self.predict(30, 150)
+        assert category == RiskGroup.HIGH.value
         
     def plot_decision_boundaries(self, plot_extended=False):
         X, y = self.data.get_data()

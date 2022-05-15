@@ -1,11 +1,8 @@
 import tensorflow as tf
 
 class InsuranceModel:
-    def __init__(self, model=None, data=None, batch_size=32, age_range=(10, 150), max_speed_range=(50, 250), keras_format=True):
+    def __init__(self, model=None, age_range=(10, 150), max_speed_range=(50, 250), keras_format=True):
         self.model = model
-        self.data = data
-        self.batch_size = batch_size
-        self.history = None
         self.keras_format = keras_format
         self.age_range = age_range
         self.max_speed_range = max_speed_range
