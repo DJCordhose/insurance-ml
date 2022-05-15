@@ -14,3 +14,4 @@ metadata.db
 trainer.py
 server.log
 *.png
+*.h5

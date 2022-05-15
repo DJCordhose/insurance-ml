@@ -1,8 +1,11 @@
+#!/usr/bin/env python
+
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 
 # from sklearn_prediction import predict
-from tf_prediction import predict
+# from tf_prediction import predict
+from model_prediction import predict
 
 from prometheus_client import MetricsHandler, Counter
 

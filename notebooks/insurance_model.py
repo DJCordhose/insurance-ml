@@ -5,7 +5,7 @@ from data import RiskGroup, DataType
 import tensorflow as tf
 
 class Model:
-    def __init__(self, model, data, batch_size=32, age_range=(10, 150), max_speed_range=(50, 250), keras_format=True):
+    def __init__(self, model, data=None, batch_size=32, age_range=(10, 150), max_speed_range=(50, 250), keras_format=True):
         self.model = model
         self.data = data
         self.batch_size = batch_size
