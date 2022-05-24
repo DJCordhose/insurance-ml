@@ -165,6 +165,8 @@ Teilnehmer sollen anhand eines in sich stimmigen Satzes von Werkzeugen die Konze
 </section> -->
 
 <section data-markdown class="todo">
+* Übung für Business Metrik	
+* Gucken: Was kann ich aus dem Talk noch übernehmen
 * Monitoring
   * monitoring/run_example.py auf Windows zum laufen bringen
     * bat?
@@ -478,8 +480,8 @@ funktionsfähiges Modell entwickelt.
 * Scripting passt hier besser als Programmieren als Ausdruck für die Tätigkeit
 * das Ziel ist eine schnelle Entwicklung
 * Phase 1 endet entweder mit
-* einem funktionsfähigen Modell mit dem man in Phase II übergeht oder
-* dem Verwerfen des Ansatzes
+  * einem funktionsfähigen Modell mit dem man in Phase II übergeht oder
+  * dem Verwerfen des Ansatzes
 
 	</section>
 
@@ -563,11 +565,11 @@ _Idee implemented in so called "notebooks"_
 * das ist kein Zeichen von einem unprofessionellen Vorgehen
 * ergibt sich aus der Arbeitsweise und Zielsetzung
 * jeder Experimentator, erprobte ML Ansatz und jede Iteration kann eine neue, komplett entkoppelte Kopie eines Notebooks rechtfertigen
-* "Das Wichtigste in dieser Phase ist die schnelle Iteration" https://twitter.com/marktenenholtz/status/1488134981985583105
-* "Machen Sie ein einfaches Experiment nach dem anderen" https://karpathy.github.io/2019/04/25/recipe/
+  * "Das Wichtigste in dieser Phase ist die schnelle Iteration" https://twitter.com/marktenenholtz/status/1488134981985583105
+  * "Machen Sie ein einfaches Experiment nach dem anderen" https://karpathy.github.io/2019/04/25/recipe/
 * natürlich wird dabei teilweise falsch entkoppelt
-* Wir kopieren alles, auch die Teile, die die beiden Notebooks größtenteils unverändert teilen
-* Solange wir aber nicht wissen was die relevant gemeinsamen Teile sind müssen wir damit weiter machen
+  * Wir kopieren alles, auch die Teile, die die beiden Notebooks größtenteils unverändert teilen
+  * Solange wir aber nicht wissen was die relevant gemeinsamen Teile sind müssen wir damit weiter machen
 * welcher Ansatz mehr Liebe verdient wird erst am Ende dieser Phase klar
 </textarea>
 	</section>
@@ -655,8 +657,8 @@ https://twitter.com/DavidSKrueger/status/1487391569028296710
 * Die Rahmenbedingungen der Produktionsumgebung müssen erfüllt werden
 * Art des Deployments, Sprache, Latenz, Speicher, Bandbreite, etc.
 * Phase II endet entweder mit
-* reifem Code und Modell mit dem man in Phase III übergeht oder
-* dem iterieren zurück in Phase I mit neu gewonnenen Erkenntnissen oder falls Rahmenbedingungen nicht erfüllt werden
+  * reifem Code und Modell mit dem man in Phase III übergeht oder
+  * dem Iterieren zurück in Phase I mit neu gewonnenen Erkenntnissen oder falls Rahmenbedingungen nicht erfüllt werden
 
 	</section>
 
@@ -672,13 +674,31 @@ https://twitter.com/DavidSKrueger/status/1487391569028296710
 ### Was gehört in Bibliotheken ausgelagert?
 
 * Wir können nicht mit einem Notebook in Produktion gehen
-* also muss alles was wir in Produktion brauchen aus den Notebooks herausgezogen werden
-* Bestimmte Teile eines Notebooks haben sich als stabil herausgestellt und 
-* sollten nicht bei jeder Kopie entkoppelt werden
+  * also muss alles was wir in Produktion brauchen aus den Notebooks herausgezogen werden
+* Bestimmte Teile eines Notebooks haben sich als stabil herausgestellt und sollten nicht bei jeder Kopie entkoppelt werden
 * Alles was sich nach Software anfühlt (Klassen, Funktionen, etc.) ist auch Software
-* diese Teile sollten auch wie solche behandelt werden  
+  * diese Teile sollten auch wie solche behandelt werden  
+* Professionalisierung muss gut abhängen
+  * erste Version der exrahierten Module ist mit Sicherheit nicht endgültig
 </textarea>
 	</section>
+
+<section data-markdown>
+### Scripte	
+* Manche Notebooks werden in Phase zu Skripten, die eine dünne API um die Module sind. 
+* Können auch in CI/CD eingebaut werden.
+* Training als Script oft nicht sinnvoll bei Deep Learning, da viel Anpassungen notwendig und besondere Ablaufumgebung mit nicht geteilten Ressourcen notwendig.
+
+</section>
+
+<section data-markdown>
+### FAQ
+
+* Wie sorgt man dafür, dass die Notebooks nicht vergammeln und bei Anpassungen der lib nicht kaputt gehen
+  * Antwort: gar nicht. Solange sie keine Scripte sind sind sie nicht stabil. 
+
+</section>
+
 
 	<section data-markdown style="font-size: x-large;" class="hands-on">
 		<textarea data-template>
@@ -712,6 +732,22 @@ https://twitter.com/DavidSKrueger/status/1487391569028296710
 https://colab.research.google.com/drive/1hDUO1-EzMVtVt6snmgrR1I1A36oPp4J9
 </textarea>
 	</section>
+
+<section data-markdown>
+###	Optional Phase 2: Business Metrik ableiten
+
+* Wir haben technische Metriken zur Bewertung, aber was will man eigentlich erreichen?
+  * Mehr Umsatz? 
+  * Mehr Gewinn? 
+  * Spannendere Aufgaben für die Mitarbeiter?
+  * Innovation? 
+* Hätte man gern von Anfang an
+* Geht aber mit der Entwicklung Hand-in-Hand
+* Häufig hat man Anfang noch gar keine Ahnung, wie so eine Metrik aussehen würde
+* Bzw. die Leute die das Domänenwissen haben, kriegen das nicht formal sortiert
+* Aufwand für die Sortierung lohnt sich evtl. gar nicht, weil man sowieso Phase I gar nicht verlässt oder zumindest nicht mit dem Ansatz
+</section>
+
 
 <section data-markdown>
 	<textarea data-template>
@@ -749,21 +785,22 @@ https://twitter.com/SamuelDataT/status/1488150832742899718
 </textarea>
 	</section> -->
 
-	<section data-markdown class="fragments">
+			<section data-markdown class="fragments">
 ### Phase 3: Produktion / Betrieb
 
-* in der dritten Phase wird die Lösung in Betrieb genommen
+in der dritten Phase wird die Lösung in Betrieb genommen
+
 * alle Regeln des produktiven Einsatzes von Software gelten auch hier
 * Monitoring hat zusätzliche Herausforderungen
-* Natur und Verteilung der Anfragen und auch Vorhersagen muss permanent überwacht werden
+  * Natur und Verteilung der Anfragen und auch Vorhersagen muss permanent überwacht werden
 * Phase III endet entweder mit
-* der Abschaltung 
-* entweder bald weil nutzlos oder
-* später weil durch neues System ersetzt
-* dem iterieren zurück in Phase II mit neu gewonnenen Erkenntnissen
-* dem iterieren zurück in Phase I mit neu gewonnenen Erkenntnissen oder einem Neuansatz (häufig ebenfalls ein Zeichen für einen Fehlschlag)
+  * der Abschaltung 
+    * entweder bald weil nutzlos oder
+    * später weil durch neues System ersetzt
+  * dem Iterieren zurück in Phase II mit neu gewonnenen Erkenntnissen
+  * dem Iterieren zurück in Phase I mit neu gewonnenen Erkenntnissen oder einem Neuansatz (häufig ebenfalls ein Zeichen für einen Fehlschlag)
 
-	</section>
+			</section>
 
 	<section data-markdown class="fragments">
 ### Technische Umsetzung des Betriebs in Produktion
