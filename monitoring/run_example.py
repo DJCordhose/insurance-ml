@@ -50,7 +50,7 @@ def check_dataset(
             return
 
     logging.info("Download dataset %s", dataset_name)
-    run_script(cmd=["scripts/prepare_datasets.py", "-d", dataset_name, "-p", dataset_path], wait=True)
+    run_script(cmd=["python", "scripts/prepare_datasets.py", "-d", dataset_name, "-p", dataset_path], wait=True)
 
 
 def download_test_datasets(force: bool):
@@ -96,8 +96,8 @@ def main(force: bool):
     setup_logger()
     check_docker_installation()
     download_test_datasets(force=force)
-    run_docker_compose()
-    send_data_requests()
+    # run_docker_compose()
+    # send_data_requests()
 
 
 if __name__ == "__main__":
