@@ -127,12 +127,6 @@ Phase III: Produktion
 
 ca. 17:00 Uhr: Ende
 
-Übungen
-* Phase II
-  * Diskussion in der Gruppe: wo sollte man was dokumentieren?
-    * Dann mit allen besprechen, dann umsetzen
-
-
 
 ---
 
@@ -161,8 +155,9 @@ Teilnehmer sollen anhand eines in sich stimmigen Satzes von Werkzeugen die Konze
 
  
 
-<!-- <section data-markdown class="local preparation hide">
-</section> -->
+<section data-markdown class="local preparation hide">
+* Debugging des Tests einmal durchspielen	
+</section>
 
 <section data-markdown class="todo">
 * Gucken: Was kann ich aus dem Talk noch übernehmen
@@ -208,7 +203,7 @@ https://www.m3-konferenz.de/veranstaltung-14132-0-mlops-mit-python-und-tensorflo
 1. Diese Folien: https://bit.ly/m3-2022-mlops
 1. Stelle sicher, dass du die Anforderungen für die Mitarbeit erfüllst
    1. Projekt clonen (auf Wunsch vorher forken): https://github.com/DJCordhose/insurance-ml
-   2. Das Projekt wie im Readme (https://github.com/DJCordhose/insurance-ml/blob/main/README.md) beschrieben entweder lokal oder/und über Docker installieren
+   2. Das Projekt wie im Readme (https://github.com/DJCordhose/insurance-ml/blob/main/README.md) beschrieben lokal installieren
   
 _Bei Problemen den Nachbar oder Olli fragen_   
 </textarea>
@@ -576,7 +571,7 @@ _Idee implemented in so called "notebooks"_
 </textarea>
 	</section>
 
-<section data-markdown>
+<!-- <section data-markdown>
 <textarea data-template>
 ### Warum so viele unterschiedliche Experimente?
 
@@ -590,7 +585,7 @@ https://karpathy.github.io/2019/04/25/recipe/
 
 </textarea>
 </section>
-
+ -->
 
 <section data-markdown class="fragments">
 <textarea data-template>
@@ -671,7 +666,7 @@ https://twitter.com/DavidSKrueger/status/1487391569028296710
 </textarea>
 	</section>
 
-	<section data-markdown>
+	<section data-markdown class="fragments">
 		<textarea data-template>
 ### Was gehört in Bibliotheken ausgelagert?
 
@@ -681,15 +676,16 @@ https://twitter.com/DavidSKrueger/status/1487391569028296710
 * Alles was sich nach Software anfühlt (Klassen, Funktionen, etc.) ist auch Software
   * diese Teile sollten auch wie solche behandelt werden  
 * Professionalisierung muss gut abhängen
+  * Es stellt sich erst langsam heraus, was in ein Modul gehört
   * erste Version der exrahierten Module ist mit Sicherheit nicht endgültig
 </textarea>
 	</section>
 
 <section data-markdown>
 ### Scripte	
-* Manche Notebooks werden in Phase zu Skripten, die eine dünne API um die Module sind. 
+* Manche Notebooks werden in Phase II zu Skripten, die eine dünne API um die Module sind. 
 * Können auch in CI/CD eingebaut werden.
-* Training als Script oft nicht sinnvoll bei Deep Learning, da viel Anpassungen notwendig und besondere Ablaufumgebung mit nicht geteilten Ressourcen notwendig.
+* Training als Script ist oft nicht sinnvoll bei Deep Learning, da viel Anpassungen notwendig und besondere Ablaufumgebung mit nicht geteilten Ressourcen notwendig.
 
 </section>
 
@@ -736,6 +732,7 @@ https://colab.research.google.com/drive/1hDUO1-EzMVtVt6snmgrR1I1A36oPp4J9
 	</section>
 
 <section data-markdown class="fragments">
+#### Optional	
 ###	Gemeinsame Diskussion: Business Metrik ableiten
 
 _Was könnte eine Business Metrik sein und kann man die quantitativ messen?_
@@ -816,7 +813,7 @@ in der dritten Phase wird die Lösung in Betrieb genommen
 	</section>
 
 
-<section data-markdown>
+<section data-markdown class="fragments">
 		<textarea data-template>
 ### Eine ML Lösung hat 2 Artefakte: Code und Modell		
 
@@ -824,7 +821,7 @@ in der dritten Phase wird die Lösung in Betrieb genommen
 * Daten und Modell muss extern gehalten, aber zusammen mit Code versioniert werden
 * Modell beschreibt einen Ausschnitt der Realität. Wie finde ich heraus wie gut es das tut uns vor allem für relevante Teile der Welt und was mache ich wenn sich das ändert
 * Richtung: Benchmark und Monitoring der Lösung in Produktion
-* Prod geht auf Code und Modell Binaries, Modell Graph überall ausführen
+<!-- * Prod geht auf Code und Modell Binaries, Modell Graph überall ausführen -->
 
 </textarea>
 	</section>
@@ -860,12 +857,11 @@ in der dritten Phase wird die Lösung in Betrieb genommen
 ## Hands-On IIIa - Intro der Produktionsumgebung
 
 1. Im Ordner `app` ist eine Server-Anwendung vorbereitet
-1. Diese läuft sowohl lokal als auch in Docker
 1. In `app.py` ist ein einfacher Flask Server implementiert
 1. Start über `python app.py`
 1. Für HTML clients Web Server auf 8000 starten: `python -m http.server`
-1. `app/client.html` macht einen einfachen Request
-1. `docs/html/calculator.html` ist ein interactiver Client
+1. `http://localhost:8000/app/client.html` macht einen einfachen Request
+1. `http://localhost:8000/docs/html/calculator.html` ist ein interactiver Client (Remote Call anhaken)
 </textarea>
 	</section>
 
@@ -978,36 +974,100 @@ https://colab.research.google.com/github/DJCordhose/ml-resources/blob/main/noteb
 </textarea>
 </section>
 
-<section data-markdown>
+<!-- <section data-markdown>
 	<textarea data-template>
 <img src='img/model-eval.png'>
 
 <small>
 
-	https://twitter.com/marktenenholtz/status/1528021809697792003</small>
+https://twitter.com/marktenenholtz/status/1528021809697792003</small>
 		</textarea>
 </section>
-	
-<section data-markdown>
+	 -->
+<section data-markdown class="fragments">
 ### Grundregel
 
 * Alle haben Probleme in Produktion
 * Es gibt kein fehlerfreies System 
   * jedenfalls nicht für lange
 * Ziel ist es, Fehler schnell 
-  * zu entdecken,
+  * zu entdecken
   * zu analysieren
-  * und entsprechende ihrer schwere zu adressieren
+  * und entsprechende ihrer Schwere zu adressieren
 
+</section>
+
+<section data-markdown>
+### Wir setzen einen eigenen Monitoring-Server auf
+
+* Basiert auf Prometheus, Grafana und Evidently
+* Code basiert auf https://github.com/evidentlyai/evidently/tree/main/examples/integrations/grafana_monitoring_service
+* Nicht direkt Teil des eigentlichen Prod-Servers
+* Zusätzliche Requests werden gegen den Monitoring-Server gemacht
+* Requests über die Zeit verteilt werden simuliert
+* Vergleich mit Referenz-Datensatz, den wir zum Training benutzt haben
 </section>
 	
 <section data-markdown>
+### Prometheus
+
+Metric Server
+
+* https://prometheus.io/
+* https://prometheus.io/docs/prometheus/latest/getting_started/
+  * https://prometheus.io/download/
+
+</section>
+
+<section data-markdown>
+### Grafana
+
+Visualisierung mit Dashboards
+	
+https://play.grafana.org/
+</section>
+
+<section data-markdown>
+### Evidently
+
+ML Performance Monitoring
+	
+* https://docs.evidentlyai.com/reports/data-drift
+* https://docs.evidentlyai.com/user-guide/customization/options-for-data-target-drift
+* https://docs.evidentlyai.com/user-guide/customization/options-for-statistical-tests
+
+https://evidentlyai.com/
+</section>
+
+	<section data-markdown class="hands-on">
+		<textarea data-template>
+## Hands-On IIIb - Monitoring und Sinn daraus machen
+
+1. Fahre deine bisherige Docker Umgebung herunter
+1. Starte die Monitoring Umgebung in `monitoring` über 
+  * `python run_example.py`
+  * `docker compose up -d --build`
+  * `python scripts/example_run_request.py`
+1. Hier werden nun Anfragen simuliert und in Grafana dargestellt
+1. Das Readme enthält Details und wie du auf die passenden Dashboards kommst
+1. Erzeuge einen passenden Grafana Alert 
+1. Zusatzaufgabe: p-value und/oder Art des Tests anpassen
+
+</textarea>
+	</section>
+
+		
+<section data-markdown>
+## Mehr über Monitoring
+</section>
+
+<!-- <section data-markdown>
 ### Man hat immer Verzögerung bis man weiß, ob die Vorhersagen gut waren
 
 * Wenn man warten kann bis die da sind hat man einen Vorteil
 * manchmal erst nach Jahren
 * Und manchmal weiß man es aber nie
-</section>
+</section> -->
 
 <section data-markdown>
 ### Die vier goldenen Regeln des traditionellen Monitorings
@@ -1020,12 +1080,11 @@ https://colab.research.google.com/github/DJCordhose/ml-resources/blob/main/noteb
 https://sre.google/sre-book/monitoring-distributed-systems/	
 </section>
 
-<section data-markdown>
+<section data-markdown style="font-size: x-large;">
 	<textarea data-template>
 ### Monitoring für ML muss komplexer sein
 
 <img src="img/google-ml-monitoring.png">
-
 
 Long: https://static.googleusercontent.com/media/research.google.com/en//pubs/archive/aad9f93b86b7addfea4c419b9100c6cdd26cacea.pdf
 Short: https://storage.googleapis.com/pub-tools-public-publication-data/pdf/45742.pdf
@@ -1059,7 +1118,7 @@ Entscheidend ist die Performance des Systems
   * wir sammeln nur Daten von Leuten, die auch unsere Kunden werden   
 * Unterschiedliche Teilbereiche können eine unterschiedliche Performanz haben
   * Während ein Bereich besser wird, kann ein anderer, evtl. kleinerer Bereich deutlich schlechter werden, bei gleichbleibenden Performance
-* Performance kann stark über die Zeit variieren
+* Performance kann stark über die Zeit variieren, ohne dass es ein Problem gibt
   * anhängig von der Art der Anfragen
   * manchmal mit Regelmäßigkeiten innerhalb eines Tages
   * Trend in Abweichungen manchmal schwer zu bestimmen   
@@ -1115,7 +1174,7 @@ Entscheidend ist die Performance des Systems
 ## Data Drift
 
 * Verändert sich die Art der Eingabedaten?
-* Oft ausdrückt durch die Verteilung der einzelnen Features
+  * Oft ausgedrückt durch die Verteilung der einzelnen Features
 
 * Muss nicht notwendig schlimm sein
   * Wenn entscheidende Features betroffen sind, kann es ein Problem sein 
@@ -1157,7 +1216,7 @@ Wenn die Welt sich ändert, ist Drift zu erwarten und damit ok
 
 |   | Positive Interpretation, keine Maßnahme erforderlich  | Negative Interpretation, Maßnahme erforderlich  |
 |---|---|---|
-| *Data und Prediction Drift*  | wichtige Features haben geändert, Modell kommt klar und extrapoliert gut, z.B.: Höheres Alter, mehr Risiko  |  wichtige Features haben geändert, Modell extrapoliert nicht sinnvoll |
+| *Data und Prediction Drift*  | wichtige Features haben sich geändert, Modell kommt klar und extrapoliert gut, z.B.: Höheres Alter, mehr Risiko  |  wichtige Features haben sich geändert, Modell extrapoliert nicht sinnvoll |
 | *Data aber kein Prediction Drift*  | keine wichtigen Features geändert, das Modell ist robust genug für den Drift  | wichtige Features geändert, Modell extrapoliert nicht sinnvoll |
 |   |   |   |
 
@@ -1181,55 +1240,6 @@ Wenn die Welt sich ändert, ist Drift zu erwarten und damit ok
 
 </section>
 
-<section data-markdown>
-## Technische Umsetzung	
-</section>
-
-<section data-markdown>
-### Prometheus
-
-Metric Server
-
-* https://prometheus.io/
-* https://prometheus.io/docs/prometheus/latest/getting_started/
-  * https://prometheus.io/download/
-
-</section>
-
-
-<section data-markdown>
-### Grafana
-
-Visualisierung mit Dashboards
-	
-https://play.grafana.org/
-</section>
-
-<section data-markdown>
-### Evidently
-
-ML Performance Monitoring
-	
-* https://docs.evidentlyai.com/reports/data-drift
-* https://docs.evidentlyai.com/user-guide/customization/options-for-data-target-drift
-* https://docs.evidentlyai.com/user-guide/customization/options-for-statistical-tests
-
-https://evidentlyai.com/
-</section>
-	
-	<section data-markdown class="hands-on">
-		<textarea data-template>
-## Hands-On IIIb - Monitoring und Sinn daraus machen
-
-1. Fahre deine bisherige Docker Umgebung herunter
-1. Starte die Monitoring Umgebung in `monitoring` über `run_example.py`
-1. Hier werden nun Anfragen simuliert und in Grafana dargestellt
-1. Das Readme enthält Details und wie du auf die passenden Dashboards kommst
-1. Erzeuge einen passenden Grafana Alert 
-1. Zusatzaufgabe: p-value und/oder Art des Tests anpassen
-
-</textarea>
-	</section>
 
 	<!-- <section data-markdown class="fragments">
 		<textarea data-template>
