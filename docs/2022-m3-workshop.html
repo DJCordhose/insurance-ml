@@ -157,23 +157,11 @@ Teilnehmer sollen anhand eines in sich stimmigen Satzes von Werkzeugen die Konze
 
 <section data-markdown class="local preparation hide">
 * Debugging des Tests einmal durchspielen	
+* Gucken: Was kann ich aus dem Talk noch übernehmen
 </section>
 
 <section data-markdown class="todo">
-* Gucken: Was kann ich aus dem Talk noch übernehmen
-* Monitoring
-  * monitoring/run_example.py auf Windows zum laufen bringen
-    * bat?
-  * Alert in Grafana
-    - anlegen auf Panel
-    - Liste der Alerts in Dashboard hinzufügen
-  * Parameter und Art des Signifikanz-Tests änderbar machen
-  https://github.com/embarced/notebooks/blob/master/mlops/3_mlops_shift.ipynb
-  https://github.com/embarced/notebooks/blob/master/mlops/5_mlops_tfdv_skew.ipynb
-  https://en.wikipedia.org/wiki/Jensen%E2%80%93Shannon_divergence
-* Test-Sachen wieder herausholen
-  * Solitary vs Social
-  * Wie testet man das System am besten?  
+
 </section>
 
 <!-- <section data-markdown class="todo">
@@ -1005,7 +993,6 @@ https://twitter.com/marktenenholtz/status/1528021809697792003</small>
 * Nicht direkt Teil des eigentlichen Prod-Servers
 * Zusätzliche Requests werden gegen den Monitoring-Server gemacht
 * Requests über die Zeit verteilt werden simuliert
-* Vergleich mit Referenz-Datensatz, den wir zum Training benutzt haben
 </section>
 	
 <section data-markdown>
@@ -1032,31 +1019,105 @@ https://play.grafana.org/
 
 ML Performance Monitoring
 	
-* https://docs.evidentlyai.com/reports/data-drift
-* https://docs.evidentlyai.com/user-guide/customization/options-for-data-target-drift
-* https://docs.evidentlyai.com/user-guide/customization/options-for-statistical-tests
-
 https://evidentlyai.com/
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+### Drift-Erkennung mit Prometheus, Evidently und Grafana
+
+<img src="img/mlops/grafana-evidently-drift.png">
+
+https://docs.evidentlyai.com/reports/data-drift
+</textarea>
+</section>
+
+<section data-markdown class="fragments">
+	<textarea data-template>
+### Wie erkennt man Drift?
+
+* Es wird ein Statistischer Test auf den Eingabge-Daten ausgeführt
+* Unsere Features sind numerisch
+  * in `monitoring/metrics_app/config.yaml` festgelegt
+* Die Anfragen in Production werden verglichen mit Referenz-Datensatz, den wir zum Training benutzt haben (`monitoring/datasets/insurance`)
+* Evidently sucht als Default eine passende Metrik aus, es muss also nicht unser Problem sein
+* Man kann aber auch von Hand konfigurieren, sowohl Test als auch Parameter
+  * https://docs.evidentlyai.com/user-guide/customization/options-for-statistical-tests
+  * https://docs.evidentlyai.com/user-guide/customization/options-for-data-target-drift
+
+
+https://docs.evidentlyai.com/reports/data-drift
+
+</textarea>
+</section>
+
+<section data-markdown class="fragments">
+	<textarea data-template>
+### Wie wird überprüft?
+
+* die statistische Verteilung der jeweiligen Features
+* weicht diese im Prod signifikant von der Verteilung im Training ab?
+* diese Abweichung wird über eine Metrik berechnet
+* es kommt eine Konfidenz heraus, ob die Verteilungen unterschiedlich sind
+* ab (default) 95% Konfidenz geht man von einer Abweichung aus 
+* das bedeutet, dass es eine 5% Wahrscheinlichkeit gibt, dass die Verteilungen eigentlich doch gleich sind, man es aber nur gerade schlechte Beispiele sieht
+
+https://de.wikipedia.org/wiki/P-Wert
+</textarea>
+</section>
+
+
+<section data-markdown>
+	<textarea data-template>
+## Die Metrik
+
+### in unserem Fall wird die Wasserstein-Metrik für den Vergleich gewählt
+
+_Wenn jede Verteilung als ein Haufen von „Erde“ angehäuft auf dem metrischen Raum betrachtet wird, dann beschreibt diese
+Metrik die minimalen „Kosten“ der Umwandlung eines Haufens in den anderen._
+
+https://de.wikipedia.org/wiki/Wasserstein-Metrik
+</textarea>
 </section>
 
 	<section data-markdown class="hands-on">
 		<textarea data-template>
 ## Hands-On IIIb - Monitoring und Sinn daraus machen
 
-1. Fahre deine bisherige Docker Umgebung herunter
+### Teil I: Das Monitoring starten 
+
 1. Starte die Monitoring Umgebung in `monitoring` über 
-  * `python run_example.py`
-  * `docker compose up -d --build`
-  * `python scripts/example_run_request.py`
-1. Hier werden nun Anfragen simuliert und in Grafana dargestellt
-1. Das Readme enthält Details und wie du auf die passenden Dashboards kommst
-1. Erzeuge einen passenden Grafana Alert 
-1. Zusatzaufgabe: p-value und/oder Art des Tests anpassen
+   * `python run_example.py`
+   * `docker compose up -d --build`
+1. http://localhost:3000
+1. admin/admin
+1. Das Dashboard `Evidently Data Drift Dashboard` aufrufen
+1. Darin den Datensatz `insurance`
+1. Mit `python scripts/example_run_request.py` Anfragen simulieren
+1. Stelle sicher, dass sich das Dashboard aktualisiert
 
 </textarea>
 	</section>
 
-		
+	<section data-markdown class="hands-on">
+		<textarea data-template>
+## Hands-On IIIb, Monitoring und Sinn daraus machen
+
+### Teil II: Einen passenden Grafana Alert erzeugen
+
+1. Einen Alert kann man in Grafana als Regel oder direkt auf einem Dashboard einrichten
+1. Editiere im Dashboard entweder das Panel für die P-Werte oder für den Anteil driftender Features
+1. Im Alert Tab kannst die Bedingung für den Alarm festlegen
+1. Eventuell musst du erst einen Ordner erzeugen: https://grafana.com/docs/grafana/latest/dashboards/dashboard_folders/
+1. Nach dem Speichern sollte ein farbiges Herz auf dem Panel den Status angeben
+1. Stelle sicher, dass dein Alert ausgelöst wird
+1. Im Alerting Menu können Contact Points zur Benachrichtigung angelegt werden
+
+https://grafana.com/docs/grafana/latest/alerting/
+
+</textarea>
+	</section>
+
 <section data-markdown>
 ## Mehr über Monitoring
 </section>
