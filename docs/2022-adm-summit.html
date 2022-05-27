@@ -115,6 +115,7 @@
 <section data-markdown class="local preparation hide">
 </section>
 
+
 <!-- 
 Künstliche Intelligenz als Disziplin der Software Entwicklung
 
@@ -131,37 +132,15 @@ Technisch werden in einem Java Umfeld arbeiten und daher ist es vorteilhaft, ein
 Laptop mitzubringen. Letztlich ist aber jeder willkommen, da es eher um Prinzipien als Details im Code gehen wird.
  -->
 
-			<section data-markdown>
-				<textarea data-template>
-## Künstliche Intelligenz als Disziplin der Software Entwicklung
-                
-API, Microservices und DDD Summit 2022, https://api-summit.de/cloudnative-devops/kuenstliche-intelligenz-als-disziplin-der-software-entwicklung/
-
-Oliver Zeigermann
-
-Folien: https://bit.ly/xxx
-
-    </textarea>
-			</section>
-
-	<section data-markdown class="todo">
-		<textarea data-template>
-### Story und Slides aus MD Dev übernehmen als Rahmen
-1. Erst Regeln mit Java
-1. Mit Python trainieren
-1. Mit Java in Prod
-   * Das in Java integrieren über REST
-		</textarea>
-	</section>
-
-			
-<section data-markdown class="todo">
-1.	Insurance mit Java-Regeln lösen	
+ <section data-markdown class="todo">
+- App.java als Code-Gerüst
+  - Kann Daten einlesen
+  - score berechnen
+  - Hülle für Predict-Funktion 
 </section>
-			
 
-			<section data-markdown class="todo">
-				<textarea data-template>	
+<section data-markdown class="todo">
+	<textarea data-template>	
 ### Ziel: den Java Client entwickeln
 * Workspace Ordner zum drauf arbeiten
 * 2er Teams, einer sollte zumindest Code auf dem eigenen Rechner ausführen können
@@ -171,23 +150,385 @@ Folien: https://bit.ly/xxx
 </textarea>
 </section>
 
-	<section data-markdown class="todo">
-		<textarea data-template>
+<section data-markdown class="todo">
+<textarea data-template>
 ### Aus MD DEv und JAX Talk Dinge übernehmen			
-		</textarea>
-	</section>
-		
-	<section data-markdown class="todo">
-		<textarea data-template>
-# Python und ML als Build Tool
+</textarea>
+</section>
 
-* Build Script schrebt man auch nicht in Java
-* Groovy und Kotlin besser
-* Python eben auch
-* Es geht aber auch in Java
+
+			<section data-markdown>
+				<textarea data-template>
+## Künstliche Intelligenz als Disziplin der Software Entwicklung
+                
+API, Microservices und DDD Summit 2022, https://api-summit.de/cloudnative-devops/kuenstliche-intelligenz-als-disziplin-der-software-entwicklung/
+
+Oliver Zeigermann
+Open Knowledge
+oliver.zeigermann@openknowledge.de
+
+Folien: https://bit.ly/xxx
+
+    </textarea>
+			</section>
+
+			
+<section data-markdown>
+  <textarea data-template>
+### Wer ist Olli
+
+<div style="display: flex;">
+<div style="flex: 50%;">
+  <a href='https://oreilly.de/produkt/machine-learning-kurz-gut-2/'>
+  <img src='img/ml-buch-v2.jpg' height="400">
+  </a>
+</div>
+<div style="flex: 50%; font-size: x-large;">
+  <img src='img/olli-opa.jpeg'>
+</div>
+</div>
+<p>
+<a target="_blank" href="mailto:oliver.zeigermann@openknowledge.de">Oliver Zeigermann</a>:
+Head of AI@OpenKnowledge
+</p>    
+</textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+### Wer seid ihr?
+
+* Was macht ihr?
+* Was wisst ihr schon?
+* Warum seid ihr hier?
+</textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+# Agenda
+
+1. Unsere Beispielanwendung
+1. Klassische Regeln
+1. Lösung mit Machine Learning (ML)
+1. Ein ML Modell in Java integrieren
+1. ML als Monolith?
+</textarea>
+</section>
+
+<section data-markdown class="todo">
+	<textarea data-template>
+### Story und Slides aus MD Dev übernehmen als Rahmen
+1. Erst Regeln mit Java
+1. Mit Python trainieren
+1. Mit Java in Prod
+* Das in Java integrieren über REST
+	</textarea>
+</section>
+
+
+<section data-markdown>
+	<textarea data-template>
+# Agenda
+
+1. _Unsere Beispielanwendung_
+1. Klassische Regeln
+1. Lösung mit Machine Learning (ML)
+1. Ein ML Modell in Java integrieren
+1. ML als Monolith?
+</textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+## Unser Beispiel: Vorhersage von Risiken
+
+* Wir sind CTO einer hochinnovativen Kfz-Versicherungsgesellschaft
+* Anders als andere Versicherungsgesellschaften bestimmen wir den Tarif anhand der geschätzen Anzahl von Unfällen pro Kunde
+* Zielsetzung: Wie viele Unfälle werden die potenziellen Kunden haben?
+
+<img src='img/pixabay/accident-151668_1280.png' style="height: 230px">
+</textarea>
+</section>
+
+<section>
+	<h3>Klassifizierung basierend auf bekannten Daten</h3>
+	<img src="img/insurance-new/train-data.png" height="500px" class="fragment">
+</section>
+
+
+<section data-markdown>
+	<textarea data-template>
+### Vorhersage von Risiken für potenzielle Kunden
+
+<a href='html/calculator.html'>
+<img src='img/calculator.png' height="400">
+</a>
+<p><small>
+<a href='html/calculator.html' target="_blank">
+https://djcordhose.github.io/ml-resources/html/calculator.html</a></small>
+</small></p>
+</textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+# Agenda
+
+1. Unsere Beispielanwendung
+1. _Klassische Regeln_
+1. Lösung mit Machine Learning (ML)
+1. Ein ML Modell in Java integrieren
+1. ML als Monolith?
+</textarea>
+</section>
+
+<section data-markdown class="hands-on">
+	<textarea data-template>
+### Hands-On I		
+
+Gemeinsame Vorbereitung
+1. Im Verzeichnis `workspace-java` ist ein Java-Projekt vorbereitet
+1. In `workspace-java/app/src/main/java/eu/zeigermann/ml/App.java` gibt es ein Code-Gerüst für diesen Workshop
+1. `./gradlew run` bzw. `gradle.bat run` starten das Projekt
+
+Durchführung im Team
+1. Tut euch in Teams von mindestens 2 Personen zusammen
+1. Mindestens eine Person sollte Java-Code auf dem eigenen Rechner ausführen können
+1. Diskutiert wie ihr die Aufgabe mit klassischen Regeln lösen könnt
+1. Implementiert die Regeln und bestimmt wie gut diese das Problem lösen
+	</textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+# Agenda
+
+1. Unsere Beispielanwendung
+1. Klassische Regeln
+1. _Lösung mit Machine Learning (ML)_
+1. Ein ML Modell in Java integrieren
+1. ML als Monolith?
+</textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+<img src='img/booster/classic-development.jpg' style="height: 600px;">
+</textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+<img src='img/booster/supervised-ml.jpg' style="height: 600px;">
+</textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+### Man muss sein Problem so formulieren, dass es für ML greifbar wird
+
+<img src='img/software-complexity.png'>
+
+<small>
+Andrej Karpathy - TRAIN AI 2018 - Building the Software 2.0 Stack
+
+https://vimeo.com/272696002
+
+</small>
+	</textarea>
+</section>
+
+
+<section data-markdown>
+    <textarea data-template>
+### Machine Learning können in Phasen strukturiert werden
+
+<img src='img/sketch/phases-ml.png'>
 
 </textarea>
 </section>
+
+	<section data-markdown class="fragments">
+### Phase 1: Exploration
+
+* in der ersten Phase eines Machine Learning Projekts wird die Anwendungsidee validiert und ein
+funktionsfähiges Modell entwickelt.
+* dabei ist ein schnelles iterieren und ausprobieren von Ideen zentral
+* das Ziel ist *nicht* ein sinnvolles Stück Software
+* Scripting passt hier besser als Programmieren als Ausdruck für die Tätigkeit
+* das Ziel ist eine schnelle Entwicklung
+* Phase 1 endet entweder mit
+  * einem funktionsfähigen Modell mit dem man in Phase II übergeht oder
+  * dem Verwerfen des Ansatzes
+
+	</section>
+
+<section data-markdown>
+### Neuronale Netzwerke sind ein mächtiges Mittel für ML	
+## TensorFlow is defacto Standard
+
+_TensorFlow is an end-to-end open source platform for machine learning. It has a comprehensive, flexible ecosystem of
+tools, libraries and community resources that lets researchers push the state-of-the-art in ML and developers easily
+build and deploy ML powered applications._
+
+https://www.tensorflow.org/
+</section>
+
+<section data-markdown>
+    <textarea data-template>
+## Deployment ist ein Schwerpunkt
+
+<img src='img/tf-deploy.png'>
+
+<small>
+
+* https://www.tensorflow.org/tfx/guide/serving
+* https://www.tensorflow.org/lite/api_docs
+* https://www.tensorflow.org/js
+
+</small>
+
+</textarea>
+</section>
+
+<section data-markdown>
+## Aber mit welcher Programmiersprache?
+
+### Und wieso ist das eigentlich Python? (Spoiler)
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+### Unterschiedliche Projekte für TensorFlow mit Java
+
+1. https://github.com/tensorflow/tensorflow/blob/master/tensorflow/java/README.md
+   * Alte Version auf Basis von JNI, nur Core für die Ausführung von Modellen
+   * https://www.tensorflow.org/api_docs/java/org/tensorflow/package-summary
+   * Stabil, aber veraltet
+1. https://www.tensorflow.org/jvm
+  * Das aktuelle Projekt
+  * Unterstützt nicht nur Deployment, sondern die volle API inkl. Training
+  * Hat strategische Bedeutung, ist aber noch nicht stabil
+  * Unterprojekt: https://github.com/tensorflow/java-ndarray
+
+</textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+### TensorFlow Java hat seine eigene Version
+
+Stabilitätsgarantien gelten nicht für Java
+
+<img src="img/lang/tf-java-versions.png">
+
+https://github.com/tensorflow/java/#tensorflow-version-support
+</textarea>
+</section>
+
+<section data-markdown class="fragments">
+	<textarea data-template>
+### Aber: Wieso eigentlich Neuronale Netzwerke in Java?        
+
+* Training von Neuronalen Netzen ist eher Scripting
+* Sprachmittel von Java sind nach wie vor umständlich für Scripting
+* Aber: vielleicht reicht eine einfache Integration eines ML-Modells in Java mit Standard-Schnittstellen?
+  * GRPC, REST, MQTT, etc.  
+
+    </textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+### TensorFlow Modelle können als Graph abgespeichert werden
+
+<img src="https://raw.githubusercontent.com/tensorflow/docs/master/site/en/guide/images/intro_to_graphs/two-layer-network.png">
+
+* https://www.tensorflow.org/guide/intro_to_graphs
+* https://www.tensorflow.org/api_docs/python/tf/Graph#as_graph_def 
+</textarea>
+</section>
+
+<section data-markdown class="fragments">
+	<textarea data-template>
+### Warum interessiert uns das?
+
+* Graphen enthalten alles was man zur Ausführung eines Neuronalen Netzes braucht
+* Damit kann man die Python-Welt verlassen
+* Man braucht lediglich eine Umgebung, die die Operationen in dem Graphen ausführen kann
+* So eine Umgebung ist bereits in TensorFlow mit C++ implementiert und auch die Python-Version beruht darauf  
+</textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+### Serving
+
+* Erlauben direkt Ausführung eines Graphen im Server-Betrieb
+* Modell-Server kann lokal unter Linux installiert werden
+* Oder man kann so ein Modell direkt bei GCP deployen
+</textarea>
+</section>
+
+	<section data-markdown>
+		<textarea data-template>
+# Analogie: Build-Tool und ML-Training
+
+* Ein Build-Script macht aus Java-Quellen ein ausführbares Programm
+* Ein Trainings-Script macht aus einer ML-Architektur und Daten ein ausführbares TensorFlow Modell
+* Ein Build-Script schreiben wir auch in Java nicht in Java selbst
+* Entweder nutzen wir eine Script-Sprache (Groovy oder Kotlin)
+* Oder eine noch weiter standadisierte, deklarative Beschreibung (XML)
+</textarea>
+</section>
+
+
+
+	<section data-markdown>
+<textarea data-template>
+## ML Training als (Build) Script	
+### Literate Statistical Programming
+
+1. Intent
+1. Code
+1. Data
+1. Results
+1. (Interpretation)
+
+_Die Idee wird in sogenannten "notebooks" implementiert_
+
+<small>https://en.wikipedia.org/wiki/Literate_programming</small>
+<br>
+<small>https://education.arcus.chop.edu/literate-statistical-programming/</small>
+
+</textarea>
+</section>
+
+<section data-markdown style="font-size: x-large;">
+	<textarea data-template>
+## Live Coding - Notebooks, interaktive Skripte
+
+### Wie fühlt sich Arbeit in Notebooks an?
+
+https://colab.research.google.com/github/DJCordhose/insurance-ml/blob/main/workspace-java/insurance_ml.ipynb
+
+</textarea>
+</section>
+
+
+
+<section data-markdown class="hands-on">
+	<textarea data-template>
+### Hands-On II		
+
+1. Bringe das Notebook auf Colab zum laufen
+1. Trainiere ein eigenes Modell und lade es auf deinen Rechner herunter
+</textarea>
+</section>
+
+			
+
 
 
 			<section data-markdown>
