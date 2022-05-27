@@ -156,13 +156,15 @@ Teilnehmer sollen anhand eines in sich stimmigen Satzes von Werkzeugen die Konze
  
 
 <section data-markdown class="local preparation hide">
+* Lars alle Übungen zeigen
 * Debugging des Tests einmal durchspielen	
-* Gucken: Was kann ich aus dem Talk noch übernehmen
+* Gucken: Was kann ich aus dem Talk noch übernehmen?
+* Sicher stellen: beenden mit grafischer Übung in der wir noch ordentlich unterstützen können und das ganze mit Kontakt beenden
 </section>
 
-<section data-markdown class="todo">
+<!-- <section data-markdown class="todo">
 
-</section>
+</section> -->
 
 <!-- <section data-markdown class="todo">
 
@@ -186,14 +188,15 @@ Hardest part is having a dataset that reflects reality. Time delays, simple dism
 
 https://www.m3-konferenz.de/veranstaltung-14132-0-mlops-mit-python-und-tensorflow.html
 
-1. Agenda ist nur der grobe Ablauf, länge der Blöcke flexibel nach Bedarf
+1. Agenda im Netz ist nur der grobe Ablauf, länge der Blöcke flexibel nach Bedarf
 1. WLAN: xxx
 1. Diese Folien: https://bit.ly/m3-2022-mlops
 1. Stelle sicher, dass du die Anforderungen für die Mitarbeit erfüllst
    1. Projekt clonen (auf Wunsch vorher forken): https://github.com/DJCordhose/insurance-ml
    2. Das Projekt wie im Readme (https://github.com/DJCordhose/insurance-ml/blob/main/README.md) beschrieben lokal installieren
-  
-_Bei Problemen den Nachbar oder Olli fragen_   
+   1. Docker wäre optimal, muss aber nicht zwingend auf jedem Rechenr laufen
+
+_Bei Problemen den Nachbar oder Olli und Lars fragen_   
 </textarea>
 </section>
 
@@ -205,11 +208,9 @@ _Bei Problemen den Nachbar oder Olli fragen_
 
 M3 2022, https://www.m3-konferenz.de/veranstaltung-14132-0-mlops-mit-python-und-tensorflow.html
 
-<!-- Oliver Zeigermann / oliver@zeigermann.de -->
+Oliver Zeigermann / oliver.zeigermann@openknowledge.de
 
-Oliver Zeigermann
-
-<!-- Folien: https://djcordhose.github.io/insurance-ml/2022-m3-workshop.html -->
+Lars Röwekamp / lars.roewekamp@openknowledge.de
 
 Folien: https://bit.ly/m3-2022-mlops
 
@@ -233,10 +234,17 @@ Folien: https://bit.ly/m3-2022-mlops
 <p>
 <a target="_blank" href="mailto:oliver.zeigermann@openknowledge.de">Oliver Zeigermann</a>:
 Head of AI@OpenKnowledge
-<br>eher Praktiker als Bescheidwisser
 </p>    
 </textarea>
 </section>
+
+<section data-markdown class="todo">
+  <textarea data-template>
+### Wer ist Lars
+
+</textarea>
+</section>
+
 
 <section data-markdown>
 	<textarea data-template>
@@ -247,7 +255,7 @@ Head of AI@OpenKnowledge
 * Warum seid ihr hier?
 </textarea>
 </section>
-  
+
 	<section data-markdown>
 		<textarea data-template>
 # Agenda
@@ -286,10 +294,13 @@ Head of AI@OpenKnowledge
 
 *Wir gehen zusammen durch das Notebook*
 
+1. Wir empfehlen: arbeitet zusammen mit euren direkten Nachbarn
+1. Sagt kurz Hallo
 1. `conda activate mlops-workshop`
 1. `cd workspace`
 1. `jupyter notebook`
 1. `http://localhost:8888/notebooks/insurance_ml.ipynb`
+
 
 falls es Installationsprobleme gibt: https://colab.research.google.com/github/DJCordhose/insurance-ml/blob/main/workspace/insurance_ml.ipynb
 
@@ -894,7 +905,90 @@ https://github.com/DJCordhose/insurance-ml/blob/main/README.md
 <!-- <section data-markdown class="todo">
 ### Monitoring ist eine Art Predictive Maintainace
 </section> -->
+
+<section data-markdown>
+### Die vier goldenen Regeln des traditionellen Monitorings
+
+* Latency
+* Traffic
+* Errors
+* Saturation
+
+https://sre.google/sre-book/monitoring-distributed-systems/	
+</section>
+
+<section data-markdown style="font-size: x-large;">
+	<textarea data-template>
+### Monitoring für ML muss komplexer sein
+
+<img src="img/google-ml-monitoring.png">
+
+Long: https://static.googleusercontent.com/media/research.google.com/en//pubs/archive/aad9f93b86b7addfea4c419b9100c6cdd26cacea.pdf
+Short: https://storage.googleapis.com/pub-tools-public-publication-data/pdf/45742.pdf
+</textarea>
+</section>
+
+<section data-markdown class="fragments";>
+## Welche Metriken kann man in ML Systemen überwachen?
+
+Entscheidend ist die Performance des Systems
+
+* Technische Metriken
+  * ohnehin verfügbar, weil für das Training erforderlich
+  * accuracy, precision/recall 
+* Business Metriken
+  * z.B.
+	* Umsatz / Gewinn
+	* Umfang Schadensmeldungen
+    * allgemeiner Käufe, Views, Clicks, etc.
+  * oft sinnvoller, aber schwerer zu messen oder schwerer zu quantifizieren
+
+</section>
+
+<section data-markdown class="fragments">
+## Das reicht meist nicht
+
+* Ground Truth liegt erst sehr spät vor
+  * Ob jemand ein guter Kunde ist wissen wir oft erst nach Jahren
+* Manchmal liegt die Ground Truth überhaupt nicht vor
+* Filter Bubble: es werden nur bestimmte Daten gesammelt
+  * wir sammeln nur Daten von Leuten, die auch unsere Kunden werden   
+* Unterschiedliche Teilbereiche können eine unterschiedliche Performanz haben
+  * Während ein Bereich besser wird, kann ein anderer, evtl. kleinerer Bereich deutlich schlechter werden, bei gleichbleibenden Performance
+* Performance kann stark über die Zeit variieren, ohne dass es ein Problem gibt
+  * anhängig von der Art der Anfragen
+  * manchmal mit Regelmäßigkeiten innerhalb eines Tages
+  * Trend in Abweichungen manchmal schwer zu bestimmen   
+</section>
+
+
+<section data-markdown class="fragments">
+## Was kann man machen: Frühes Monitoring
+
+* Qualität der Daten
+  * wie verändern sich fehlende oder falsche Felder
+  * Plausibilität
+* Daten Drift
+  * Verteilung der Eingabedaten
+* Prediction Drift   
+  * Was gibt das Modell aus?
+</section>
+
+<section data-markdown>
+## Datenqualität
+
+* Felder
+  * fehlen
+  * ungültig
+  * falsch / unplausibel / Wertebereich verlassen
+* Features 
+  * konstante (die (meisten) Eingaben haben (fast) denselben Wert)
+  * leere
+  * fast leer
+  * Korrelationen zwischen Features
+</section>
 	
+
 <section data-markdown class="fragments">
 	<textarea data-template>
 ### Wir lassen das System ein bisschen in Produktion laufen
@@ -985,6 +1079,21 @@ https://twitter.com/marktenenholtz/status/1528021809697792003</small>
 
 </section>
 
+	<section data-markdown class="fragments">
+		<textarea data-template>
+### Woher weiß man, dass man ein neues Modell in Produktion braucht?
+
+1. Mindestens einmal im Jahr, damit man überhaupt noch weiß wie es geht
+1. Wenn die Metrik des Modells nachlässt in Produktion
+1. Dafür braucht man die Ground Truth der Daten aus Produktion
+1. Manchmal bekommt man diese unmittelbar nach der Vorhersage durch die Reaktion eines menschlichen Benutzers
+1. Oft aber auch erst nach nennenswerter Verzögerung 
+1. Wenn sich die Verteilung der Daten der Anfragen deutlich von denen des Trainings unterscheiden 
+
+</textarea>
+	</section>
+
+
 <section data-markdown>
 ### Wir setzen einen eigenen Monitoring-Server auf
 
@@ -1045,7 +1154,6 @@ https://docs.evidentlyai.com/reports/data-drift
   * https://docs.evidentlyai.com/user-guide/customization/options-for-statistical-tests
   * https://docs.evidentlyai.com/user-guide/customization/options-for-data-target-drift
 
-
 https://docs.evidentlyai.com/reports/data-drift
 
 </textarea>
@@ -1065,7 +1173,6 @@ https://docs.evidentlyai.com/reports/data-drift
 https://de.wikipedia.org/wiki/P-Wert
 </textarea>
 </section>
-
 
 <section data-markdown>
 	<textarea data-template>
@@ -1099,6 +1206,55 @@ https://de.wikipedia.org/wiki/Wasserstein-Metrik
 </textarea>
 	</section>
 
+<section data-markdown >
+	<textarea data-template>
+## Drift erfordert Interpretation
+
+Wenn die Welt sich ändert, ist Drift zu erwarten und damit ok
+
+|   | Positive Interpretation, keine Maßnahme erforderlich  | Negative Interpretation, Maßnahme erforderlich  |
+|---|---|---|
+| *Data und Prediction Drift*  | wichtige Features haben sich geändert, Modell kommt klar und extrapoliert gut, z.B.: Höheres Alter, mehr Risiko  |  wichtige Features haben sich geändert, Modell extrapoliert nicht sinnvoll |
+| *Data aber kein Prediction Drift*  | keine wichtigen Features geändert, das Modell ist robust genug für den Drift  | wichtige Features geändert, Modell extrapoliert nicht sinnvoll |
+|   |   |   |
+
+</textarea>
+</section>
+
+<section data-markdown>
+## Alarm bei Data Drift
+
+* Verändert sich die Art der Eingabedaten?
+  * Oft ausgedrückt durch die Verteilung der einzelnen Features
+
+* Muss nicht notwendig schlimm sein
+  * Wenn entscheidende Features betroffen sind, kann es ein Problem sein 
+* Alarm anhand von
+  * Wichtigkeit der driftenden Features
+  * Anzahl der driftenden Features
+  * Ausmaß des Drifts
+<!-- * Dafür wichtig
+  * Vernünftige Tests anhand der Metriken
+  * Vernünftige Konfidenzintervalle -->
+
+</section>
+
+
+<section data-markdown>
+## Maßnahmen bei Drift
+
+* Neue Daten aufnehmen (und labeln)
+* Neue Version des Modells trainieren
+* Schnelle Maßnahme
+  * Pre-/Post-Processing des Modells neu kalibrieren
+  * Schwellwerte für Anwendung anpassen
+  * Bestimmte Bereiche ausklammern 
+  * Modell Architektur ändern (oder fixen) und neu trainieren
+* Sehr schnelle Maßnahme: Fallback
+  * Manuell
+  * Heuristik / Baseline
+</section>
+
 	<section data-markdown class="hands-on">
 		<textarea data-template>
 ## Hands-On IIIb, Monitoring und Sinn daraus machen
@@ -1118,9 +1274,9 @@ https://grafana.com/docs/grafana/latest/alerting/
 </textarea>
 	</section>
 
-<section data-markdown>
+<!-- <section data-markdown>
 ## Mehr über Monitoring
-</section>
+</section> -->
 
 <!-- <section data-markdown>
 ### Man hat immer Verzögerung bis man weiß, ob die Vorhersagen gut waren
@@ -1130,88 +1286,6 @@ https://grafana.com/docs/grafana/latest/alerting/
 * Und manchmal weiß man es aber nie
 </section> -->
 
-<section data-markdown>
-### Die vier goldenen Regeln des traditionellen Monitorings
-
-* Latency
-* Traffic
-* Errors
-* Saturation
-
-https://sre.google/sre-book/monitoring-distributed-systems/	
-</section>
-
-<section data-markdown style="font-size: x-large;">
-	<textarea data-template>
-### Monitoring für ML muss komplexer sein
-
-<img src="img/google-ml-monitoring.png">
-
-Long: https://static.googleusercontent.com/media/research.google.com/en//pubs/archive/aad9f93b86b7addfea4c419b9100c6cdd26cacea.pdf
-Short: https://storage.googleapis.com/pub-tools-public-publication-data/pdf/45742.pdf
-</textarea>
-</section>
-
-<section data-markdown class="fragments";>
-## Welche Metriken kann man in ML Systemen überwachen?
-
-Entscheidend ist die Performance des Systems
-
-* Technische Metriken
-  * ohnehin verfügbar, weil für das Training erforderlich
-  * accuracy, precision/recall 
-* Business Metriken
-  * z.B.
-	* Umsatz / Gewinn
-	* Umfang Schadensmeldungen
-    * allgemeiner Käufe, Views, Clicks, etc.
-  * oft sinnvoller, aber schwerer zu messen oder schwerer zu quantifizieren
-
-</section>
-
-<section data-markdown class="fragments">
-## Das reicht meist nicht
-
-* Ground Truth liegt erst sehr spät vor
-  * Ob jemand ein guter Kunde ist wissen wir oft erst nach Jahren
-* Manchmal liegt die Ground Truth überhaupt nicht vor
-* Filter Bubble: es werden nur bestimmte Daten gesammelt
-  * wir sammeln nur Daten von Leuten, die auch unsere Kunden werden   
-* Unterschiedliche Teilbereiche können eine unterschiedliche Performanz haben
-  * Während ein Bereich besser wird, kann ein anderer, evtl. kleinerer Bereich deutlich schlechter werden, bei gleichbleibenden Performance
-* Performance kann stark über die Zeit variieren, ohne dass es ein Problem gibt
-  * anhängig von der Art der Anfragen
-  * manchmal mit Regelmäßigkeiten innerhalb eines Tages
-  * Trend in Abweichungen manchmal schwer zu bestimmen   
-</section>
-
-
-<section data-markdown class="fragments">
-## Was kann man machen: Frühes Monitoring
-
-* Qualität der Daten
-  * wie verändern sich fehlende oder falsche Felder
-  * Plausibilität
-* Daten Drift
-  * Verteilung der Eingabedaten
-* Prediction Drift   
-  * Was gibt das Modell aus?
-</section>
-
-<section data-markdown>
-## Datenqualität
-
-* Felder
-  * fehlen
-  * ungültig
-  * falsch / unplausibel / Wertebereich verlassen
-* Features 
-  * konstante (die (meisten) Eingaben haben (fast) denselben Wert)
-  * leere
-  * fast leer
-  * Korrelationen zwischen Features
-</section>
-	
 <!-- <section data-markdown>
 ## Drift Detection
 </section>
@@ -1231,23 +1305,6 @@ Entscheidend ist die Performance des Systems
   * Kolmogorow-Smirnow-Test  	
 </section>
  -->
-<section data-markdown>
-## Data Drift
-
-* Verändert sich die Art der Eingabedaten?
-  * Oft ausgedrückt durch die Verteilung der einzelnen Features
-
-* Muss nicht notwendig schlimm sein
-  * Wenn entscheidende Features betroffen sind, kann es ein Problem sein 
-* Alarm anhand von
-  * Wichtigkeit der driftenden Features
-  * Anzahl der driftenden Features
-  * Ausmaß des Drifts
-<!-- * Dafür wichtig
-  * Vernünftige Tests anhand der Metriken
-  * Vernünftige Konfidenzintervalle -->
-
-</section>
 
 <!-- <section data-markdown>
 ## Vernünftige Tests: Nicht-Parametrische Tests
@@ -1269,38 +1326,6 @@ Entscheidend ist die Performance des Systems
     * Z-Test für eine Proportion https://statologie.de/z-test-eine-proportion/ (p = p0)
 </section>
  -->
-<section data-markdown >
-	<textarea data-template>
-## Drift erfordert Interpretation
-
-Wenn die Welt sich ändert, ist Drift zu erwarten und damit ok
-
-|   | Positive Interpretation, keine Maßnahme erforderlich  | Negative Interpretation, Maßnahme erforderlich  |
-|---|---|---|
-| *Data und Prediction Drift*  | wichtige Features haben sich geändert, Modell kommt klar und extrapoliert gut, z.B.: Höheres Alter, mehr Risiko  |  wichtige Features haben sich geändert, Modell extrapoliert nicht sinnvoll |
-| *Data aber kein Prediction Drift*  | keine wichtigen Features geändert, das Modell ist robust genug für den Drift  | wichtige Features geändert, Modell extrapoliert nicht sinnvoll |
-|   |   |   |
-
-</textarea>
-</section>
-
-<section data-markdown>
-## Maßnahmen bei Drift
-
-* Neue Daten aufnehmen (und labeln)
-* Neue Version des Modells trainieren
-* Schnelle Maßnahme
-  * Pre-/Post-Processing des Modells neu kalibrieren
-  * Schwellwerte für Anwendung anpassen
-  * Bestimmte Bereiche ausklammern 
-  * Modell Architektur ändern (oder fixen) und neu trainieren
-* Sehr schnelle Maßnahme: Fallback
-  * Manuell
-  * Heuristik / Baseline
-
-
-</section>
-
 
 	<!-- <section data-markdown class="fragments">
 		<textarea data-template>
@@ -1379,7 +1404,7 @@ https://twitter.com/chipro/status/1313921889061015557
 </textarea>
 	</section> -->			
 
-	<section data-markdown>
+	<!-- <section data-markdown>
 ### Ein vielleicht noch weiter verbreitetes Fehlerbild
 
 Nicht die Welt ändert sich, sondern unsere Kodierung davon
@@ -1395,7 +1420,7 @@ Nicht die Welt ändert sich, sondern unsere Kodierung davon
   * Kodierung
 
 </section>
-
+ -->
 
 
 	<section data-markdown class="fragments">
@@ -1409,22 +1434,8 @@ Nicht die Welt ändert sich, sondern unsere Kodierung davon
 <!-- * Selbst Colab erlaubt das Arbeiten auf einer Kombination von Notebooks und Bibliotheken
 * Referenz: Module in Colab nutzen: https://colab.research.google.com/drive/1hDUO1-EzMVtVt6snmgrR1I1A36oPp4J9 -->
 * Rückker in Phase I muss nicht radikal sein
-* wenn Ansatz vergleichbar kann Phase II so erhalten bleiben
-* neue Ergebnisse fliesen dann iterativ in die Professionalisierung
-
-</textarea>
-	</section>
-
-	<section data-markdown class="fragments">
-		<textarea data-template>
-### Woher weiß man, dass man ein neues Modell in Produktion braucht?
-
-1. Mindestens einmal im Jahr, damit man überhaupt noch weiß wie es geht
-1. Wenn die Metrik des Modells nachlässt in Produktion
-1. Dafür braucht man die Ground Truth der Daten aus Produktion
-1. Manchmal bekommt man diese unmittelbar nach der Vorhersage durch die Reaktion eines menschlichen Benutzers
-1. Oft aber auch erst nach nennenswerter Verzögerung 
-1. Wenn sich die Verteilung der Daten der Anfragen deutlich von denen des Trainings unterscheiden 
+  * wenn Ansatz vergleichbar kann Phase II so erhalten bleiben
+  * neue Ergebnisse fliesen dann iterativ in die Professionalisierung
 
 </textarea>
 	</section>
@@ -1475,13 +1486,11 @@ M3 2022, https://www.m3-konferenz.de/veranstaltung-14132-0-mlops-mit-python-und-
 
 Bleibt gern im Kontakt
 
-Oliver Zeigermann
-
+Oliver Zeigermann / oliver.zeigermann@openknowledge.de
 https://www.linkedin.com/in/oliver-zeigermann-34989773/
-
-<!-- oliver@zeigermann.de -->
-
 https://twitter.com/DJCordhose
+
+Lars Röwekamp / lars.roewekamp@openknowledge.de
 
 Folien: https://bit.ly/m3-2022-mlops
 
