@@ -184,7 +184,18 @@ Durchführung im Team
 1. Mindestens eine Person sollte Java-Code auf dem eigenen Rechner ausführen können
 1. Diskutiert wie ihr die Aufgabe mit klassischen Regeln lösen könnt
 1. Implementiert die Regeln und bestimmt wie gut diese das Problem lösen
+1. Wie weit könnt ihr den Score von 33% nach oben bringen?
 	</textarea>
+</section>
+
+<section data-markdown class="hands-on">
+	<textarea data-template>
+### Hands-On Ib
+
+1. Ändert die einzulesende Datei auf `insurance-customers-risk-1500-test.csv`
+1. Wie verändert sich der Score?
+1. Was könnte sich hier verändert haben?
+</textarea>
 </section>
 
 <section data-markdown>
@@ -326,38 +337,6 @@ https://github.com/tensorflow/java/#tensorflow-version-support
     </textarea>
 </section>
 
-<section data-markdown>
-	<textarea data-template>
-### TensorFlow Modelle können als Graph abgespeichert werden
-
-<img src="https://raw.githubusercontent.com/tensorflow/docs/master/site/en/guide/images/intro_to_graphs/two-layer-network.png">
-
-* https://www.tensorflow.org/guide/intro_to_graphs
-* https://www.tensorflow.org/api_docs/python/tf/Graph#as_graph_def 
-</textarea>
-</section>
-
-<section data-markdown class="fragments">
-	<textarea data-template>
-### Warum interessiert uns das?
-
-* Graphen enthalten alles was man zur Ausführung eines Neuronalen Netzes braucht
-* Damit kann man die Python-Welt verlassen
-* Man braucht lediglich eine Umgebung, die die Operationen in dem Graphen ausführen kann
-* So eine Umgebung ist bereits in TensorFlow mit C++ implementiert und auch die Python-Version beruht darauf  
-</textarea>
-</section>
-
-<section data-markdown>
-	<textarea data-template>
-### Serving
-
-* Erlauben direkt Ausführung eines Graphen im Server-Betrieb
-* Modell-Server kann lokal unter Linux installiert werden
-* Oder man kann so ein Modell direkt bei GCP deployen
-</textarea>
-</section>
-
 	<section data-markdown>
 		<textarea data-template>
 ### Analogie: Build-Tool und ML-Training
@@ -370,6 +349,15 @@ https://github.com/tensorflow/java/#tensorflow-version-support
 </textarea>
 </section>
 
+<section data-markdown>
+	<textarea data-template>
+### Python für ML
+
+* Python ist perfekt für Scripting
+* Hat die größte Community in dem Bereich
+* Python hat die besten Bibliotheken und Werkzeuge
+</textarea>
+</section>
 
 
 	<section data-markdown>
@@ -419,10 +407,19 @@ https://colab.research.google.com/github/DJCordhose/insurance-ml/blob/main/works
 1. Unsere Beispielanwendung
 1. Klassische Regeln
 1. Lösung mit Machine Learning (ML)
-1. _Ein ML Modell in Java integrieren_
-1. ML als Monolith?
+1. _ML als Monolith?_
+1. Ein ML Modell in Java integrieren
 </textarea>
 </section>
+		
+
+<section data-markdown>
+	<textarea data-template>
+### Ein großes Modell oder (mehrere) kleinere		
+<img src="img/sketch/small-model.jpg">
+</textarea>
+</section>
+
 
 <section data-markdown>
 	<textarea data-template>
@@ -431,11 +428,201 @@ https://colab.research.google.com/github/DJCordhose/insurance-ml/blob/main/works
 1. Unsere Beispielanwendung
 1. Klassische Regeln
 1. Lösung mit Machine Learning (ML)
-1. Ein ML Modell in Java integrieren
-1. _ML als Monolith?_
+1. ML als Monolith?
+1. _Ein ML Modell in Java integrieren_
 </textarea>
 </section>
-		
+
+<section data-markdown>
+	<textarea data-template>
+### TensorFlow Modelle können als Graph abgespeichert werden
+
+<img src="https://raw.githubusercontent.com/tensorflow/docs/master/site/en/guide/images/intro_to_graphs/two-layer-network.png">
+
+* https://www.tensorflow.org/guide/intro_to_graphs
+* https://www.tensorflow.org/api_docs/python/tf/Graph#as_graph_def 
+</textarea>
+</section>
+
+<section data-markdown class="fragments">
+	<textarea data-template>
+### Warum interessiert uns das?
+
+* Graphen enthalten alles was man zur Ausführung eines Neuronalen Netzes braucht
+* Damit kann man die Python-Welt verlassen
+* Man braucht lediglich eine Umgebung, die die Operationen in dem Graphen ausführen kann
+* So eine Umgebung ist bereits in TensorFlow mit C++ implementiert und auch die Python-Version beruht darauf  
+</textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+### Serving
+
+* Erlauben direkt Ausführung eines Graphen im Server-Betrieb
+* Modell-Server kann lokal unter Linux installiert werden
+* Oder man kann so ein Modell direkt bei GCP deployen
+</textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+### Serving
+
+```
+saved_model_cli show --dir insurance-classifier --all
+```
+
+```
+export TF_CPP_VMODULE=http_server=1
+
+nohup tensorflow_model_server --port=8500 --rest_api_port=8501 \
+  --model_name=insurance --model_base_path=/home/olli/insurance-model  >server.log 2>&1
+```
+
+https://www.tensorflow.org/tfx/guide/serving
+https://www.tensorflow.org/tfx/serving/setup
+</textarea>
+</section>
+
+<section>
+<h3>TensorFlow Modelle können auch direkt aus Java aufgerufen</h3>
+
+<pre>
+    <code data-trim data-line-numbers="1|3-7|9-11|13-17"><script type="text/template">
+try (var savedModelBundle = SavedModelBundle.load("insurance-ml/app/classifier", "serve")) {
+
+    var input_matrix = NdArrays.ofFloats(Shape.of(1, 2));
+    input_matrix.set(NdArrays.vectorOf(48.0f, 100.0f), 0);
+    Tensor input_tensor = TFloat32.tensorOf(input_matrix);
+    Map<String, Tensor> inputTensorMap = new HashMap<>();
+    inputTensorMap.put("input", input_tensor);
+
+    var myFunction = savedModelBundle.function("serving_default");
+    Map<String, Tensor> outputTensorMap = myFunction.call(inputTensorMap);
+    var prediction = outputTensorMap.get("output");
+
+    // overly complicated way to get the prediction, but so far found no better way
+    var probas = prediction.asRawTensor().data().asFloats();
+    float redProba = probas.getFloat(0);
+    float yellowProba = probas.getFloat(1);
+    float greenProba = probas.getFloat(2);
+}
+        
+</script></code>
+</pre>
+</section>
+
+
+<section data-markdown class="hands-on">
+	<textarea data-template>
+### Hands-On III		
+
+1. Binde das Modell in deinen Java-Code ein
+1. Entweder als direkten Aufruf 
+1. Oder rufe einen Server auf
+   1. starte einen TensorFlow Server (geht nur unter Linux)
+     * https://www.tensorflow.org/tfx/serving/setup
+   1. Oder bringe da Modell in der Cloud zum laufen
+1. Wie ist der Score des Modells mit den beiden Datensätzen? 
+</textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+
+<!-- <img src='img/6monts-later.jpg' height="600px"> -->
+<img src='img/2year-later.jpg' height="600px">
+
+</textarea>
+</section>
+
+
+<section data-markdown data-transition="none">
+	<textarea data-template>
+## Ergebnis des Modells nach zwei Jahren
+
+<img src='img/insurance-new/insurance-after-shift.png' class="fragment">
+
+</textarea>
+</section>
+
+
+<section data-markdown data-transition="none">
+	<textarea data-template>
+## Ursprüngliche Daten zum direkten Vergleich
+
+<img src='img/insurance-new/insurance-pred.png'>
+
+</textarea>
+</section>
+
+<section data-markdown class="fragments">
+	<textarea data-template>
+### Was ist hier passiert? 
+
+*Die Welt steht nicht still - Model und Welt laufen auseinander, aus 70%  Genauigkeit werden 65%*
+
+* Elektroautos finden weitere Verbreitung
+* potente Elektroautos haben allgemein deutlich geringere Höchstgeschwindigkeit 
+* aber super Beschleunigung
+* Gute Beschleunigung ist viel eher Ursache für rasante Fahrweise, Unfallwahrscheinlichkeit ist hoch
+* Wir haben aber nur Höchstgeschwindigkeit als Daten (seht im Fahrzeugschein), Korrelation war angenommen
+* Der Cluster mit jungen, schlechten Fahrern ist nach unten gerutscht
+* _Wird nun fälschlich als gut vorhergesagt und werden günstig versichert_
+<!-- * Tatsächlich sehen wir aber viele Unfälle -->
+<!-- - Faherer vielleicht ein bisschen älter geworden -->
+</textarea>
+</section>
+
+<!-- <section data-markdown>
+	<textarea data-template>
+<img src='img/model-eval.png'>
+
+<small>
+
+https://twitter.com/marktenenholtz/status/1528021809697792003</small>
+		</textarea>
+</section>
+	 -->
+<section data-markdown class="fragments">
+### Grundregel
+
+* Alle haben Probleme in Produktion
+* Es gibt kein fehlerfreies System 
+  * jedenfalls nicht für lange
+* Ziel ist es, Fehler schnell 
+  * zu entdecken
+  * zu analysieren
+  * und entsprechende ihrer Schwere zu adressieren
+
+</section>
+
+	<section data-markdown class="fragments">
+		<textarea data-template>
+### Woher weiß man, dass man ein neues Modell in Produktion braucht?
+
+1. Mindestens einmal im Jahr, damit man überhaupt noch weiß wie es geht
+1. Wenn die Metrik des Modells nachlässt in Produktion
+1. Dafür braucht man die Ground Truth der Daten aus Produktion
+1. Manchmal bekommt man diese unmittelbar nach der Vorhersage durch die Reaktion eines menschlichen Benutzers
+1. Oft aber auch erst nach nennenswerter Verzögerung 
+1. Wenn sich die Verteilung der Daten der Anfragen deutlich von denen des Trainings unterscheiden 
+
+</textarea>
+	</section>
+
+<section data-markdown class="hands-on">
+	<textarea data-template>
+### Hands-On IIIb		
+
+1. Der Datensatz `insurance-customers-risk-1500-shift.csv` drückt den beschriebenen Shift aus
+1. Bestimme die Performance des Modelle mit diesem Datensatz
+1. Wie würdest du mit den unterschiedlichen Ansätzen, auch diesen Datensatz gut abdecken?
+1. Wie würde das mit mehr als 2 Dimensionen funktionieren?
+</textarea>
+</section>
+
 <section data-markdown class="todo">
 	<textarea data-template>
 # Zusammenfassung
