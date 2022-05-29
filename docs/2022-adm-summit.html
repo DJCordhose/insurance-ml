@@ -45,16 +45,8 @@ Laptop mitzubringen. Letztlich ist aber jeder willkommen, da es eher um Prinzipi
 
  <section data-markdown class="todo">
 1. App.java als Code-Gerüst in workspace-java vorbereiten
-  * Daten einlesen als Grundlage
-  - score berechnen
-  - Hülle für Predict-Funktion
-1. Modelle vergleichen, Java Regeln und ML
-1. Mit Java in Prod
-   * Lokal direkt in Java einbinden   
-   * Mein Modell auf GCP hosten, dann können wir da direkt ran
-   * Das in Java integrieren über REST
-1. Inhalte Aus MD DEv und JAX Talk Dinge übernehmen			
-
+  * Über alle Iterieren für den direkten TF-Aufruf aus Java
+1. Mein Modell auf GCP hosten, dann können wir da direkt ran
   </section>
 			<section data-markdown>
 				<textarea data-template>
@@ -519,13 +511,114 @@ try (var savedModelBundle = SavedModelBundle.load("insurance-ml/app/classifier",
 ### Hands-On III		
 
 1. Binde das Modell in deinen Java-Code ein
-1. Entweder als direkten Aufruf 
+1. Entweder als direkten Aufruf
+1. Oder wandle das Modell in JS, um es direkt im Browser zu nutzen
+   * https://www.tensorflow.org/js/tutorials/conversion/import_saved_model 
 1. Oder rufe einen Server auf
    1. starte einen TensorFlow Server (geht nur unter Linux)
-     * https://www.tensorflow.org/tfx/serving/setup
-   1. Oder bringe da Modell in der Cloud zum laufen
+      * https://www.tensorflow.org/tfx/serving/setup
+   1. oder bringe da Modell in der Cloud zum laufen
+      * https://cloud.google.com/ai-platform/prediction/docs/deploying-models
 1. Wie ist der Score des Modells mit den beiden Datensätzen? 
+
+_Wähle den direkten Aufruf, es sei denn du hast bereits Erfahrung in den anderen Varianten der Produktion_
 </textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+```
+gcloud ai-platform local predict --model-dir /home/olli/insurance-model/1 \
+  --json-instances  sample_insurance.json \
+  --framework tensorflow
+```
+
+https://cloud.google.com/ai-platform/prediction/docs/deploying-models#test_your_model_with_local_predictions
+</textarea>
+</section>
+
+<!-- 
+
+ACHTUNG: DAS HIER IST AKTUELLER ALS DIE NÄCHSTEN BEIDEN FOLIEN
+
+gcloud auth login
+gcloud config set project ml-project-213311
+
+// https://cloud.google.com/storage/docs/naming-buckets?_ga=2.159882297.-561421399.1653816440
+gsutil mb gs://eu_zeigermann_ml_insurance_1
+gsutil cp -R /home/olli/insurance-model/1 gs://eu_zeigermann_ml_insurance_1
+
+
+gcloud ai-platform models create "ml_insurance" --region=europe-west1 --enable-logging
+gcloud ai-platform versions create "v1" --model "ml_insurance" --origin "gs://eu_zeigermann_ml_insurance_1"
+gcloud ai-platform versions describe "v1" --model "ml_insurance"
+
+gcloud ai-platform predict --model "ml_insurance" --version "v1" --json-instances sample_insurance.json
+
+Aufruf aus Java: https://cloud.google.com/ai-platform/prediction/docs/online-predict#java
+Dependencies: https://github.com/GoogleCloudPlatform/java-docs-samples/blob/ab20245137332ff8ba6285f9a66f3f8bb1558b52/mlengine/online-prediction/pom.xml
+ -->
+        <section class="todo">
+<h3>Deploying to Google Clound ML</h3>
+
+<div class="fragment">
+    <p>Copy your model to a Cloud Bucket</p>
+<pre><code contenteditable data-trim class="python">
+gsutil mb gs://my_bucket
+gsutil cp -R tf/1 gs://my_bucket
+</code></pre>
+<p><small>
+Needs Google Cloud SDK:         
+    <a href='https://cloud.google.com/sdk/install'>https://cloud.google.com/sdk/install</a></small></p>
+</div>
+<div class="fragment">
+    <p>Deploy from this bucket</p>
+<pre><code contenteditable data-trim class="python">
+gcloud ai-platform models create "ml_insurance" --region=europe-west1 --enable-logging
+gcloud ml-engine versions create "v1" --model "ml_insurance" \
+ --origin "gs://my_bucket/1"
+gcloud ml-engine versions describe "v1" --model "ml_insurance"
+</code></pre>
+<p><small>
+<a href='https://cloud.google.com/ml-engine/docs/tensorflow/deploying-models'>
+    https://cloud.google.com/ml-engine/docs/tensorflow/deploying-models</a>
+<br>
+<a href='https://cloud.google.com/ml-engine/docs/tensorflow/prediction-overview#prediction_logging'>
+    https://cloud.google.com/ml-engine/docs/tensorflow/prediction-overview#prediction_logging</a></small></p>
+</div>
+
+    </section>
+
+<section class="todo">
+<h3>Making Predictions</h3>
+
+<div class="fragment">
+    <p>Input format is a bit special</p>
+<pre><code contenteditable data-trim class="python">
+# sample_insurance.json    
+{"input": [ 18, 160 ]}
+{"input": [ 51, 100]}
+{"input": [ 20, 90]}    
+</code></pre>
+</div>
+<div class="fragment">
+    <p>Call from Google Cloud Console</p>
+<pre><code contenteditable data-trim class="python fragment">
+gcloud ml-engine predict --model "ml_insurance" --version "v1" \
+ --json-instances ./sample_insurance.json
+</code></pre>
+<pre><code contenteditable data-trim class="python fragment">
+SCORES
+[0.8658562898635864, 7.318668918511809e-14, 0.13414366543293]
+[0.002760800765827298, 0.8720880746841431, 0.12515118718147278]
+[5.452934419736266e-05, 0.005952719133347273, 0.9939927458763123]    
+</code></pre>
+</div>
+
+<p><small>
+<a href='https://cloud.google.com/ml-engine/docs/tensorflow/online-predict'>https://cloud.google.com/ml-engine/docs/tensorflow/online-predict</a>
+</small></p>
+
 </section>
 
 <section data-markdown>
