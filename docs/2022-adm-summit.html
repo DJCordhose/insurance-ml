@@ -47,6 +47,8 @@ Laptop mitzubringen. Letztlich ist aber jeder willkommen, da es eher um Prinzipi
 1. App.java als Code-Gerüst in workspace-java vorbereiten
   * Über alle Iterieren für den direkten TF-Aufruf aus Java
 1. Mein Modell auf GCP hosten, dann können wir da direkt ran
+1. Modell nach TF.js wandeln
+1. wie kriegt man fertiges Tf Modell auf Aws geservt? Also nicht erst über Sagemaker Notebooks
   </section>
 			<section data-markdown>
 				<textarea data-template>
@@ -620,6 +622,139 @@ SCORES
 </small></p>
 
 </section>
+
+        <section class="todo">
+<h3>Making Predictions from Python</h3>
+
+<div class="fragment">
+    <p>First we need a few more libraries</p>
+<pre><code contenteditable data-trim class="python">
+pip install google-api-python-client
+pip install tensorflow-serving-api
+</code></pre>
+</div>
+<div class="fragment">
+    <p>Input needs to conform to JSON now</p>
+<pre><code contenteditable data-trim class="python">
+instances = [{"inputs": [100,  47,  10]}]
+predict_json("ml_project", "ml_insurance", instances=instances)
+</code></pre>
+<pre><code contenteditable data-trim class="python fragment">
+[{'scores': 
+  [0.002760800765827298, 0.8720880746841431, 0.12515118718147278]}]
+</code></pre>
+</div>
+
+<p><small>
+<a href='https://cloud.google.com/ml-engine/docs/tensorflow/online-predict'>https://cloud.google.com/ml-engine/docs/tensorflow/online-predict</a>
+</small></p>
+
+    </section>
+
+            <section class="todo">
+<h3>Python API</h3>
+
+<div class="fragment">
+<pre><code contenteditable data-trim class="python">
+import googleapiclient.discovery
+
+def predict_json(project, model, instances):
+    service = googleapiclient.discovery.build('ml', 'v1')
+</code></pre>
+<pre><code contenteditable class="python fragment">    name = 'projects/{}/models/{}'.format(project, model)
+
+    response = service.projects().predict(
+        name=name,
+        body={'instances': instances}
+    ).execute()
+
+    return response['predictions']</code></pre>
+</div>
+
+<p><small>
+<a href='https://cloud.google.com/ml-engine/docs/tensorflow/online-predict'>https://cloud.google.com/ml-engine/docs/tensorflow/online-predict</a>
+<br>
+<a href='https://github.com/GoogleCloudPlatform/python-docs-samples/blob/master/ml_engine/online_prediction/predict.py'>
+    https://github.com/GoogleCloudPlatform/python-docs-samples/blob/master/ml_engine/online_prediction/predict.py
+</a>
+
+</small></p>
+
+    </section>
+
+        <section class="todo">
+<h3>TensorFlow Serving REST API</h3>
+
+<div class="fragment">
+<p>Starting the Model Server in Rest Mode (needs Linux)</p>
+
+<pre><code contenteditable data-trim>
+tensorflow_model_server --rest_api_port=8501 \
+--model_name=manning_insurance_1 \
+--model_base_path=$(pwd)/tf
+</code></pre>
+<p><small><a href='https://www.tensorflow.org/serving/api_rest'>https://www.tensorflow.org/serving/api_rest</a></small></p>
+</div>
+
+<div class="fragment">
+<p>Curling to it</p>
+
+<pre><code contenteditable data-trim class="python">
+curl -X POST \
+http://localhost:8501/v1/models/manning_insurance_1:predict  \
+-d '{ "instances": [{"inputs": [ 100.0,  47.0,  10.0]}]}' 
+# {
+#     "predictions": [[0.0027608, 0.872088, 0.125151]]
+# }</code></pre>
+</div>
+
+<p class="fragment"><small>
+    <em>Note</em>: To make this work from a browser you need a server in between, because 
+    <a href='https://enable-cors.org/'>CORS</a> makes an 
+    <a href='js/serving-sandbox.html'>
+        OPTION request</a>
+     that is not implemented by model server</small></p>
+
+    </section>
+
+
+        <section class="todo">
+<h3>Deploying to the Browser</h3>
+
+<div class="fragment">
+<p>Converting our Keras Model to TensorFlow.js</p>
+
+<pre><code contenteditable data-trim class="python">
+tensorflowjs_converter --input_format keras \
+./model/insurance.hdf5 \
+./tfjs    
+</code></pre>
+<p><small><a href='https://js.tensorflow.org/tutorials/import-keras.html'>
+    https://js.tensorflow.org/tutorials/import-keras.html</a></small></p>
+
+</div>
+
+<div class="fragment">
+<p>Loading and using directly from the browser</p>
+
+            <pre><code contenteditable data-trim class="fragment line-numbers javascript">
+const model = await tf.loadModel('tfjs/model.json');
+            </code></pre>
+            <pre><code contenteditable data-trim class="fragment line-numbers javascript">
+// max speed, age, thousand miles per year
+const example = tf.tensor([[100, 47, 10]]);
+const prediction = model.predict(example);
+console.log(await prediction.data());
+//[0.00334801129065454, 0.8710343241691589, 0.12561771273612976]
+    </code></pre>
+
+<p><small>
+            <a href='js/tensorflow-sandbox/load_manning_model.html' target="_blank">
+                https://djcordhose.github.io/ai/js/tensorflow-sandbox/load_manning_model.html</a></small>
+        </small></p>
+    </div>   
+    </section>
+
 
 <section data-markdown>
 	<textarea data-template>
