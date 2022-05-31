@@ -50,6 +50,7 @@
                 <div>
                     <button type="button" class="risk btn btn-success" style="display: none">Low Risk</button>
                     <button type="button" class="risk btn btn-danger" style="display: none">High Risk</button>
+                    <button type="button" class="risk btn" style="display: none; color: red;" id="invalid">Error: Invalid range</button>
                     <button type="button" class="risk btn btn-warning" style="display: none">Medium Risk</button>
                 </div>
                 <br>
@@ -90,12 +91,20 @@
                 [red, green, yellow] = result;
                 console.log(result);
             } else {
-                const response = await calculateRemote(speed, age, miles);
-                console.log(response);
-                const { category, prediction } = response;
-                console.log(prediction);
-                // XXX: reversed order when using remote
-                [red, yellow, green] = prediction;
+                try {
+                    const response = await calculateRemote(speed, age, miles);
+                    console.log(response);
+                    const { category, prediction } = response;
+                    console.log(prediction);
+                    // XXX: reversed order when using remote
+                    [red, yellow, green] = prediction;
+                } catch (e) {
+                    clearButtons();
+                    console.log(e);
+                    document.querySelector('#invalid').style.display = 'inline';
+
+                    return
+                }
             }
 
             clearButtons();
@@ -138,7 +147,9 @@
                 method: 'POST',
                 mode: 'cors'
             });
-
+            if (result.status === 422) {
+                throw new Error(`Status code ${result.status}`);
+            }
             const json = await result.json();
             return json;
         }

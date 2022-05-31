@@ -34,23 +34,25 @@ def do_predict():
     age = request.json['age']
     miles = request.json['miles']
 
-    predicted_category, probabilities = predict(speed, age, miles)
+    try:
+        predicted_category, probabilities = predict(speed, age, miles)
 
-    response = {
-        'category': predicted_category,
-        'prediction': probabilities,
-    }
-    
-    dataset = {
-        'out': response,
-        'in': {
-            'speed': speed, 'age': age, 'miles': miles
+        response = {
+            'category': predicted_category,
+            'prediction': probabilities,
         }
-    }
+        
+        dataset = {
+            'out': response,
+            'in': {
+                'speed': speed, 'age': age, 'miles': miles
+            }
+        }
 
-    data_logger.info(dataset)
-    return jsonify(response)
-
+        data_logger.info(dataset)
+        return jsonify(response)
+    except (ValueError):
+        return jsonify({'error': 'invalid input'}), 422
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=8080)
