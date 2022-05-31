@@ -29,7 +29,7 @@ class NumpyEncoder(json.JSONEncoder):
 def send_data_row(dataset_name: str, data: Dict) -> None:
     print(f"Send a data item for {dataset_name}")
     encoded_data = json.dumps([data], cls=NumpyEncoder)
-    print(encoded_data)
+    # print(encoded_data)
 
     try:
         response = requests.post(
@@ -63,6 +63,8 @@ def main(sleep_timeout: int) -> None:
     max_index = 0
 
     for dataset_name in os.listdir(datasets_path):
+        # hack to only have insurance data for now
+        if dataset_name != 'insurance': continue
         production_data_path = os.path.join(datasets_path, dataset_name, "production.csv")
         new_data = pd.read_csv(production_data_path)
         datasets[dataset_name] = new_data
