@@ -28,11 +28,13 @@ class NumpyEncoder(json.JSONEncoder):
 
 def send_data_row(dataset_name: str, data: Dict) -> None:
     print(f"Send a data item for {dataset_name}")
+    encoded_data = json.dumps([data], cls=NumpyEncoder)
+    print(encoded_data)
 
     try:
         response = requests.post(
             f"http://localhost:8085/iterate/{dataset_name}",
-            data=json.dumps([data], cls=NumpyEncoder),
+            data=encoded_data,
             headers={"content-type": "application/json"},
         )
 

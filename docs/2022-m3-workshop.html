@@ -1150,6 +1150,24 @@ https://evidentlyai.com/
 
 <section data-markdown>
 	<textarea data-template>
+### Übersicht der Services
+
+* Monitoring App
+  * Endpunkt für die Registrierung von Datensätzen: http://localhost:8085/iterate/<dataset\> (POST)
+	* Nutzlast per JSON Body, kann Prediction enthalten z.B.: `[{"speed": 99.0, "age": 28.0, "miles": 21.0, "group": 2.0, "risk": 0.2110376180699707}]`  
+  * Metrics aus Evidently: http://localhost:8085/metrics
+    * über `app.wsgi_app = DispatcherMiddleware(app.wsgi_app, {"/metrics": prometheus_client.make_wsgi_app()})`
+
+* Promethus: http://localhost:9090
+* Grafana: http://localhost:3000
+
+*Erfordert das Starten des Monitoring Services (kommt später)*	
+</textarea>
+</section>
+
+
+<section data-markdown>
+	<textarea data-template>
 ### Drift-Erkennung mit Prometheus, Evidently und Grafana
 
 <img src="img/mlops/grafana-evidently-drift.png">
@@ -1213,8 +1231,22 @@ https://de.wikipedia.org/wiki/Wasserstein-Metrik
 1. Starte die Monitoring Umgebung in `monitoring` über 
    * `python run_example.py`
    * `docker compose up -d --build`
-1. http://localhost:3000
-1. admin/admin
+1. Checke, dass diese Services laufen
+   * Monitoring App, Metrics aus Evidently: http://localhost:8085/metrics
+   * Promethus: http://localhost:9090
+   * Grafana: http://localhost:3000
+
+</textarea>
+	</section>
+
+	<section data-markdown class="hands-on">
+		<textarea data-template>
+## Hands-On IIIb - Monitoring und Sinn daraus machen
+
+### Teil II: Request simulieren
+
+1. Einloggen in Grafana: http://localhost:3000
+   1. admin/admin
 1. Das Dashboard `Evidently Data Drift Dashboard` aufrufen
 1. Darin den Datensatz `insurance`
 1. Mit `python scripts/example_run_request.py` Anfragen simulieren
@@ -1276,7 +1308,7 @@ Wenn die Welt sich ändert, ist Drift zu erwarten und damit ok
 		<textarea data-template>
 ## Hands-On IIIb, Monitoring und Sinn daraus machen
 
-### Teil II: Einen passenden Grafana Alert erzeugen
+### Teil III: Einen passenden Grafana Alert erzeugen
 
 1. Einen Alert kann man in Grafana als Regel oder direkt auf einem Dashboard einrichten
 1. Editiere im Dashboard entweder das Panel für die P-Werte oder für den Anteil driftender Features
@@ -1439,7 +1471,7 @@ Nicht die Welt ändert sich, sondern unsere Kodierung davon
 </section>
  -->
 
- 
+
 	<section data-markdown class="fragments">
 		<textarea data-template>
 ### Wir gehen zurück in die Phasen I und II
