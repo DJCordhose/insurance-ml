@@ -713,7 +713,7 @@ https://twitter.com/DavidSKrueger/status/1487391569028296710
 		<textarea data-template>
 ## Hands-On II - Entscheidende Teile in Bibliotheken auslagern
 
-*Arbeite weiter in deinem Notebook und erzeuge Checkpoints und Commits nach jeder Änderung*
+*Arbeite weiter in deinem Notebook*
 
 ### Intro (gemeinsam): Ein Stück Code aus dem Notebook herausziehen
 1. https://ipython.org/ipython-doc/3/config/extensions/autoreload.html
@@ -733,7 +733,7 @@ https://twitter.com/DavidSKrueger/status/1487391569028296710
 
 </textarea>
 	</section>
-
+<!-- 
 	<section data-markdown>
 		<textarea data-template>
 ### Referenz: Module in Colab nutzen
@@ -755,7 +755,7 @@ _Was könnte eine Business Metrik sein und kann man die quantitativ messen?_
 * Bzw. die Leute die das Domänenwissen haben, kriegen das nicht formal sortiert
 * Aufwand für die Sortierung lohnt sich evtl. gar nicht, weil man sowieso Phase I gar nicht verlässt oder zumindest nicht mit dem Ansatz
 </section>
-
+ -->
 
 <section data-markdown>
 	<textarea data-template>
@@ -858,8 +858,10 @@ in der dritten Phase wird die Lösung in Betrieb genommen
 		<textarea data-template>
 ### Große Dateien versionieren
 
-* git lfs
-* DVC
+Sinnvoll für Trainingsdaten und Modell 
+
+* git lfs: https://git-lfs.github.com/
+* DVC: https://dvc.org/
 		</textarea>
 	</section>
 
@@ -869,10 +871,12 @@ in der dritten Phase wird die Lösung in Betrieb genommen
 
 1. Im Ordner `app` ist eine Server-Anwendung vorbereitet
 1. In `app.py` ist ein einfacher Flask Server implementiert
+1. `cd app`
 1. Start über `python app.py`
-1. Für HTML clients Web Server auf 8000 starten: `python -m http.server`
-1. `http://localhost:8000/app/client.html` macht einen einfachen Request
-1. `http://localhost:8000/docs/html/calculator.html` ist ein interactiver Client (Remote Call anhaken)
+1. app.py benutzt eine zusätzliche lib, in der du den Pfad auf dein eigenes Modell anpassen musst
+1. Für HTML clients Web Server auf 8000 starten: `python -m http.server 8000`
+1. http://localhost:8000/app/client.html macht einen einfachen Requests
+1. http://localhost:8000/docs/html/calculator.html ist ein interactiver Client (Remote Call anhaken)
 </textarea>
 	</section>
 
