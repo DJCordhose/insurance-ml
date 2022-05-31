@@ -113,7 +113,7 @@ class MonitoringService:
 
         self.metrics = {}
         self.next_run_time = {}
-        self.hash = hashlib.sha256(pd.util.hash_pandas_object(self.reference["bike_random_forest"]).values).hexdigest()
+        # self.hash = hashlib.sha256(pd.util.hash_pandas_object(self.reference["bike_random_forest"]).values).hexdigest()
         self.hash_metric = prometheus_client.Gauge("evidently:reference_dataset_hash", "", labelnames=["hash"])
 
     def iterate(self, dataset_name: str, new_rows: pd.DataFrame):
@@ -151,7 +151,7 @@ class MonitoringService:
         self.monitoring[dataset_name].execute(
             self.reference[dataset_name], current_data, self.column_mapping[dataset_name]
         )
-        self.hash_metric.labels(hash=self.hash).set(1)
+        # self.hash_metric.labels(hash=self.hash).set(1)
 
         for metric, value, labels in self.monitoring[dataset_name].metrics():
             metric_key = f"evidently:{metric.name}"
