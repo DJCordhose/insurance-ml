@@ -36,6 +36,13 @@ You can create an `mlops-workshop` conda environment executing:
 $ conda env create -f environment.yml
 ```
 
+For Apple with an M1 processor install the the appropriate [Miniconda](https://docs.conda.io/en/latest/miniconda.html) version. You can create the `mlops-workshop` conda environment executing:
+
+```
+$ conda env create -f environment-m1.yml
+```
+
+
 and later activate the environment:
 
 ```
