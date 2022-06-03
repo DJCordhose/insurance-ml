@@ -1,0 +1,1689 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=10.0, user-scalable=yes">
+
+	<title>MLOps d2d 2022</title>
+
+	<link rel="stylesheet" href="revealjs/reveal.js/dist/reset.css" />
+    <link rel="stylesheet" href="revealjs/reveal.js/dist/reveal.css" />
+    <link rel="stylesheet" href="revealjs/reveal.js/dist/theme/white.css" />
+
+    <!-- Theme used for syntax highlighted code -->
+	<!-- <link rel="stylesheet" href="revealjs/reveal.js/plugin/highlight/monokai.css"> -->
+	<!-- <link rel="stylesheet" href="revealjs/reveal.js/plugin/highlight/zenburn.css"> -->
+    <link rel="stylesheet" href="revealjs/highlight-js-github-theme.css" />
+    <link rel="stylesheet" href="revealjs/styles.css" />
+
+</head>
+
+<body style="background-color: whitesmoke;">
+	<div class="reveal">
+		<div class="slides">
+
+<!-- 
+M3 Workshop:
+
+Titel: MLOps mit Python und TensorFlow
+Untertitel: Machine Learning betrachtet als ein Engineering Problem
+
+Level: Fortgeschritten
+
+Eine praxistaugliche Anwendung mit Techniken des Machine Learnings zu entwickeln ist in erster Linie eine
+Herausforderung im Bereich des Engineerings. Dabei geht es mehr um den
+Entwicklungsprozess und weniger um die konkret eingesetzte Technik und
+die Bibliotheken.
+
+In diesem Workshop gehen wir gemeinsam durch die unterschiedlichen Phasen eines Machine Learning Projekts, von der
+Exploration und Validierung eines Machine Learning Ansatzes über
+die Professionalisierung zu einem stabilen Stück Software bis in den produktiven Einsatz. 
+
+In der ersten Phase entwickeln wir eine Machine Learning basierte Lösung für ein gegebenes Problem.
+Dabei iterieren wir mit der Hilfe von Notebooks schnell durch unterschiedliche Experimente. Am Ende dieser Phase haben
+wir unsere Idee (hoffentlich) validiert und können
+mit diesem Ansatz in die nächste Phase übergehen.
+
+In Phase zwei professionalisieren wir unseren gefundenen Ansatz in Richtung Produktion. Dabei bringen wir unsere Experimente in 
+Python Module und bereiten diese für die Produktion vor. In dieser letzten Phase der Produktion sehen wir uns an, wie man ein solches Modell betreiben und monitoren kann.
+
+Alle Schritte sind hands-on und wir werden genug Zeit für Diskussionen haben. 
+
+Vorkenntnisse
+
+Teilnehmer sollten entweder mit den Werkzeugen und dem Vorgehen im Bereich Data Science und/oder als Machine Learning
+Engineer grundlegende Erfahrung haben. Die Sprache Python ist ebenso Grundlage.
+Die Werkzeuge sind von untergeordneter Bedeutung. Kenntnisse im Bereich TensorFlow oder Scikit-Learn, Jupyter Notebooks
+und Colab erleichtern die Entwicklung jedoch.
+
+Lernziel
+
+In diesem durch praktische Übungen geprägten Workshop wollen wir zusammen die Herausforderungen kennen lernen und
+meistern, die sich aus dem Ziel "langfristig in Produktion" sein ergeben.
+
+
+Kurzbeschreibung für M3
+
+Eine praxistaugliche Anwendung mit Techniken des Machine Learnings zu entwickeln ist in erster Linie eine
+Herausforderung im Bereich des Engineerings.
+
+In diesem Workshop gehen wir gemeinsam durch die unterschiedlichen Phasen eines Machine Learning Projekts, von der
+Exploration und Validierung eines Machine Learning Ansatzes über
+die Professionalisierung zu einem stabilen Stück Software bis in den produktiven Einsatz. Dabei geht es mehr um den
+Entwicklungsprozess und weniger um die konkret eingesetzte Technik und
+die Bibliotheken.
+
+Vorbereitung
+
+Dieser Workshop geht davon aus, dass du bereits eine Entwicklungsumgebung mit IDE, Python Distribution und Git auf eurem Rechner lauffähig hast. 
+Sollte das nicht der Fall sein und du nicht sicher bist, welche Software passt, installiere bitte:
+1. Anaconda: https://www.anaconda.com/products/individual
+2. Visual Studio Code: https://code.visualstudio.com/
+3. Git: https://git-scm.com/downloads
+4. Docker: https://docs.docker.com/get-docker/ und https://docs.docker.com/compose/install/
+
+Wir werden auf einem Beispielprojekt arbeiten. Habt bitte bereits vor dem Workshop
+1. Das Projekt geklont: https://github.com/DJCordhose/insurance-ml
+2. Das Projekt wie im Readme beschrieben entweder lokal oder/und über Docker installiert
+
+
+Agenda
+
+09:00 Uhr: Beginn
+
+Einführung in das Projekt und Überblick
+* Grundlagen von ML
+* Phasen eines ML Projekts
+* Unser Beispiel erkunden
+* TensorFlow und Scikit-Learn
+
+10:45 - 11:00 Uhr: Kaffeepause
+
+Phase I: Exploration
+* Was ist der Sinn dieser Phase, was sind die Ziele
+* Wieso bauen wir hier keine "richtige" Software?
+* Arbeit mit Notebooks und Colab
+* Übergang zu Phase II 
+
+12:30 - 13:30 Uhr: Mittagspause
+
+Phase II: Professionalisierung
+* Vom Notebook zum Modul
+* Vom Notebook zum Script
+* Testing mit Python Unit testing
+* Finden von Fehlern und Debugging
+* Was muss man dokumentieren?
+* Arbeit in der IDE
+* Übergang zu Phase III oder I
+
+15:00 - 15:15 Uhr: Kaffeepause
+
+Phase III: Produktion
+* Produktivsetzung
+* Drifts, Monitoring, Alerting
+* Evidently, Prometheus, Grafana 
+* Übergang zu Phase II oder I
+
+ca. 17:00 Uhr: Ende
+
+
+---
+
+Data2Day
+https://www.data2day.de/cfp.php
+
+MLOps mit Python
+
+Viele Unternehmen haben die Phase des reinen Experimentierens mit Machine Learning hinter sich gelassen und fragen sich
+nun, wie man ein Machine Learning Modell so betreibt wie ein traditionelles Stück Software. Also wie man es in Produktion bringt und dort
+erfolgreich hält. MLOps ist der Name für diesen Ansatz. 
+
+In diesem Workshop werden wir uns anhand eines durchgängigen Beispiel durch die Phasen eines Machine Learning Projekts bewegen:
+- Exploration: Entwicklung eines Modells mit Jupyter Notebooks und TensorFlow
+- Professionalisierung: Refactoring in Module
+- Produktion und Monitoring: Produktivsetzung mit Flask und Docker, Monitoring mit Prometheus, Evidently und Grafana
+
+Als ML Werkzeug werden wir TensorFlow nutzen, allerdings ist dies nur ein Beispiel und alles gezeigte gilt auch für alle
+anderen Frameworks. Es wird lediglich Erfahrung mit Python und ein Verständnis für ein Machine Learning Projekt
+vorausgesetzt. Alles andere wird - soweit nötig - im Workshop eingeführt.
+
+Lernziel:
+Teilnehmer sollen anhand eines in sich stimmigen Satzes von Werkzeugen die Konzepte und Ansätze im Bereich MLOps kennen lernen und diskutieren können.
+
+-->
+
+ 
+
+<!-- <section data-markdown class="local preparation hide">
+* Serving Teil aus Amd und abcd am Ende einfügen?
+* Details
+  * Übersicht Zusammenspiel Prometheus, Grafana etc.
+  * Zuerst die gleichen Daten gegen den Server schicken, um zu sehen, dass kein Drift
+  * P Wert anders einstellen
+  * Gucken: Was kann ich aus dem Talk noch übernehmen?
+	
+* Lars alle Übungen zeigen
+* Debugging des Tests einmal durchspielen	
+* Sicher stellen: beenden mit grafischer Übung in der wir noch ordentlich unterstützen können und das ganze mit Kontakt beenden
+* Phase 3 könnte den ganzen Nachmittag einnehmen, wir haben eher zu viel Material
+
+</section>
+ -->
+<!-- <section data-markdown class="todo">
+
+</section> -->
+
+<!-- <section data-markdown class="todo">
+
+https://developers.google.com/machine-learning/guides/rules-of-ml		
+Hidden Technical Debt in Machine Learning Systems: https://proceedings.neurips.cc/paper/2015/file/86df7dcfd896fcaf2674f757a2463eba-Paper.pdf	
+</section>
+
+
+<section data-markdown class="todo">
+### The world is messy
+		
+	Statisticians that believe that doing the statistics is the hard part reveal they have no sense how messy real world data collection is.
+
+Hardest part is having a dataset that reflects reality. Time delays, simple dismissals, incentives, clerical errors, term ambiguity, on and on
+(https://twitter.com/normonics/status/1511021293969235975?t=spHs38A9j38gdGASJMt1AA&s=03) 
+</section> -->
+
+<section data-markdown class="todo">
+	<textarea data-template>
+- Links auf D2D setzen
+- Installation als Teil des Programms
+  - Inkl. Anaconda und git, etc.
+  
+- Script besser berücksichtigen
+  - Scripts in Ordner herausziehen  
+  - Script und Libs in Übersichtsgrafik
+  - Training Script als dünnen Wrapper um train.py
+  
+Didaktik:
+- Co-Trainer anwerben
+
+Tests
+- Tests über pytest von der Kommandozeile
+
+
+
+	</textarea>
+</section>
+
+<section data-markdown class="todo">
+	<textarea data-template>
+### Findings
+
+- Installation kann nicht vorausgesetzt werden
+- Herausziehen von libs: wissen nicht was man herausziehen soll
+- Keiner kennt die Logging Tools
+- Stats sind kompliziert
+- Versionen Pinnen in Phase II
+- Gemeinsam nochmal durch das Notebook: was kann raus? Jeder wählt eine Funktion aus und zieht sie raus. Ich mache eine vor
+</textarea>
+</section>
+
+<section data-markdown class="todo">
+	<textarea data-template>
+### Evidently und Stats
+- zeigen dass mit Originaldaten kein Drift (dafür natürlich erstmal dafür sorgen, dass es so ist)
+- Fenster Breite anpassen 
+- Andere Metrik 
+- andere p-value
+
+</textarea>
+</section>
+
+<section data-markdown class="todo">
+	<textarea data-template>
+
+Evaluation is one of the most important aspects of ML but today’s evaluation landscape is scattered and undocumented which makes evaluation unnecessarily hard.
+
+For that reason we are excited to release 🤗 Evaluate!
+
+https://t.co/x9DMvdjCMi
+
+Let’s take a tour: https://t.co/wLuHZ6Ict1
+(https://twitter.com/lvwerra/status/1531652407909920769?t=gPIcSQ2aB79Q2GEzLTpIMg&s=03) 
+
+</textarea>
+</section>
+
+
+<section data-markdown class="todo">
+	<textarea data-template>
+### Directory Struktur
+
+<img src="img/todo/matthias-directory-structure.jpg">
+
+</textarea>
+</section>
+
+<section data-markdown class="todo">
+	<textarea data-template>
+### Testing
+
+<img src="img/todo/matthias-testing.jpg">
+
+</textarea>
+</section>
+
+<section data-markdown class="todo">
+	<textarea data-template>
+### Alternative Algorithmen und Decision Boundaries
+
+<img src="img/insurance-new/dec_bound_adaboost.png">
+<img src="img/insurance-new/dec_bound_rf.png">
+
+</textarea>
+</section>
+
+<section data-markdown class="todo">
+	<textarea data-template>
+Fear of deploys is the largest source of technical debt and wasted time in most engineering orgs.
+(https://twitter.com/mipsytipsy/status/1530664380961943553?t=tbi4R3SZwHMuwFl-0_4EGg&s=03) 
+</textarea>
+</section>
+
+
+
+<section data-markdown>
+	<textarea data-template>
+### Bevor es los geht
+
+https://www.m3-konferenz.de/veranstaltung-14132-0-mlops-mit-python-und-tensorflow.html
+
+<div style="display: flex;">
+<div style="flex: 50%;">
+
+1. Agenda im Netz ist nur der grobe Ablauf, länge der Blöcke flexibel nach Bedarf, offizielles Ende ist schon 16:00
+1. Diese Folien: https://bit.ly/m3-2022-mlops
+1. Falls noch nicht geschehen, bitte das Projekt wie in der Beschreibung (link oben) *lokal* installieren
+1. Nachher gibt es noch Zeit und es gibt auch einen Fallback
+	</div>
+<div style="flex: 50%; font-size: x-large;">
+<img src='img/wlan.jpg' style="height: 400px;">
+
+</div>
+</div>
+	
+
+_Bei Problemen den Nachbar oder Olli und Lars fragen_   
+</textarea>
+</section>
+
+
+			<section data-markdown>
+				<textarea data-template>
+## MLOps mit Python und TensorFlow         
+### Machine Learning betrachtet als ein Engineering Problem       
+
+M3 2022, https://www.m3-konferenz.de/veranstaltung-14132-0-mlops-mit-python-und-tensorflow.html
+
+Oliver Zeigermann / oliver.zeigermann@openknowledge.de
+
+Lars Röwekamp / lars.roewekamp@openknowledge.de
+
+Folien: https://bit.ly/m3-2022-mlops
+
+    </textarea>
+			</section>
+
+<section data-markdown>
+  <textarea data-template>
+### Wer ist Lars
+
+<img src='img/profilBild_LarsRoewekamp.png'>
+
+<p>
+<a target="_blank" href="mailto:lars.roewekamp@openknowledge.de">Lars Röwekamp</a>:
+CIO New Technologies@OpenKnowledge
+</p>    
+</textarea>
+</section>
+
+<section data-markdown>
+  <textarea data-template>
+### Wer ist Olli
+
+<div style="display: flex;">
+<div style="flex: 50%;">
+  <a href='https://oreilly.de/produkt/machine-learning-kurz-gut-2/'>
+  <img src='img/ml-buch-v2.jpg' height="400">
+  </a>
+</div>
+<div style="flex: 50%; font-size: x-large;">
+  <img src='img/olli-opa.jpeg'>
+</div>
+</div>
+<p>
+<a target="_blank" href="mailto:oliver.zeigermann@openknowledge.de">Oliver Zeigermann</a>:
+Head of AI@OpenKnowledge
+</p>    
+</textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+### Wer seid ihr?
+
+* Was macht ihr?
+* Was wisst ihr schon?
+* Warum seid ihr hier?
+</textarea>
+</section>
+
+	<section data-markdown>
+		<textarea data-template>
+# Agenda
+
+* Phase 0: Grundlagen MLOps, Unser Beispiel, Installation
+* Phase 1: Exploration
+* Phase 2: Professionalisierung
+* Phase 3: Produktion
+
+</textarea>
+	</section>
+
+
+	<section data-markdown>
+		<textarea data-template>
+# Agenda
+
+* _Phase 0: Grundlagen MLOps, Unser Beispiel, Installation_
+* Phase 1: Exploration
+* Phase 2: Professionalisierung
+* Phase 3: Produktion
+
+</textarea>
+	</section>
+
+	<section data-markdown>
+		<textarea data-template>
+## Installation
+
+</textarea>
+	</section>
+
+	<section data-markdown style="font-size: x-large;" class="hands-on">
+		<textarea data-template>
+## Hands-On 0 - Die Arbeitsumgebung überprüfen und kennen lernen
+
+*Wir gehen zusammen durch das Notebook*
+
+1. Wir empfehlen: arbeitet zusammen mit euren direkten Nachbarn
+1. Sagt kurz Hallo
+1. Falls das Projekt noch nicht installiert ist, dies bitte lokal tun, wie hier beschrieben unter Vorbereitung installieren: https://www.m3-konferenz.de/veranstaltung-14132-0-mlops-mit-python-und-tensorflow.html
+1. `conda activate mlops-workshop`
+1. `cd workspace`
+1. `jupyter notebook`
+1. http://localhost:8888/notebooks/insurance_ml.ipynb
+
+https://www.m3-konferenz.de/veranstaltung-14132-0-mlops-mit-python-und-tensorflow.html
+
+falls es Installationsprobleme gibt: https://colab.research.google.com/github/DJCordhose/insurance-ml/blob/main/workspace/insurance_ml.ipynb
+</textarea>
+	</section>
+
+	<section data-markdown>
+		<textarea data-template>
+## Grundlagen MLOps
+
+</textarea>
+	</section>
+
+
+<section data-markdown class="fragments">
+### Was ist MLOps?
+
+* MLOps ist abgeleitet von DevOps
+* Durch MLOps kommt ML in Produktion und wird in Betrieb gehalten
+* Dazu kommen eine Reihe von Werkzeugen und Praktiken zum Einsatz
+* Überschneidung aus
+  * Softwareentwicklung
+  * Operations
+  * Data Science
+</section>
+
+<section data-markdown class="fragments">
+### Warum MLOps?
+
+* im akademischen Leben zählt für einen Wettbewerb häufig nur der Score (Güte) des Modells
+* dieser Ansatz hat sich im Bereich des Data Science auch in der Praxis breit gemacht
+* die Praxis ist aber keine Kaggle Competition
+* In-Sample Evaluation (auch wenn wir die vorher abgetrennt haben) sagt nur bedingt etwas für Eignung in
+einer praktsichen Anwendung aus
+* Out-Of-Sample Evaluation häufig erst im produktiven Betrieb möglich (evtl nur mitlaufen lassen)
+</section>
+
+<section data-markdown>
+    <textarea data-template>
+### ML Modelle brauchen permanente Wartung
+
+<img src='img/mlops/modell-vergammelt.jpg'>
+
+Das gilt nicht nur für ML Modelle, aber bei diesen ist es offensichtlicher
+</textarea>
+</section>
+
+
+<section data-markdown>
+_MLOps today is in a very messy state with regards to tooling, practices, and standards. However, this is to be expected
+given that we are still in the early phases of broader enterprise machine learning adoption. As this transformation
+continues over the coming years, expect the dust to settle while ML-driven value becomes more widespread._
+
+https://www.mihaileric.com/posts/mlops-is-a-mess/
+</section>
+		
+	
+<section data-markdown>
+    <textarea data-template>
+## Die Tool-Landschaft ist divers und meist (noch) Inhouse
+
+<img src='img/mlops/mltools-ih.jpg' style="height: 400px;">
+
+<small>
+
+* https://towardsdatascience.com/lessons-on-ml-platforms-from-netflix-doordash-spotify-and-more-f455400115c7
+* Diskussion: 
+  * https://twitter.com/adamlaiacano/status/1458124198166122503
+  * https://twitter.com/rahulj51/status/1455431014671699971
+
+</small>
+
+</textarea>
+    </section>
+
+<section data-markdown class="fragments">
+### Ansatz des Workshops
+
+* Der Bereich MLOps ist bisher weder im Bereich Framework noch konzeptionell standardisiert
+* Ich zeige *eine* Mögliche Lösung für eine Problemstellung
+* Meine eigene Erfahrung ist dafür Grundlage
+* Jeder gezeigte Ansatz kann von uns kritisch hinterfragt und bewertet werden
+* Es gibt mit Sicherheit andere Ansätze, die auch gut funktionieren
+
+</section>
+
+
+<section data-markdown>
+	<textarea data-template>
+## Unser Beispiel: Vorhersage von Risiken
+
+* Wir sind CTO einer hochinnovativen Kfz-Versicherungsgesellschaft
+* Anders als andere Versicherungsgesellschaften bestimmen wir den Tarif anhand der geschätzen Anzahl von Unfällen pro Kunde
+* Zielsetzung: Wie viele Unfälle werden die potenziellen Kunden haben?
+
+<img src='img/pixabay/accident-151668_1280.png' style="height: 230px">
+</textarea>
+</section>
+
+<section>
+	<h3>Klassifizierung basierend auf bekannten Daten</h3>
+	<img src="img/insurance-new/train-data.png" height="500px" class="fragment">
+</section>
+
+
+<section data-markdown>
+	<textarea data-template>
+### Vorhersage von Risiken für potenzielle Kunden
+
+<a href='html/calculator.html'>
+<img src='img/calculator.png' height="400">
+</a>
+<p><small>
+<a href='html/calculator.html' target="_blank">
+https://djcordhose.github.io/ml-resources/html/calculator.html</a></small>
+</small></p>
+</textarea>
+</section>
+
+
+	<section data-markdown>
+		<textarea data-template>
+# Agenda
+
+* Phase 0: Grundlagen MLOps, Unser Beispiel, Installation
+* _Phase 1: Exploration_
+* Phase 2: Professionalisierung
+* Phase 3: Produktion
+
+</textarea>
+	</section>
+
+<section data-markdown class="fragments">
+### Data SCIENCE
+
+SCIENCE:
+
+If you don't make mistakes, you're doing it wrong.
+
+If you don't correct those mistakes, you're doing it really wrong.
+
+If you can't accept that you're mistaken, you're not doing it at all.
+
+https://twitter.com/ProfFeynman/status/1523317198168936448 	
+</section>
+
+<section data-markdown>
+    <textarea data-template>
+### Machine Learning können in Phasen strukturiert werden
+
+<img src='img/sketch/phases-ml.png'>
+
+</textarea>
+</section>
+
+<section data-markdown>
+    <textarea data-template>
+<img src='img/twitter-fchollet-early-errors.png'>
+
+https://twitter.com/fchollet/status/1525135062705983488
+</textarea>
+</section>
+
+
+	<section data-markdown class="fragments">
+### Phase 1: Exploration
+
+* in der ersten Phase eines Machine Learning Projekts wird die Anwendungsidee validiert und ein
+funktionsfähiges Modell entwickelt.
+* dabei ist ein schnelles iterieren und ausprobieren von Ideen zentral
+* das Ziel ist *nicht* ein sinnvolles Stück Software
+* Scripting passt hier besser als Programmieren als Ausdruck für die Tätigkeit
+* das Ziel ist eine schnelle Entwicklung
+* Phase 1 endet entweder mit
+  * einem funktionsfähigen Modell mit dem man in Phase II übergeht oder
+  * dem Verwerfen des Ansatzes
+
+	</section>
+
+	<section data-markdown>
+		<textarea data-template>
+### Man muss sein Problem so formulieren, dass es für ML greifbar wird
+
+<img src='img/software-complexity.png'>
+
+<small>
+Andrej Karpathy - TRAIN AI 2018 - Building the Software 2.0 Stack
+
+https://vimeo.com/272696002
+
+</small>
+		</textarea>
+	</section>
+
+	<section data-markdown>
+<textarea data-template>
+### Literate Statistical Programming
+
+1. Intent
+1. Code
+1. Data
+1. Results
+1. (Interpretation)
+
+_Idee implementiert als sogenannte "notebooks"_
+
+<small>https://en.wikipedia.org/wiki/Literate_programming</small>
+<br>
+<small>https://education.arcus.chop.edu/literate-statistical-programming/</small>
+
+</textarea>
+</section>
+
+	<section data-markdown style="font-size: x-large;" class="hands-on">
+		<textarea data-template>
+## Hands-On I - Ein Modell erzeugen
+
+*Arbeite weiter in deinem Notebook*
+
+### Intro
+1. Wir gehen noch einmal zusammen durch das Notebook und sehen uns die Teile genauer an
+1. Adhoc-Intro ML und TensorFlow, so viel wie ihr braucht?
+  1. Wer schon Bescheid weiß, kann direkt loslegen
+
+### Modell Exploration  
+1. Erzeuge ein gutes Modell
+1. Wenn du willst und kannst, musst du nicht TensorFlow nutzen
+1. In welchem Bereich ist das Modell zu gebrauchen?
+1. Sorge dafür, dass das Modell nur in diesem Bereich eine Vorhersage liefert
+1. Wie könnte man sinnvoll mit einer Anfrage außerhalb des Wertebereichts umgehen?
+
+Manche Leute mögen https://mlflow.org/
+</textarea>
+	</section>
+
+	<section data-markdown>
+		<textarea data-template>
+### Kann man sinnvoll direkt in Produktion gehen?
+
+<img src='img/sketch/ml-phasen.png' style="height: 600px;">
+</textarea>
+	</section>
+
+
+	<section data-markdown>
+		<textarea data-template>
+### Phase I hinterlässt gern einen Wust an Notebooks
+
+<img src='img/sketch/notebook-explosion-no-title.png'  style="height: 600px;">
+
+</textarea>
+	</section>
+
+	<section data-markdown class="fragments">
+		<textarea data-template>
+### Ist ein Wust an Notebooks ein Problem?
+
+* das ist kein Zeichen von einem unprofessionellen Vorgehen
+* ergibt sich aus der Arbeitsweise und Zielsetzung
+* jeder Experimentator, erprobte ML Ansatz und jede Iteration kann eine neue, komplett entkoppelte Kopie eines Notebooks rechtfertigen
+  * "Das Wichtigste in dieser Phase ist die schnelle Iteration" https://twitter.com/marktenenholtz/status/1488134981985583105
+  * "Machen Sie ein einfaches Experiment nach dem anderen" https://karpathy.github.io/2019/04/25/recipe/
+* natürlich wird dabei teilweise falsch entkoppelt
+  * Wir kopieren alles, auch die Teile, die die beiden Notebooks größtenteils unverändert teilen
+  * Solange wir aber nicht wissen was die relevant gemeinsamen Teile sind müssen wir damit weiter machen
+* welcher Ansatz mehr Liebe verdient wird erst am Ende dieser Phase klar
+</textarea>
+	</section>
+
+<!-- <section data-markdown>
+<textarea data-template>
+### Warum so viele unterschiedliche Experimente?
+
+### Herausforderungen beim Training neuronaler Netze: 
+## Das Training neuronaler Netze scheitert unbemerkt - die mögliche Fehlerfläche ist groß
+
+### "Das Wichtigste in dieser Phase ist die schnelle Iteration." 
+https://twitter.com/marktenenholtz/status/1488134981985583105
+### "Machen Sie ein einfaches Experiment nach dem anderen" 
+https://karpathy.github.io/2019/04/25/recipe/
+
+</textarea>
+</section>
+ -->
+
+<section data-markdown class="fragments">
+<textarea data-template>
+## Was will man da denn in Produktion bringen?
+
+_ein Modell steht nicht für sich allein_
+* es braucht Code für Vor- und Nachbearbeitung
+* es ist eingebettet in andere Systeme
+
+_wer will Scripte in Produktion?_
+* Notebooks sind interaktive Scripte
+* Wie ruft man das denn auf?
+* Welches bringen wir in Produktion?
+* Wie versionieren wir das? 
+* Tests/Dokumentation?
+* Debugging/Show References/Refactor/Autocomplete/Quick Fix/etc.?
+
+</textarea>
+</section>
+
+
+<section data-markdown>
+	<textarea data-template>
+# Agenda
+
+* Phase 0: Grundlagen MLOps, Unser Beispiel, Installation
+* Phase 1: Exploration
+* _Phase 2: Professionalisierung_
+* Phase 3: Produktion
+
+</textarea>
+</section>
+
+	<section data-markdown>
+		<textarea data-template>
+<img src='img/mlops/mlops-systems.png'>					
+
+<small>
+
+https://twitter.com/nkoumchatzky/status/1525904101619417095
+</small>
+
+		</textarea>
+	</section>
+
+
+
+	<!-- <section data-markdown>
+		<textarea data-template>
+<img src='img/ml-bad.png'>					
+
+<small>
+
+https://twitter.com/DavidSKrueger/status/1487391569028296710
+</small>
+
+		</textarea>
+	</section>
+ -->
+	<section data-markdown class="fragments">
+### Phase 2: Professionalisierung
+
+* in der zweiten Phase wird die skizzierte Lösung in ein langlebiges Projekt umgewandelt
+* alle Regeln einer guten Software-Entwicklung gelten von nun an
+* Stabilität und Funktionalität wird gewährleistet
+* Die Rahmenbedingungen der Produktionsumgebung müssen erfüllt werden
+* Art des Deployments, Sprache, Latenz, Speicher, Bandbreite, etc.
+* Phase II endet entweder mit
+  * reifem Code und Modell mit dem man in Phase III übergeht oder
+  * dem Iterieren zurück in Phase I mit neu gewonnenen Erkenntnissen oder falls Rahmenbedingungen nicht erfüllt werden
+
+	</section>
+
+
+	<section data-markdown>
+		<textarea data-template>
+<img src='img/sketch/ml-dev-prozess.png' style="height: 650px;">
+</textarea>
+	</section>
+
+	<section data-markdown class="fragments">
+		<textarea data-template>
+### Was gehört in Bibliotheken ausgelagert?
+
+* Wir können nicht mit einem Notebook in Produktion gehen
+  * also muss alles was wir in Produktion brauchen aus den Notebooks herausgezogen werden
+* Bestimmte Teile eines Notebooks haben sich als stabil herausgestellt und sollten nicht bei jeder Kopie entkoppelt werden
+* Alles was sich nach Software anfühlt (Klassen, Funktionen, etc.) ist auch Software
+  * diese Teile sollten auch wie solche behandelt werden  
+* Professionalisierung muss gut abhängen
+  * Es stellt sich erst langsam heraus, was in ein Modul gehört
+  * erste Version der exrahierten Module ist mit Sicherheit nicht endgültig
+</textarea>
+	</section>
+
+<section data-markdown>
+### Scripte	
+* Manche Notebooks werden in Phase II zu Skripten, die eine dünne API um die Module sind. 
+* Können auch in CI/CD eingebaut werden.
+* Training als Script ist oft nicht sinnvoll bei Deep Learning, da viel Anpassungen notwendig und besondere Ablaufumgebung mit nicht geteilten Ressourcen notwendig.
+
+</section>
+
+<section data-markdown>
+### FAQ
+
+* Wie sorgt man dafür, dass die Notebooks nicht vergammeln und bei Anpassungen der lib nicht kaputt gehen
+  * Antwort: gar nicht. Solange sie keine Scripte oder Module sind sind sie nicht stabil. 
+
+</section>
+
+
+	<section data-markdown style="font-size: x-large;" class="hands-on">
+		<textarea data-template>
+## Hands-On II - Entscheidende Teile in Bibliotheken auslagern
+
+*Arbeite weiter in deinem Notebook*
+
+### Intro (gemeinsam): Ein Stück Code aus dem Notebook herausziehen
+1. https://ipython.org/ipython-doc/3/config/extensions/autoreload.html
+1. Ein Python Modul erzeugen und im Notebook importieren
+1. Tests und Debugging
+   * mit https://docs.pytest.org/en/7.1.x/getting-started.html
+   * von der Kommandozeile
+   * in der IDE
+1. Beispiele für Dokumentation in `InsuranceModel`
+   * wo macht Doku Sinn?
+   * Typen nutzen?  
+
+### Kandidaten für das auslagern in Module ausmachen und auslagern
+1. Was brauchen wir für Produktion?
+1. Welche Teile verwenden wir immer wieder?
+1. Was ändert sich nicht?
+
+</textarea>
+	</section>
+<!-- 
+	<section data-markdown>
+		<textarea data-template>
+### Referenz: Module in Colab nutzen
+
+https://colab.research.google.com/drive/1hDUO1-EzMVtVt6snmgrR1I1A36oPp4J9
+</textarea>
+	</section>
+
+<section data-markdown class="fragments">
+#### Optional	
+###	Gemeinsame Diskussion: Business Metrik ableiten
+
+_Was könnte eine Business Metrik sein und kann man die quantitativ messen?_
+
+* Wir haben technische Metriken zur Bewertung, aber was will man eigentlich erreichen?
+* Hätte man gern von Anfang an
+* Geht aber mit der Entwicklung Hand-in-Hand
+* Häufig hat man Anfang noch gar keine Ahnung, wie so eine Metrik aussehen würde
+* Bzw. die Leute die das Domänenwissen haben, kriegen das nicht formal sortiert
+* Aufwand für die Sortierung lohnt sich evtl. gar nicht, weil man sowieso Phase I gar nicht verlässt oder zumindest nicht mit dem Ansatz
+</section>
+ -->
+
+<section data-markdown>
+	<textarea data-template>
+# Agenda
+
+* Phase 0: Grundlagen MLOps, Unser Beispiel, Installation
+* Phase 1: Exploration
+* Phase 2: Professionalisierung
+* _Phase 3: Produktion_
+
+</textarea>
+</section>
+
+	<section data-markdown>
+		<textarea data-template>
+<img src='img/everybody-gansta.png' style="height: 600px">
+
+<small>
+
+https://twitter.com/karpathy/status/1486215976559398915
+</small>
+
+</textarea>
+	</section>
+
+	<!-- <section data-markdown>
+		<textarea data-template>
+<img src='img/twitter-taylor-ml-deployment.png'>
+
+<small>
+
+https://twitter.com/SamuelDataT/status/1488150832742899718
+</small>
+
+</textarea>
+	</section> -->
+
+			<section data-markdown class="fragments">
+### Phase 3: Produktion / Betrieb
+
+in der dritten Phase wird die Lösung in Betrieb genommen
+
+* alle Regeln des produktiven Einsatzes von Software gelten auch hier
+* Monitoring hat zusätzliche Herausforderungen
+  * Natur und Verteilung der Anfragen und auch Vorhersagen muss permanent überwacht werden
+* Phase III endet entweder mit
+  * der Abschaltung 
+    * entweder bald weil nutzlos oder
+    * später weil durch neues System ersetzt
+  * dem Iterieren zurück in Phase II mit neu gewonnenen Erkenntnissen
+  * dem Iterieren zurück in Phase I mit neu gewonnenen Erkenntnissen oder einem Neuansatz (häufig ebenfalls ein Zeichen für einen Fehlschlag)
+
+			</section>
+
+	<section data-markdown class="fragments">
+### Technische Umsetzung des Betriebs in Produktion
+
+* Ein TensorFlow Graph lässt sich in unterschiedlichsten Szenarien einzusetzen
+* Als Server
+  * local
+  * GCP
+* Von C++
+* Von JavaScript
+* Von Java
+
+	</section>
+
+
+<section data-markdown class="fragments">
+		<textarea data-template>
+### Eine ML Lösung hat 2 Artefakte: Code und Modell		
+
+* Beides muss in Prod gebracht werden
+* Daten und Modell muss extern gehalten, aber zusammen mit Code versioniert werden
+* Modell beschreibt einen Ausschnitt der Realität. Wie finde ich heraus wie gut es das tut uns vor allem für relevante Teile der Welt und was mache ich wenn sich das ändert
+* Richtung: Benchmark und Monitoring der Lösung in Produktion
+<!-- * Prod geht auf Code und Modell Binaries, Modell Graph überall ausführen -->
+
+</textarea>
+	</section>
+
+	<section data-markdown>
+		<textarea data-template>
+### Nicht aller Code ist für Produktion gedacht		
+
+* Was geht in Produktion
+  * Vorhersage
+  * Monitoring
+
+* Was geht nicht in Produktion
+  * Training
+  * Analytics
+  * Visualisierung
+
+
+</textarea>
+	</section>
+
+	<section data-markdown>
+		<textarea data-template>
+### Große Dateien versionieren
+
+Sinnvoll für Trainingsdaten und Modell 
+
+* git lfs: https://git-lfs.github.com/
+* DVC: https://dvc.org/
+		</textarea>
+	</section>
+
+	<section data-markdown class="hands-on">
+		<textarea data-template>
+## Hands-On IIIa - Intro der Produktionsumgebung
+
+1. Im Ordner `app` ist eine Server-Anwendung vorbereitet
+1. In `app.py` ist ein einfacher Flask Server implementiert
+1. `cd app`
+1. Start über `python app.py`
+1. app.py benutzt eine zusätzliche lib, in der du den Pfad auf dein eigenes Modell anpassen musst
+1. Für HTML clients Web Server auf 8000 starten: `python -m http.server 8000`
+1. http://localhost:8000/app/client.html macht einen einfachen Requests
+1. http://localhost:8000/docs/html/calculator.html ist ein interactiver Client (Remote Call anhaken)
+</textarea>
+	</section>
+
+	<!-- <section data-markdown class="hands-on">
+		<textarea data-template>
+## Hands-On IIIa - Intro Docker Umgebung
+
+1. `Dockerfile` enthält die Bauanleitung für das Docker Image
+1. `docker-compose up --build` (Referenz https://docs.docker.com/compose/reference/up/)
+   * baut und startet den Server
+   * started Prometheus und Grafana
+   * Definition in `docker-compose.yaml`
+1. `docker-compose down` stopt alle Services wieder   
+
+https://github.com/DJCordhose/insurance-ml/blob/main/README.md   
+</textarea>
+	</section>
+
+	<section data-markdown class="hands-on">
+		<textarea data-template>
+## Hands-On IIIa - Das Modell in Produktion bringen
+
+1. `app.py` so anpassen, dass damit das eigenen Programm instrumentiert wird 
+1. Starten und mit `client.html` ausprobieren
+1. Optional: Dassselbe mit der Docker-Umgebung 
+
+</textarea>
+	</section>
+ -->
+	<section data-markdown>
+	<textarea data-template>
+# Agenda
+
+* Phase 0: Grundlagen MLOps, Unser Beispiel, Installation
+* Phase 1: Exploration
+* Phase 2: Professionalisierung
+* _Phase 3b: Produktion / Monitoring_
+
+</textarea>
+</section>
+
+<!-- <section data-markdown class="todo">
+### Monitoring ist eine Art Predictive Maintainace
+</section> -->
+
+<!-- <section data-markdown>
+### Die vier goldenen Regeln des traditionellen Monitorings
+
+* Latency
+* Traffic
+* Errors
+* Saturation
+
+https://sre.google/sre-book/monitoring-distributed-systems/	
+</section>
+ -->
+
+ <section data-markdown>
+    <textarea data-template>
+### Wir erinnern uns: ML Modelle brauchen permanente Wartung
+
+<img src='img/mlops/modell-vergammelt.jpg'>
+
+</textarea>
+</section>
+
+
+<section data-markdown style="font-size: x-large;">
+	<textarea data-template>
+### Monitoring für ML muss komplexer sein
+
+<img src="img/google-ml-monitoring.png">
+
+Long: https://static.googleusercontent.com/media/research.google.com/en//pubs/archive/aad9f93b86b7addfea4c419b9100c6cdd26cacea.pdf
+Short: https://storage.googleapis.com/pub-tools-public-publication-data/pdf/45742.pdf
+</textarea>
+</section>
+
+<!-- <section data-markdown class="fragments";>
+## Welche Metriken kann man in ML Systemen überwachen?
+
+Entscheidend ist die Performance des Systems
+
+* Technische Metriken
+  * ohnehin verfügbar, weil für das Training erforderlich
+  * accuracy, precision/recall 
+* Business Metriken
+  * z.B.
+	* Umsatz / Gewinn
+	* Umfang Schadensmeldungen
+    * allgemeiner Käufe, Views, Clicks, etc.
+  * oft sinnvoller, aber schwerer zu messen oder schwerer zu quantifizieren
+
+</section> -->
+
+<!-- <section data-markdown class="fragments">
+## Das reicht meist nicht
+
+* Ground Truth liegt erst sehr spät vor
+  * Ob jemand ein guter Kunde ist wissen wir oft erst nach Jahren
+* Manchmal liegt die Ground Truth überhaupt nicht vor
+* Filter Bubble: es werden nur bestimmte Daten gesammelt
+  * wir sammeln nur Daten von Leuten, die auch unsere Kunden werden   
+* Unterschiedliche Teilbereiche können eine unterschiedliche Performanz haben
+  * Während ein Bereich besser wird, kann ein anderer, evtl. kleinerer Bereich deutlich schlechter werden, bei gleichbleibenden Performance
+* Performance kann stark über die Zeit variieren, ohne dass es ein Problem gibt
+  * anhängig von der Art der Anfragen
+  * manchmal mit Regelmäßigkeiten innerhalb eines Tages
+  * Trend in Abweichungen manchmal schwer zu bestimmen   
+</section>
+
+
+<section data-markdown class="fragments">
+## Was kann man machen: Frühes Monitoring
+
+* Qualität der Daten
+  * wie verändern sich fehlende oder falsche Felder
+  * Plausibilität
+* Daten Drift
+  * Verteilung der Eingabedaten
+* Prediction Drift   
+  * Was gibt das Modell aus?
+</section>
+
+<section data-markdown>
+## Datenqualität
+
+* Felder
+  * fehlen
+  * ungültig
+  * falsch / unplausibel / Wertebereich verlassen
+* Features 
+  * konstante (die (meisten) Eingaben haben (fast) denselben Wert)
+  * leere
+  * fast leer
+  * Korrelationen zwischen Features
+</section>
+	
+ -->
+<section data-markdown class="fragments">
+	<textarea data-template>
+### Wir lassen das System ein bisschen in Produktion laufen
+
+Mal sehen wie sich das System macht
+
+- Information über Schadensfälle neuer Kunden kommen nur verzögert
+- Aber neue Meldungen über Schandensmeldungen kommen permanent
+- Wir haben keine explizite Kontrolle darüber, wer bei uns versichert werden will und wessen Unfalldaten wir bekommen
+- Es gibt aber eine Tendenz dahin, dasss eher Kunden mit guten Konditionen kommen
+
+<!-- <small>
+
+https://colab.research.google.com/github/DJCordhose/ml-resources/blob/main/notebooks/mlops/3_mlops_shift.ipynb
+</small> -->
+
+</textarea>
+</section>
+
+
+<section data-markdown>
+	<textarea data-template>
+
+<!-- <img src='img/6monts-later.jpg' height="600px"> -->
+<img src='img/2year-later.jpg' height="600px">
+
+</textarea>
+</section>
+
+
+<section data-markdown data-transition="none">
+	<textarea data-template>
+## Ergebnis des Modells nach zwei Jahren
+
+<img src='img/insurance-new/insurance-after-shift.png' class="fragment">
+
+</textarea>
+</section>
+
+
+<section data-markdown data-transition="none">
+	<textarea data-template>
+## Ursprüngliche Daten zum direkten Vergleich
+
+<img src='img/insurance-new/insurance-pred.png'>
+
+</textarea>
+</section>
+
+<section data-markdown class="fragments">
+	<textarea data-template>
+### Was ist hier passiert? 
+
+*Die Welt steht nicht still - Model und Welt laufen auseinander, aus 70%  Genauigkeit werden 65%*
+
+* Elektroautos finden weitere Verbreitung
+* potente Elektroautos haben allgemein deutlich geringere Höchstgeschwindigkeit 
+* aber super Beschleunigung
+* Gute Beschleunigung ist viel eher Ursache für rasante Fahrweise, Unfallwahrscheinlichkeit ist hoch
+* Wir haben aber nur Höchstgeschwindigkeit als Daten (seht im Fahrzeugschein), Korrelation war angenommen
+* Der Cluster mit jungen, schlechten Fahrern ist nach unten gerutscht
+* _Wird nun fälschlich als gut vorhergesagt und werden günstig versichert_
+<!-- * Tatsächlich sehen wir aber viele Unfälle -->
+<!-- - Faherer vielleicht ein bisschen älter geworden -->
+</textarea>
+</section>
+
+<!-- <section data-markdown>
+	<textarea data-template>
+<img src='img/model-eval.png'>
+
+<small>
+
+https://twitter.com/marktenenholtz/status/1528021809697792003</small>
+		</textarea>
+</section>
+	 -->
+<section data-markdown class="fragments">
+### Grundregel
+
+* Alle haben Probleme in Produktion
+* Es gibt kein fehlerfreies System 
+  * jedenfalls nicht für lange
+* Ziel ist es, Fehler schnell 
+  * zu entdecken
+  * zu analysieren
+  * und entsprechende ihrer Schwere zu adressieren
+
+</section>
+
+	<section data-markdown class="fragments">
+		<textarea data-template>
+### Woher weiß man, dass man ein neues Modell in Produktion braucht?
+
+1. Mindestens einmal im Jahr, damit man überhaupt noch weiß wie es geht
+1. Wenn die Metrik des Modells nachlässt in Produktion
+1. Dafür braucht man die Ground Truth der Daten aus Produktion
+1. Manchmal bekommt man diese unmittelbar nach der Vorhersage durch die Reaktion eines menschlichen Benutzers
+1. Oft aber auch erst nach nennenswerter Verzögerung 
+1. Wenn sich die Verteilung der Daten der Anfragen deutlich von denen des Trainings unterscheiden 
+
+</textarea>
+	</section>
+
+
+<section data-markdown>
+### Wir setzen einen eigenen Monitoring-Server auf
+
+* Basiert auf Prometheus, Grafana und Evidently
+* Code basiert auf https://github.com/evidentlyai/evidently/tree/main/examples/integrations/grafana_monitoring_service
+* Nicht direkt Teil des eigentlichen Prod-Servers
+* Zusätzliche Requests werden gegen den Monitoring-Server gemacht
+* Requests über die Zeit verteilt werden simuliert
+</section>
+	
+<section data-markdown>
+### Prometheus
+
+Metric Server
+
+* https://prometheus.io/
+* https://prometheus.io/docs/prometheus/latest/getting_started/
+  * https://prometheus.io/download/
+
+</section>
+
+<section data-markdown>
+### Grafana
+
+Visualisierung mit Dashboards
+	
+https://play.grafana.org/
+</section>
+
+<section data-markdown>
+### Evidently
+
+ML Performance Monitoring
+	
+https://evidentlyai.com/
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+### Zusammenspiel der Komponenten
+
+<!-- <img src="img/mlops/monitoring-components.png"> -->
+<img src="img/mlops/evidently_grafana_service.png">
+
+https://docs.evidentlyai.com/integrations/evidently-and-grafana
+</textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+### Übersicht der Services
+
+* Monitoring App
+  * Endpunkt für die Registrierung von Datensätzen: http://localhost:8085/iterate/<dataset\> (POST)
+	* Nutzlast per JSON Body, kann Prediction enthalten z.B.: `[{"speed": 99.0, "age": 28.0, "miles": 21.0, "group": 2.0, "risk": 0.2110376180699707}]`  
+  * Metrics aus Evidently: http://localhost:8085/metrics
+    * über `app.wsgi_app = DispatcherMiddleware(app.wsgi_app, {"/metrics": prometheus_client.make_wsgi_app()})`
+
+* Promethus: http://localhost:9090
+* Grafana: http://localhost:3000
+
+*Erfordert das Starten des Monitoring Services (kommt später)*	
+</textarea>
+</section>
+
+
+<section data-markdown>
+	<textarea data-template>
+### Drift-Erkennung mit Prometheus, Evidently und Grafana
+
+<img src="img/mlops/grafana-evidently-drift.png">
+
+https://docs.evidentlyai.com/reports/data-drift
+</textarea>
+</section>
+
+<section data-markdown class="fragments">
+	<textarea data-template>
+### Wie erkennt man Drift?
+
+* Es wird ein Statistischer Test auf den Eingabge-Daten ausgeführt
+* Unsere Features sind numerisch
+  * in `monitoring/metrics_app/config.yaml` festgelegt
+* Die Anfragen in Production werden verglichen mit Referenz-Datensatz, den wir zum Training benutzt haben (`monitoring/datasets/insurance`)
+* Evidently sucht als Default eine passende Metrik aus, es muss also nicht unser Problem sein
+* Man kann aber auch von Hand konfigurieren, sowohl Test als auch Parameter
+  * https://docs.evidentlyai.com/user-guide/customization/options-for-statistical-tests
+  * https://docs.evidentlyai.com/user-guide/customization/options-for-data-target-drift
+
+https://docs.evidentlyai.com/reports/data-drift
+
+</textarea>
+</section>
+
+<!-- <section data-markdown class="fragments">
+	<textarea data-template>
+### Wie wird überprüft?
+
+* die statistische Verteilung der jeweiligen Features
+* weicht diese im Prod signifikant von der Verteilung im Training ab?
+* diese Abweichung wird über eine Metrik berechnet
+* es kommt eine Konfidenz heraus, ob die Verteilungen unterschiedlich sind
+* ab (default) 95% Konfidenz geht man von einer Abweichung aus 
+* das bedeutet, dass es eine 5% Wahrscheinlichkeit gibt, dass die Verteilungen eigentlich doch gleich sind, man es aber nur gerade schlechte Beispiele sieht
+
+https://de.wikipedia.org/wiki/P-Wert
+</textarea>
+</section>
+ -->
+<!-- <section data-markdown>
+	<textarea data-template>
+## Die Metrik
+
+### in unserem Fall wird die Wasserstein-Metrik für den Vergleich gewählt
+
+_Wenn jede Verteilung als ein Haufen von „Erde“ angehäuft auf dem metrischen Raum betrachtet wird, dann beschreibt diese
+Metrik die minimalen „Kosten“ der Umwandlung eines Haufens in den anderen._
+
+https://de.wikipedia.org/wiki/Wasserstein-Metrik
+</textarea>
+</section> -->
+
+	<section data-markdown class="hands-on">
+		<textarea data-template>
+## Hands-On IIIb - Monitoring und Sinn daraus machen
+
+### Teil I: Das Monitoring starten 
+
+1. Starte die Monitoring Umgebung in `monitoring` über 
+   * `docker compose up -d --build`
+1. Checke, dass diese Services laufen
+   * Monitoring App, Metrics aus Evidently: http://localhost:8085/metrics
+   * Promethus: http://localhost:9090
+   * Grafana: http://localhost:3000
+
+</textarea>
+	</section>
+
+	<section data-markdown class="hands-on">
+		<textarea data-template>
+## Hands-On IIIb - Monitoring und Sinn daraus machen
+
+### Teil II: Request simulieren
+
+1. Einloggen in Grafana: http://localhost:3000
+   1. admin/admin
+1. Das Dashboard `Evidently Data Drift Dashboard` aufrufen
+1. Darin den Datensatz `insurance`
+1. Mit `python scripts/example_run_request.py` Anfragen simulieren
+1. Stelle sicher, dass sich das Dashboard aktualisiert
+
+</textarea>
+	</section>
+
+<section data-markdown >
+	<textarea data-template>
+## Drift erfordert Interpretation
+
+Wenn die Welt sich ändert, ist Drift zu erwarten und damit ok
+
+|   | Positive Interpretation, keine Maßnahme erforderlich  | Negative Interpretation, Maßnahme erforderlich  |
+|---|---|---|
+| *Data und Prediction Drift*  | wichtige Features haben sich geändert, Modell kommt klar und extrapoliert gut, z.B.: Höheres Alter, mehr Risiko  |  wichtige Features haben sich geändert, Modell extrapoliert nicht sinnvoll |
+| *Data aber kein Prediction Drift*  | keine wichtigen Features geändert, das Modell ist robust genug für den Drift  | wichtige Features geändert, Modell extrapoliert nicht sinnvoll |
+|   |   |   |
+
+</textarea>
+</section>
+
+<section data-markdown>
+## Alarm bei Data Drift
+
+* Verändert sich die Art der Eingabedaten?
+  * Oft ausgedrückt durch die Verteilung der einzelnen Features
+
+* Muss nicht notwendig schlimm sein
+  * Wenn entscheidende Features betroffen sind, kann es ein Problem sein 
+* Alarm anhand von
+  * Wichtigkeit der driftenden Features
+  * Anzahl der driftenden Features
+  * Ausmaß des Drifts
+<!-- * Dafür wichtig
+  * Vernünftige Tests anhand der Metriken
+  * Vernünftige Konfidenzintervalle -->
+
+</section>
+
+
+<section data-markdown>
+## Maßnahmen bei Drift
+
+* Neue Daten aufnehmen (und labeln)
+* Neue Version des Modells trainieren
+* Schnelle Maßnahme
+  * Pre-/Post-Processing des Modells neu kalibrieren
+  * Schwellwerte für Anwendung anpassen
+  * Bestimmte Bereiche ausklammern 
+  * Modell Architektur ändern (oder fixen) und neu trainieren
+* Sehr schnelle Maßnahme: Fallback
+  * Manuell
+  * Heuristik / Baseline
+</section>
+
+	<section data-markdown class="hands-on">
+		<textarea data-template>
+## Hands-On IIIb, Monitoring und Sinn daraus machen
+
+### Teil III: Einen passenden Grafana Alert erzeugen
+
+1. Einen Alert kann man in Grafana als Regel oder direkt auf einem Dashboard einrichten
+1. Editiere im Dashboard entweder das Panel für die P-Werte oder für den Anteil driftender Features
+1. Im Alert Tab kannst die Bedingung für den Alarm festlegen
+1. Eventuell musst du erst einen Ordner erzeugen: https://grafana.com/docs/grafana/latest/dashboards/dashboard_folders/
+1. Nach dem Speichern sollte ein farbiges Herz auf dem Panel den Status angeben
+1. Stelle sicher, dass dein Alert ausgelöst wird
+1. Im Alerting Menu können Contact Points zur Benachrichtigung angelegt werden
+
+https://grafana.com/docs/grafana/latest/alerting/
+
+</textarea>
+	</section>
+
+<!-- <section data-markdown>
+## Mehr über Monitoring
+</section> -->
+
+<!-- <section data-markdown>
+### Man hat immer Verzögerung bis man weiß, ob die Vorhersagen gut waren
+
+* Wenn man warten kann bis die da sind hat man einen Vorteil
+* manchmal erst nach Jahren
+* Und manchmal weiß man es aber nie
+</section> -->
+
+<!-- <section data-markdown>
+## Drift Detection
+</section>
+
+<section data-markdown>
+## Metriken für Drift 
+
+* Wie viele Predictions sind gültig bzw. werden als gut genug angesehen?
+* Art der Verteilung (z.B. Normal)
+* Parameter einer angenommenen Normalverteilung
+  * Mean
+  * Std Dev
+  * Percentile
+  * min-max
+* Statistische Tests für Konfidenzintervalle
+  * KL Divergence
+  * Kolmogorow-Smirnow-Test  	
+</section>
+ -->
+
+<!-- <section data-markdown>
+## Vernünftige Tests: Nicht-Parametrische Tests
+
+</section>
+
+
+<section data-markdown>
+## Vernünftige Tests: Parametrische Tests
+
+* Parametrische Tests sind besser als Nicht-Parametrische für Drift-Detection
+* Müssen für jedes Feature einzeln aufgesetzt werden
+* Sinnvoll wenn man nicht zu viele Features hat und man eine hohe Sicherheit braucht
+* Beispiele für Tests
+  * Z-Test
+    * Es wird eine Normalverteilung angenommen
+    * https://www.statisticshowto.com/probability-and-statistics/hypothesis-testing/z-test/
+    * Z-Test, T-Test des Mittelwerts (m = m0)
+    * Z-Test für eine Proportion https://statologie.de/z-test-eine-proportion/ (p = p0)
+</section>
+ -->
+
+	<!-- <section data-markdown class="fragments">
+		<textarea data-template>
+### Probleme: Selection/Survivor Bias
+
+* Wir können nicht aktiv Daten sammeln, sondern nur von unseren Kunden
+* Wir haben keine explizite Kontrolle darüber, wer bei uns versichert werden will und wessen Unfalldaten wir bekommen
+* Es gibt aber eine Tendenz dahin, dasss eher Kunden mit guten Konditionen kommen
+* Mögliche Lösung: ab und zu risikoreichen Personen gute Angebote machen
+* Neues Problem: potentielle Nachvollziehbarkeit
+
+https://en.wikipedia.org/wiki/Survivorship_bias
+</textarea>
+	</section>  -->
+
+	<!-- <section data-markdown class="fragments todo" style="font-size: x-large;">
+### Phase 3: Betrieb
+
+* Schwierigkeit:
+* Müssen wir wieder zurück ins Experiment?
+* Wie finden wir heraus, ob unser Modell gut funktioniert?
+
+* Monitoring
+* Alles was man auch sonst monitort
+* Plus Anfragen sammeln und Vorhersagen mitschreiben
+
+* Achtung Bias
+* Wenn wir nur die vermeintlich guten Kunden annehmen, wie können wir dann einen schlechten erkenen?
+* wir haben ja gar keinen oder nur wenige als Kunden
+* Einen gewissen Prozentsatz mit schlechter Hypothese ein sehr gutes Angebot machen
+
+	</section> -->
+
+	<!-- <section data-markdown class="todo">
+
+- Information über Schadensfälle neuer Kunden kommen nur verzögert
+- Aber neue Meldungen über Schandensmeldungen kommen permanent
+- wie oft neu trainieren?
+- mit welchen Daten? Aktualität vs Datenmenge?
+- wie schnell ändert sich die Welt? wie schnell die Menschen die bei uns Kunden sein wollen?
+- Datensätze schnell statistisch vergleichen mit describe
+	</section>
+-->
+
+
+	<!-- <section data-markdown>
+		<textarea data-template>
+### Prozess eines ML-Projekts
+
+<img src='img/sketch/phases.png' style="height: 100%;">    
+</textarea>
+	</section>
+
+
+	<section data-markdown>
+		<textarea data-template>
+### Wieso MLOps oder warum ist ein Modell nie wirklich fertig
+
+_Concept und Data Drift_
+- Vorhersagen werden ohne Nachtraining schlechter 
+- die Welt entwickelt sich weiter und liefert andere Daten
+
+_Passiert_
+- plötzlich (neue oder veränderte Konkurrenten, schwerwiegende Ereignisse) oder
+- schleichend (gesellschaftliche Entwicklungen)
+
+unterschiedliche Abschnitte der Daten können unterschiedlich schnell vergammeln
+
+<small>
+
+https://en.wikipedia.org/wiki/Concept_drift
+<br>
+https://twitter.com/chipro/status/1313921889061015557
+
+</small>
+</textarea>
+	</section> -->			
+
+	<!-- <section data-markdown>
+### Ein vielleicht noch weiter verbreitetes Fehlerbild
+
+Nicht die Welt ändert sich, sondern unsere Kodierung davon
+
+* Beispiel Bild-Daten
+  * float 0..1 vs int 0..255
+  * wie viele Farbkanäle
+* insbesondere Neuronale Netze haben "silent failure"
+* also: Wertebereich checken und Typ der Argumente
+* bei unseren Beispiel: normalisiert vs nicht normalisiert
+* Was monitoren
+  * Verteilung
+  * Kodierung
+
+</section>
+ -->
+
+
+	<section data-markdown class="fragments">
+		<textarea data-template>
+### Wir gehen zurück in die Phasen I und II
+
+* hier wird wieder in Notebooks gearbeitet
+* die Bibliotheken werden inkludiert und bei jeder Änderung neu geladen
+* Jupyter Lab bietet eine gemeine Oberfläche für Notebooks und Bibliotheken
+* Eine Kombination von Visual Studio Code und Jupyer Notebooks ist ebenso möglich
+<!-- * Selbst Colab erlaubt das Arbeiten auf einer Kombination von Notebooks und Bibliotheken
+* Referenz: Module in Colab nutzen: https://colab.research.google.com/drive/1hDUO1-EzMVtVt6snmgrR1I1A36oPp4J9 -->
+* Rückker in Phase I muss nicht radikal sein
+  * wenn Ansatz vergleichbar kann Phase II so erhalten bleiben
+  * neue Ergebnisse fliesen dann iterativ in die Professionalisierung
+
+</textarea>
+	</section>
+
+<section data-markdown>
+    <textarea data-template>
+## Weitere Vorträge von OpenKnowledge bei der M3
+
+<div class="container">
+    <div class="col">
+        <img src="img/m3-teaser-dev.png" style="height: 200px;">
+		Donnerstag, 10:30 - 11:15
+    </div>
+    <div class="col">
+        <img src="img/m3-teaser-weltwissen.png" style="height: 200px;">
+		Freitag, 10:15 - 11:00
+    </div>
+    <div class="col">
+        <img src="img/m3-teaser-ethik.png" style="height: 200px;">
+		Freitag, 11:15 - 12:00
+    </div>
+</div>
+
+</textarea>
+</section>
+
+<section data-markdown class="fragments">
+	<textarea data-template>
+### Zusammenfassung
+
+1. Machine Learning Projekte können in Phasen gedacht werden
+1. In der ersten Phase macht man möglichst schnelle Experimente
+1. Sollte sich eine Idee als tragfähig erweisen, professionalisiert man die Idee
+1. Dies ist Voraussetzung und Grundlage für Produktion
+1. In Produktion ergeben sich besondere Herausforderung im Bereich Monitoring
+1. Typischerweise müssen Machine Learning Systeme regelmäßig nachtrainiert und gepflegt werden
+</textarea>
+</section>
+
+			<section data-markdown>
+				<textarea data-template>
+# Vielen Dank
+
+MLOps mit Python und TensorFlow
+Machine Learning betrachtet als ein Engineering Problem
+
+M3 2022, https://www.m3-konferenz.de/veranstaltung-14132-0-mlops-mit-python-und-tensorflow.html
+
+Bleibt gern im Kontakt
+
+Oliver Zeigermann / oliver.zeigermann@openknowledge.de
+https://www.linkedin.com/in/oliver-zeigermann-34989773/
+https://twitter.com/DJCordhose
+
+Lars Röwekamp / lars.roewekamp@openknowledge.de
+
+Folien: https://bit.ly/m3-2022-mlops
+
+    </textarea>
+			</section>
+
+
+		</div>
+	</div>
+	<script src="revealjs/reveal.js/dist/reveal.js"></script>
+	<script src="revealjs/reveal.js/plugin/notes/notes.js"></script>
+	<script src="revealjs/reveal.js/plugin/markdown/markdown.js"></script>
+	<script src="revealjs/reveal.js/plugin/highlight/highlight.js"></script>
+	<script src="revealjs/config.js"></script>
+
+
+</body>
+
+</html>
