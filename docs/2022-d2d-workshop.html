@@ -192,6 +192,29 @@ Hardest part is having a dataset that reflects reality. Time delays, simple dism
 
 <section data-markdown class="todo">
 	<textarea data-template>
+### Checken, ob was spannendes dabei ist
+https://www.isi-web.org/events
+</textarea>
+</section>
+
+<section data-markdown class="todo">
+	<textarea data-template>
+### Vorgehen
+
+* Konzentration auf das eigentliche Prod Problem
+* Mit fertigem Modell und herausgezogenen Libs und Scripten anfangen
+* Block 1: Installation, Stand der Entwicklung, Intro MLOps
+* 
+
+Offen
+* Wie binden wir Scripte ein?
+* Daten? DVC?
+* Feature Store?
+</textarea>
+</section>
+
+<section data-markdown class="todo">
+	<textarea data-template>
 - Links auf D2D setzen
 - Installation als Teil des Programms
   - Inkl. Anaconda und git, etc.
@@ -206,9 +229,6 @@ Didaktik:
 
 Tests
 - Tests über pytest von der Kommandozeile
-
-
-
 	</textarea>
 </section>
 
@@ -221,6 +241,8 @@ Tests
 - Keiner kennt die Logging Tools
 - Stats sind kompliziert
 - Versionen Pinnen in Phase II
+  - conda env export > environment. yml
+
 - Gemeinsam nochmal durch das Notebook: was kann raus? Jeder wählt eine Funktion aus und zieht sie raus. Ich mache eine vor
 </textarea>
 </section>
@@ -230,11 +252,22 @@ Tests
 ### Evidently und Stats
 - zeigen dass mit Originaldaten kein Drift (dafür natürlich erstmal dafür sorgen, dass es so ist)
 - Fenster Breite anpassen 
-- Andere Metrik 
+- Andere Metrik?
+  * Wasserstein ist schon gut: CNN: Wasserstein ist ne echte Metrik, kl nicht. Man kann also echte topologische Unterschiede betrachtet. Wie zb für visuelle Sachen.
+  * https://stats.stackexchange.com/questions/295617/what-is-the-advantages-of-wasserstein-metric-compared-to-kullback-leibler-diverg 
 - andere p-value
 
 </textarea>
 </section>
+
+<section data-markdown>
+	<textarea data-template>
+### Evidently in (eigenem?) Notebook nutzen
+
+Verteilung der Features bei Normal und Drift In Scatter Plot mit ausgeben und Plot in Folien zeigen
+</textarea>
+</section>
+
 
 <section data-markdown class="todo">
 	<textarea data-template>
