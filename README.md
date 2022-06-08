@@ -2,6 +2,8 @@
 
 ## Running the tutorial locally
 
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/DJCordhose/insurance-ml/)
+
 ### Install via Docker
 
 For this workshop you will need [Docker](https://docs.docker.com/get-docker/) and [Docker Compose](https://docs.docker.com/compose/install/) running on your machine. *(on mac os and Windows docker-compose is by default installed with Docker)*
