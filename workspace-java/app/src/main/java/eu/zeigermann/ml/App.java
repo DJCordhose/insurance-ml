@@ -94,7 +94,7 @@ public class App {
         // TODO: COMMENT IN ONE OF THOSE OPTIONS
 
         // OPTION 1: Use hand written rules
-        // var predictions = app.predictFromRules(dataSets);
+        var predictions = app.predictFromRules(dataSets);
 
         // OPTION 2: use the TensorFlow serving API
         // var predictions = app.predictFromServer(dataSets);
@@ -102,8 +102,8 @@ public class App {
         // OPTION 3: Use call using JavaCPP / JNI
         // TODO: Need to point this to your trained model
         // app.loadModel("/home/olli/insurance-ml/app/classifier");
-        app.loadModel("/home/olli/tmp/classifier");
-        var predictions = app.predictFromLocalModel(dataSets);
+        // app.loadModel("/home/olli/tmp/classifier");
+        // var predictions = app.predictFromLocalModel(dataSets);
 
         var groundTruth = dataSets;
         var detectedTruth = predictions;

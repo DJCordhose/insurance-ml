@@ -44,12 +44,6 @@ Laptop mitzubringen. Letztlich ist aber jeder willkommen, da es eher um Prinzipi
  -->
 
  <section data-markdown class="todo">
-### aktuell
-
-1. Musterlösung erzeugen
-  1. Übungen durchgehen
-
-
 Nice to have
 1. Modell nach TF.js wandeln
 1. wie kriegt man fertiges Tf Modell auf Aws geservt? Also nicht erst über Sagemaker Notebooks
@@ -108,8 +102,8 @@ Head of AI@OpenKnowledge
 1. Unsere Beispielanwendung
 1. Klassische Regeln
 1. Lösung mit Machine Learning (ML)
-1. Ein ML Modell in Java integrieren
 1. ML als Monolith?
+1. Ein ML Modell in Java integrieren
 </textarea>
 </section>
 
@@ -120,8 +114,8 @@ Head of AI@OpenKnowledge
 1. _Unsere Beispielanwendung_
 1. Klassische Regeln
 1. Lösung mit Machine Learning (ML)
-1. Ein ML Modell in Java integrieren
 1. ML als Monolith?
+1. Ein ML Modell in Java integrieren
 </textarea>
 </section>
 
@@ -164,8 +158,8 @@ https://djcordhose.github.io/ml-resources/html/calculator.html</a></small>
 1. Unsere Beispielanwendung
 1. _Klassische Regeln_
 1. Lösung mit Machine Learning (ML)
-1. Ein ML Modell in Java integrieren
 1. ML als Monolith?
+1. Ein ML Modell in Java integrieren
 </textarea>
 </section>
 
@@ -204,8 +198,8 @@ Durchführung im Team
 1. Unsere Beispielanwendung
 1. Klassische Regeln
 1. _Lösung mit Machine Learning (ML)_
-1. Ein ML Modell in Java integrieren
 1. ML als Monolith?
+1. Ein ML Modell in Java integrieren
 </textarea>
 </section>
 
@@ -399,6 +393,7 @@ https://colab.research.google.com/github/DJCordhose/insurance-ml/blob/main/works
 </textarea>
 </section>
 
+
 <section data-markdown>
 	<textarea data-template>
 # Agenda
@@ -406,8 +401,40 @@ https://colab.research.google.com/github/DJCordhose/insurance-ml/blob/main/works
 1. Unsere Beispielanwendung
 1. Klassische Regeln
 1. Lösung mit Machine Learning (ML)
-1. _Ein ML Modell in Java integrieren_
+1. _ML als Monolith?_
+1. Ein ML Modell in Java integrieren
+</textarea>
+</section>
+
+<section data-markdown>
+    <textarea data-template>
+<img src='img/mlops/mlops-systems.png'>					
+
+<small>
+
+https://twitter.com/nkoumchatzky/status/1525904101619417095
+</small>
+
+    </textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+### Ein großes Modell oder (mehrere) kleinere		
+<img src="img/sketch/small-model.jpg">
+</textarea>
+</section>
+
+
+<section data-markdown>
+	<textarea data-template>
+# Agenda
+
+1. Unsere Beispielanwendung
+1. Klassische Regeln
+1. Lösung mit Machine Learning (ML)
 1. ML als Monolith?
+1. _Ein ML Modell in Java integrieren_
 </textarea>
 </section>
 
@@ -703,6 +730,7 @@ tensorflowjs_converter --input_format keras \
 
 </div>
 
+
 <div class="fragment">
 <p>Nutzung im Browser</p>
 
@@ -716,7 +744,9 @@ const prediction = model.predict(example);
 console.log(await prediction.data());
 //[0.00334801129065454, 0.8710343241691589, 0.12561771273612976]
     </code></pre>
-
+<p><small><a href='html/calculator.html'>
+    https://djcordhose.github.io/insurance-ml/html/calculator.html</a></small></p>
+    
     </div>   
     </section>
 
@@ -739,6 +769,24 @@ _Wähle den direkten Aufruf, es sei denn du hast bereits Erfahrung in den andere
 </textarea>
 </section>
 
+<section data-markdown class="fragments">
+	<textarea data-template>
+### Wir lassen das System ein bisschen in Produktion laufen
+
+Mal sehen wie sich das System macht
+
+- Information über Schadensfälle neuer Kunden kommen nur verzögert
+- Aber neue Meldungen über Schandensmeldungen kommen permanent
+- Wir haben keine explizite Kontrolle darüber, wer bei uns versichert werden will und wessen Unfalldaten wir bekommen
+- Es gibt aber eine Tendenz dahin, dasss eher Kunden mit guten Konditionen kommen
+
+<!-- <small>
+
+https://colab.research.google.com/github/DJCordhose/ml-resources/blob/main/notebooks/mlops/3_mlops_shift.ipynb
+</small> -->
+
+</textarea>
+</section>
 
 <section data-markdown>
 	<textarea data-template>
@@ -830,33 +878,21 @@ https://twitter.com/marktenenholtz/status/1528021809697792003</small>
 
 1. Der Datensatz `insurance-customers-risk-1500-shift.csv` drückt den beschriebenen Shift aus
 1. Bestimme die Performance des Modelle mit diesem Datensatz
-1. Wie würdest du mit den unterschiedlichen Ansätzen, auch diesen Datensatz gut abdecken?
-1. Wie würde das mit mehr als 2 Dimensionen funktionieren?
+1. Wie würdest du mit den unterschiedlichen Ansätzen auch diesen Datensatz gut abdecken?
+<!-- 1. Wie würde das mit mehr als 2 Dimensionen funktionieren? -->
 </textarea>
 </section>
 
-<section data-markdown>
-	<textarea data-template>
-# Agenda
-
-1. Unsere Beispielanwendung
-1. Klassische Regeln
-1. Lösung mit Machine Learning (ML)
-1. Ein ML Modell in Java integrieren
-1. _ML als Monolith?_
-</textarea>
-</section>
-
-<section data-markdown>
-	<textarea data-template>
-### Ein großes Modell oder (mehrere) kleinere		
-<img src="img/sketch/small-model.jpg">
-</textarea>
-</section>
-
-<section data-markdown class="todo">
+<section data-markdown class="fragments">
 	<textarea data-template>
 # Zusammenfassung
+
+* ML kann eine Alternative zu Regeln sein wenn diese dynamisch sind
+* Anhand von Daten kann man ein Neuronales Netz trainieren
+* Dabei ist die Allgemeinheit des Modells am wichtigsten
+* Ein ML-Modell steht nicht für sich, es ist immer ein Teil eines größeren Systems
+* Eine Geschäftslogik (egal ob klassisch oder ML basiert) muss sich mit der Welt mitentwickeln
+  * In klassischen Systemen bekommt man oft nicht mit, dass die Geschäftslogik veraltet
 </textarea>
 </section>
 
