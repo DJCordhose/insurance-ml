@@ -81,6 +81,8 @@ public class App {
             csvFilename = args[0];
         } else {
             csvFilename = "/home/olli/insurance-ml/data/insurance-customers-risk-1500.csv";
+            // csvFilename = "/home/olli/insurance-ml/data/insurance-customers-risk-1500-test.csv";
+            // csvFilename = "/home/olli/insurance-ml/data/insurance-customers-risk-1500-shift.csv";
         }
          
         var rawCsv = app.parseCsv(csvFilename);
@@ -89,24 +91,27 @@ public class App {
         // System.out.println(reqString);
         // System.exit(0);
 
-        var predictions = app.predictFromRules(dataSets);
-        // var predictions = app.predictFromServer(dataSets);
-        // for (var prediction : predictions) {
-        //     System.out.println(prediction.predictionClass());
-        // }
+        // TODO: COMMENT IN ONE OF THOSE OPTIONS
 
+        // OPTION 1: Use hand written rules
+        // var predictions = app.predictFromRules(dataSets);
+
+        // OPTION 2: use the TensorFlow serving API
+        // var predictions = app.predictFromServer(dataSets);
+
+        // OPTION 3: Use call using JavaCPP / JNI
+        // TODO: Need to point this to your trained model
         // app.loadModel("/home/olli/insurance-ml/app/classifier");
-        // var prediction = app.predict(48, 100);
-        // System.out.print(prediction);
+        app.loadModel("/home/olli/tmp/classifier");
+        var predictions = app.predictFromLocalModel(dataSets);
 
         var groundTruth = dataSets;
         var detectedTruth = predictions;
         var score = app.score(groundTruth, detectedTruth);
         System.out.println(score);
-
-
     }
 
+    // TODO: YOUR RULES HERE
     public List<Prediction> predictFromRules(List<DataSet> dataSets) {
         List<Prediction> predictions = new ArrayList<>();
         for (var dataSet : dataSets) {
@@ -119,7 +124,7 @@ public class App {
     public List<Prediction> predictFromLocalModel(List<DataSet> dataSets) {
         List<Prediction> predictions = new ArrayList<>();
         for (var dataSet : dataSets) {
-            Prediction prediction = Prediction.fromPredictionClass(Prediction.GREEN);
+            Prediction prediction = predict((float) dataSet.age(), (float) dataSet.maxSpeed());
             predictions.add(prediction);
         }
         return predictions;

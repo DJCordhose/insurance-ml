@@ -13,7 +13,7 @@
 
     <!-- Theme used for syntax highlighted code -->
 	<!-- <link rel="stylesheet" href="revealjs/reveal.js/plugin/highlight/monokai.css"> -->
-	<!-- <link rel="stylesheet" href="revealjs/reveal.js/plugin/highlight/zenburn.css"> -->
+	<link rel="stylesheet" href="revealjs/reveal.js/plugin/highlight/zenburn.css">
     <link rel="stylesheet" href="revealjs/highlight-js-github-theme.css" />
     <link rel="stylesheet" href="revealjs/styles.css" />
 
@@ -44,9 +44,13 @@ Laptop mitzubringen. Letztlich ist aber jeder willkommen, da es eher um Prinzipi
  -->
 
  <section data-markdown class="todo">
-1. App.java als Code-Gerüst in workspace-java vorbereiten
-  * Über alle Iterieren für den direkten TF-Aufruf aus Java
-1. Mein Modell auf GCP hosten, dann können wir da direkt ran
+### aktuell
+
+1. Musterlösung erzeugen
+  1. Übungen durchgehen
+
+
+Nice to have
 1. Modell nach TF.js wandeln
 1. wie kriegt man fertiges Tf Modell auf Aws geservt? Also nicht erst über Sagemaker Notebooks
 1. Link auf Prod in Android: http://newsletter.victordibia.com/issues/running-machine-learning-models-on-android-devices-issue-9-1199608
@@ -402,31 +406,11 @@ https://colab.research.google.com/github/DJCordhose/insurance-ml/blob/main/works
 1. Unsere Beispielanwendung
 1. Klassische Regeln
 1. Lösung mit Machine Learning (ML)
-1. _ML als Monolith?_
-1. Ein ML Modell in Java integrieren
-</textarea>
-</section>
-		
-
-<section data-markdown>
-	<textarea data-template>
-### Ein großes Modell oder (mehrere) kleinere		
-<img src="img/sketch/small-model.jpg">
-</textarea>
-</section>
-
-
-<section data-markdown>
-	<textarea data-template>
-# Agenda
-
-1. Unsere Beispielanwendung
-1. Klassische Regeln
-1. Lösung mit Machine Learning (ML)
-1. ML als Monolith?
 1. _Ein ML Modell in Java integrieren_
+1. ML als Monolith?
 </textarea>
 </section>
+
 
 <section data-markdown>
 	<textarea data-template>
@@ -484,7 +468,7 @@ https://www.tensorflow.org/tfx/serving/setup
 <h3>TensorFlow Modelle können auch direkt aus Java aufgerufen</h3>
 
 <pre>
-    <code data-trim data-line-numbers="1|3-7|9-11|13-17"><script type="text/template">
+    <code data-trim><script type="text/template">
 try (var savedModelBundle = SavedModelBundle.load("insurance-ml/app/classifier", "serve")) {
 
     var input_matrix = NdArrays.ofFloats(Shape.of(1, 2));
@@ -508,28 +492,10 @@ try (var savedModelBundle = SavedModelBundle.load("insurance-ml/app/classifier",
 </pre>
 </section>
 
-
-<section data-markdown class="hands-on">
-	<textarea data-template>
-### Hands-On III		
-
-1. Binde das Modell in deinen Java-Code ein
-1. Entweder als direkten Aufruf
-1. Oder wandle das Modell in JS, um es direkt im Browser zu nutzen
-   * https://www.tensorflow.org/js/tutorials/conversion/import_saved_model 
-1. Oder rufe einen Server auf
-   1. starte einen TensorFlow Server (geht nur unter Linux)
-      * https://www.tensorflow.org/tfx/serving/setup
-   1. oder bringe da Modell in der Cloud zum laufen
-      * https://cloud.google.com/ai-platform/prediction/docs/deploying-models
-1. Wie ist der Score des Modells mit den beiden Datensätzen? 
-
-_Wähle den direkten Aufruf, es sei denn du hast bereits Erfahrung in den anderen Varianten der Produktion_
-</textarea>
-</section>
-
 <section data-markdown>
 	<textarea data-template>
+### Lokale Vorhersage
+
 ```
 gcloud ai-platform local predict --model-dir /home/olli/insurance-model/1 \
   --json-instances  sample_insurance.json \
@@ -539,6 +505,7 @@ gcloud ai-platform local predict --model-dir /home/olli/insurance-model/1 \
 https://cloud.google.com/ai-platform/prediction/docs/deploying-models#test_your_model_with_local_predictions
 </textarea>
 </section>
+
 
 <!-- 
 
@@ -553,34 +520,34 @@ gsutil cp -R /home/olli/insurance-model/1 gs://eu_zeigermann_ml_insurance_1
 
 
 gcloud ai-platform models create "ml_insurance" --region=europe-west1 --enable-logging
-gcloud ai-platform versions create "v1" --model "ml_insurance" --origin "gs://eu_zeigermann_ml_insurance_1"
-gcloud ai-platform versions describe "v1" --model "ml_insurance"
+gcloud ai-platform versions create "v1" --model "ml_insurance" --region=europe-west1 --framework tensorflow  --runtime-version=2.8 --origin "gs://eu_zeigermann_ml_insurance_1/1"
+gcloud ai-platform versions describe "v1" --region=europe-west1 --model "ml_insurance"
 
-gcloud ai-platform predict --model "ml_insurance" --version "v1" --json-instances sample_insurance.json
+gcloud ai-platform predict --region=europe-west1 --model "ml_insurance" --version "v1" --json-instances sample_insurance.json
 
 Aufruf aus Java: https://cloud.google.com/ai-platform/prediction/docs/online-predict#java
 Dependencies: https://github.com/GoogleCloudPlatform/java-docs-samples/blob/ab20245137332ff8ba6285f9a66f3f8bb1558b52/mlengine/online-prediction/pom.xml
  -->
-        <section class="todo">
-<h3>Deploying to Google Clound ML</h3>
+        <section>
+<h3>Modell auf Google Clound ML deployen</h3>
 
 <div class="fragment">
-    <p>Copy your model to a Cloud Bucket</p>
+    <p>Modell in einen Cloud Bucket kopieren</p>
 <pre><code contenteditable data-trim class="python">
-gsutil mb gs://my_bucket
-gsutil cp -R tf/1 gs://my_bucket
+gsutil mb gs://eu_zeigermann_ml_insurance_1
+gsutil cp -R /home/olli/insurance-model/1 gs://eu_zeigermann_ml_insurance_1
 </code></pre>
 <p><small>
-Needs Google Cloud SDK:         
+Erfordert Google Cloud SDK:         
     <a href='https://cloud.google.com/sdk/install'>https://cloud.google.com/sdk/install</a></small></p>
 </div>
 <div class="fragment">
-    <p>Deploy from this bucket</p>
+    <p>Deployment aus diesem Bucket</p>
 <pre><code contenteditable data-trim class="python">
 gcloud ai-platform models create "ml_insurance" --region=europe-west1 --enable-logging
-gcloud ml-engine versions create "v1" --model "ml_insurance" \
- --origin "gs://my_bucket/1"
-gcloud ml-engine versions describe "v1" --model "ml_insurance"
+gcloud ai-platform versions create "v1" --model "ml_insurance" --region=europe-west1 --framework tensorflow \
+ --runtime-version=2.8 --origin "gs://eu_zeigermann_ml_insurance_1/1"
+gcloud ai-platform versions describe "v1" --region=europe-west1 --model "ml_insurance"
 </code></pre>
 <p><small>
 <a href='https://cloud.google.com/ml-engine/docs/tensorflow/deploying-models'>
@@ -592,11 +559,11 @@ gcloud ml-engine versions describe "v1" --model "ml_insurance"
 
     </section>
 
-<section class="todo">
-<h3>Making Predictions</h3>
+<section>
+<h3>Anfragen</h3>
 
 <div class="fragment">
-    <p>Input format is a bit special</p>
+    <p>Das Input-format ist ein bisschen sonderbar</p>
 <pre><code contenteditable data-trim class="python">
 # sample_insurance.json    
 {"input": [ 18, 160 ]}
@@ -605,16 +572,17 @@ gcloud ml-engine versions describe "v1" --model "ml_insurance"
 </code></pre>
 </div>
 <div class="fragment">
-    <p>Call from Google Cloud Console</p>
+    <p>Aufruf</p>
 <pre><code contenteditable data-trim class="python fragment">
-gcloud ml-engine predict --model "ml_insurance" --version "v1" \
+gcloud ai-platform predict --region=europe-west1 --model "ml_insurance" --version "v1" \
  --json-instances ./sample_insurance.json
+
 </code></pre>
 <pre><code contenteditable data-trim class="python fragment">
-SCORES
-[0.8658562898635864, 7.318668918511809e-14, 0.13414366543293]
-[0.002760800765827298, 0.8720880746841431, 0.12515118718147278]
-[5.452934419736266e-05, 0.005952719133347273, 0.9939927458763123]    
+Wahrscheinlichkeiten pro Klasse
+[[0.982429862, 0.0175378807, 3.22602682e-05], 
+[0.012407572, 0.333301514, 0.654291], 
+[0.00413073646, 0.985944033, 0.00992520899]]
 </code></pre>
 </div>
 
@@ -624,7 +592,7 @@ SCORES
 
 </section>
 
-        <section class="todo">
+        <!-- <section class="todo">
 <h3>Making Predictions from Python</h3>
 
 <div class="fragment">
@@ -717,13 +685,13 @@ http://localhost:8501/v1/models/manning_insurance_1:predict  \
      that is not implemented by model server</small></p>
 
     </section>
+ -->
 
-
-        <section class="todo">
-<h3>Deploying to the Browser</h3>
+        <section>
+<h3>Alternative: Im Browser deployen</h3>
 
 <div class="fragment">
-<p>Converting our Keras Model to TensorFlow.js</p>
+<p>Keras Model nach TensorFlow.js konvertieren</p>
 
 <pre><code contenteditable data-trim class="python">
 tensorflowjs_converter --input_format keras \
@@ -736,25 +704,40 @@ tensorflowjs_converter --input_format keras \
 </div>
 
 <div class="fragment">
-<p>Loading and using directly from the browser</p>
+<p>Nutzung im Browser</p>
 
             <pre><code contenteditable data-trim class="fragment line-numbers javascript">
 const model = await tf.loadModel('tfjs/model.json');
             </code></pre>
             <pre><code contenteditable data-trim class="fragment line-numbers javascript">
-// max speed, age, thousand miles per year
-const example = tf.tensor([[100, 47, 10]]);
+// age, max speed
+const example = tf.tensor([[47, 100]]);
 const prediction = model.predict(example);
 console.log(await prediction.data());
 //[0.00334801129065454, 0.8710343241691589, 0.12561771273612976]
     </code></pre>
 
-<p><small>
-            <a href='js/tensorflow-sandbox/load_manning_model.html' target="_blank">
-                https://djcordhose.github.io/ai/js/tensorflow-sandbox/load_manning_model.html</a></small>
-        </small></p>
     </div>   
     </section>
+
+<section data-markdown class="hands-on">
+	<textarea data-template>
+### Hands-On III		
+
+1. Binde das Modell in deinen Java-Code ein
+1. Entweder als direkten Aufruf
+1. Oder wandle das Modell in JS, um es direkt im Browser zu nutzen
+   * https://www.tensorflow.org/js/tutorials/conversion/import_saved_model 
+1. Oder rufe einen Server auf
+   1. starte einen TensorFlow Server (geht nur unter Linux)
+      * https://www.tensorflow.org/tfx/serving/setup
+   1. oder bringe da Modell in der Cloud zum laufen
+      * https://cloud.google.com/ai-platform/prediction/docs/deploying-models
+1. Wie ist der Score des Modells mit den beiden Datensätzen? 
+
+_Wähle den direkten Aufruf, es sei denn du hast bereits Erfahrung in den anderen Varianten der Produktion_
+</textarea>
+</section>
 
 
 <section data-markdown>
@@ -849,6 +832,25 @@ https://twitter.com/marktenenholtz/status/1528021809697792003</small>
 1. Bestimme die Performance des Modelle mit diesem Datensatz
 1. Wie würdest du mit den unterschiedlichen Ansätzen, auch diesen Datensatz gut abdecken?
 1. Wie würde das mit mehr als 2 Dimensionen funktionieren?
+</textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+# Agenda
+
+1. Unsere Beispielanwendung
+1. Klassische Regeln
+1. Lösung mit Machine Learning (ML)
+1. Ein ML Modell in Java integrieren
+1. _ML als Monolith?_
+</textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+### Ein großes Modell oder (mehrere) kleinere		
+<img src="img/sketch/small-model.jpg">
 </textarea>
 </section>
 
