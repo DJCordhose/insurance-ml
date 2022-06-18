@@ -80,9 +80,9 @@ public class App {
         if (args.length > 0) {
             csvFilename = args[0];
         } else {
-            csvFilename = "/home/olli/insurance-ml/data/insurance-customers-risk-1500.csv";
-            // csvFilename = "/home/olli/insurance-ml/data/insurance-customers-risk-1500-test.csv";
-            // csvFilename = "/home/olli/insurance-ml/data/insurance-customers-risk-1500-shift.csv";
+            csvFilename = "../../data/insurance-customers-risk-1500.csv";
+            // csvFilename = "../../data/insurance-customers-risk-1500-test.csv";
+            // csvFilename = "../../data/insurance-customers-risk-1500-shift.csv";
         }
          
         var rawCsv = app.parseCsv(csvFilename);

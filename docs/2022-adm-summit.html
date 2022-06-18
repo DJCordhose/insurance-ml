@@ -41,24 +41,51 @@ Monolith vs kleinere Services also von neuem wieder auf.
 
 Technisch werden in einem Java Umfeld arbeiten und daher ist es vorteilhaft, eine Java Entwicklungsumgebung auf einem
 Laptop mitzubringen. Letztlich ist aber jeder willkommen, da es eher um Prinzipien als Details im Code gehen wird.
- -->
 
- <section data-markdown class="todo">
+---
 
-### muss
-* Installationsanleitung
-  * Clonen
-  * JDK, IDE
-* Variante für Gitpod?
+Java Forum Nord: https://javaforumnord.de/site/2022/
 
-### Nice to have
-1. Modell nach TF.js wandeln
-1. wie kriegt man fertiges Tf Modell auf Aws geservt? Also nicht erst über Sagemaker Notebooks
-1. Link auf Prod in Android: http://newsletter.victordibia.com/issues/running-machine-learning-models-on-android-devices-issue-9-1199608
-  </section>
-			<section data-markdown>
+Machine Learning mit Java
+
+Java ist die vorherrschende Sprache bei der Entwicklung von Geschäftsanwendungen, aber Machine Learning Anwendungen
+werden meist mit Python entwickelt. Daraus resultiert die Frage: wie macht man als Java-Entwickler Machine Learning? Und
+auch: wann ist das sinnvoll und wie ersetzt man evtl. bestehende Code mit einem solchen Modell und wie bindet man dieses
+in die bestehende Anwendung ein?
+
+In diesem Vortrag sehen wir uns anhand eines durchgängigen Code-Beispiels in Java an
+- Warum sind verschachtelte ifs oft nicht genug?
+- Welche Möglichkeiten gibt es, ein Stück Java-Code mit einem Machine Learning Modell zu ersetzen?
+- Wie erzeugt man ein derartiges Modell und woran kann man ablesen, ob es gut ist?
+- Was sind die besonderen Herausforderungen eines Machine Learning Modells in Produktion?
+
+Als Framework für Machine Learning werden wir TensorFlow nutzen.
+
+-->
+
+ <!-- <section data-markdown class="todo">
+
+  </section> -->
+
+  <section data-markdown>
+	<textarea data-template>
+### Bevor es los geht
+
+https://api-summit.de/cloudnative-devops/kuenstliche-intelligenz-als-disziplin-der-software-entwicklung/
+
+1. Diese Folien: https://bit.ly/amd-summit-2022-ml
+1. Forken und Clonen: https://github.com/DJCordhose/insurance-ml
+1. Sicherstellen, dass du eine IDE und ein aktuelles JDK installiert hast`
+   1. Der Code ist mit JDK 17 entwickelt, aber alles ab 11 sollte funktionieren
+1. Nachher gibt es noch Zeit, dies zu tun, also kein Stress
+
+_Bei Problemen den Nachbar oder Olli fragen_   
+</textarea>
+</section>
+
+  <section data-markdown>
 				<textarea data-template>
-## Künstliche Intelligenz als Disziplin der Software Entwicklung
+# Künstliche Intelligenz als Disziplin der Software Entwicklung
                 
 API, Microservices und DDD Summit 2022, https://api-summit.de/cloudnative-devops/kuenstliche-intelligenz-als-disziplin-der-software-entwicklung/
 
@@ -172,30 +199,37 @@ https://djcordhose.github.io/ml-resources/html/calculator.html</a></small>
 
 <section data-markdown class="hands-on">
 	<textarea data-template>
-### Hands-On I		
+### Hands-On 0: Installation und Orientierung im Projekt
 
-Gemeinsame Vorbereitung
+_Installation_
+1. Forken und Clonen: https://github.com/DJCordhose/insurance-ml
+1. Sicherstellen, dass du eine IDE und ein aktuelles JDK installiert hast
+   1. Der Code ist mit JDK 17 entwickelt, aber alles ab 11 sollte funktionieren
+
+_Das Beispiel_
 1. Im Verzeichnis `workspace-java` ist ein Java-Projekt vorbereitet
 1. In `workspace-java/app/src/main/java/eu/zeigermann/ml/App.java` gibt es ein Code-Gerüst für diesen Workshop
-1. `./gradlew run` bzw. `gradle.bat run` starten das Projekt
+1. `./gradlew run --args="../../data/insurance-customers-risk-1500.csv"` (`gradle.bat` auf Windows) starten das Projekt und gibt den Anteil richtiger Vorhersagen aus
+1. `App.predictFromRules` wandelt eine Liste von Datensätzen in Predictions um
 
-Durchführung im Team
-1. Tut euch in Teams von mindestens 2 Personen zusammen
-1. Mindestens eine Person sollte Java-Code auf dem eigenen Rechner ausführen können
-1. Diskutiert wie ihr die Aufgabe mit klassischen Regeln lösen könnt
-1. Implementiert die Regeln und bestimmt wie gut diese das Problem lösen
-1. Wie weit könnt ihr den Score von 33% nach oben bringen?
 	</textarea>
 </section>
 
 <section data-markdown class="hands-on">
 	<textarea data-template>
-### Hands-On Ib
+### Hands-On I: Klassische Regeln formulieren		
 
+1. Tut euch in Teams von mindestens 2 Personen zusammen
+1. Mindestens eine Person sollte Java-Code auf dem eigenen Rechner ausführen können
+1. Diskutiert wie ihr die Aufgabe mit klassischen Regeln lösen könnt
+1. Implementiert die Regeln in `App.predictFromRules` und bestimmt wie gut diese das Problem lösen
+1. Wie weit könnt ihr den Score von 33% nach oben bringen?
+
+Optional
 1. Ändert die einzulesende Datei auf `insurance-customers-risk-1500-test.csv`
 1. Wie verändert sich der Score?
 1. Was könnte sich hier verändert haben?
-</textarea>
+	</textarea>
 </section>
 
 <section data-markdown>
@@ -253,7 +287,7 @@ https://twitter.com/ClementDelangue/status/1536514359450652674
 </section>
 
 
-
+<!-- 
 <section data-markdown>
     <textarea data-template>
 ### Machine Learning können in Phasen strukturiert werden
@@ -276,7 +310,7 @@ funktionsfähiges Modell entwickelt.
   * einem funktionsfähigen Modell mit dem man in Phase II übergeht oder
   * dem Verwerfen des Ansatzes
 
-	</section>
+	</section> -->
 
 <section data-markdown>
 ### Neuronale Netzwerke sind ein mächtiges Mittel für ML	
@@ -737,8 +771,28 @@ http://localhost:8501/v1/models/manning_insurance_1:predict  \
     </section>
  -->
 
+<section data-markdown>
+### Alternative: ML auf Edge Devices deployen
+
+* _Datenschutz_: Eingabedaten für das Modell verlassen das Gerät nicht
+* _Latenz_: Vorhersage wird lokal ausgeführt
+* _Zugang zu Echtzeit-Sensordaten_: Modell kann zur Entwicklung interaktiver Erlebnisse verwendet werden, die lokale Sensordaten nutzen, z. B. Beschleunigungsmesser, Gyroskop, Mikrofon usw.
+* _Kosten_: es müssen keine Server für die Vorhersagen betrieben werden
+
+</section>
+
+<section data-markdown>
+### Auf Mobile deployen
+
+* https://www.tensorflow.org/lite
+* https://www.tensorflow.org/lite/guide/ios
+* https://www.tensorflow.org/lite/android
+* http://newsletter.victordibia.com/issues/running-machine-learning-models-on-android-devices-issue-9-1199608
+* https://developers.google.com/learn/topics/on-device-ml
+</section>
+    
         <section>
-<h3>Alternative: Im Browser deployen</h3>
+<h3>Im Browser deployen</h3>
 
 <div class="fragment">
 <p>Keras Model nach TensorFlow.js konvertieren</p>
@@ -772,6 +826,18 @@ console.log(await prediction.data());
     
     </div>   
     </section>
+
+<section data-markdown>
+### TensorFlow auf AWS    
+
+* Mit Sagemaker entwickeln
+  * https://aws.amazon.com/de/tensorflow/
+  * https://aws.amazon.com/de/getting-started/hands-on/train-tune-deep-learning-model-amazon-sagemaker/
+* Nur serven 
+  * einfach über das normale `tensorflow_model_server`
+  * Es gibt dafür ein fertiges Deep Learning AMI: https://docs.aws.amazon.com/dlami/
+  * https://docs.aws.amazon.com/dlami/latest/devguide/tutorial-tfserving.html  
+</section>
 
 <section data-markdown class="hands-on">
 	<textarea data-template>
