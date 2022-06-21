@@ -111,14 +111,19 @@ public class App {
         System.out.println(score);
     }
 
-    // TODO: YOUR RULES HERE
     public List<Prediction> predictFromRules(List<DataSet> dataSets) {
         List<Prediction> predictions = new ArrayList<>();
         for (var dataSet : dataSets) {
-            Prediction prediction = Prediction.fromPredictionClass(Prediction.GREEN);
+            Prediction prediction = this.predictFromRule(dataSet);
             predictions.add(prediction);
         }
         return predictions;
+    }
+
+    // TODO: YOUR RULES HERE
+    public Prediction predictFromRule(DataSet dataSet) {
+        Prediction prediction = Prediction.fromPredictionClass(Prediction.GREEN);
+        return prediction;
     }
 
     public List<Prediction> predictFromLocalModel(List<DataSet> dataSets) {
