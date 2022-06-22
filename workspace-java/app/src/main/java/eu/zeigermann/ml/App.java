@@ -81,7 +81,7 @@ public class App {
             csvFilename = args[0];
         } else {
             csvFilename = "../../data/insurance-customers-risk-1500.csv";
-            // csvFilename = "../../data/insurance-customers-risk-1500-test.csv";
+//            csvFilename = "../../data/insurance-customers-risk-1500-test.csv";
             // csvFilename = "../../data/insurance-customers-risk-1500-shift.csv";
         }
          
@@ -97,7 +97,7 @@ public class App {
         var predictions = app.predictFromRules(dataSets);
 
         // OPTION 2: use the TensorFlow serving API
-        // var predictions = app.predictFromServer(dataSets);
+//         var predictions = app.predictFromServer(dataSets);
 
         // OPTION 3: Use call using JavaCPP / JNI
         // TODO: Need to point this to your trained model
@@ -123,6 +123,22 @@ public class App {
     // TODO: YOUR RULES HERE
     public Prediction predictFromRule(DataSet dataSet) {
         var prediction = Prediction.fromPredictionClass(Prediction.GREEN);
+        if (dataSet.age() > 70) {
+            prediction = Prediction.fromPredictionClass(Prediction.RED);
+            return prediction;
+        }
+        if (dataSet.age() < 35 && dataSet.maxSpeed() < 115) {
+            prediction = Prediction.fromPredictionClass(Prediction.YELLOW);
+            return prediction;
+        }
+        if (dataSet.age() < 50 && dataSet.age() > 25 && dataSet.maxSpeed() > 140) {
+            prediction = Prediction.fromPredictionClass(Prediction.RED);
+            return prediction;
+        }
+        if (dataSet.age() < 35) {
+            prediction = Prediction.fromPredictionClass(Prediction.RED);
+            return prediction;
+        }
         return prediction;
     }
 
