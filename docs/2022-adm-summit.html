@@ -23,8 +23,8 @@
 	<div class="reveal">
 		<div class="slides">
 
-<section data-markdown class="local preparation hide">
-</section>
+<!-- <section data-markdown class="local preparation hide">
+</section> -->
 
 
 <!-- 
@@ -60,6 +60,8 @@ In diesem Vortrag sehen wir uns anhand eines durchgängigen Code-Beispiels in Ja
 - Was sind die besonderen Herausforderungen eines Machine Learning Modells in Produktion?
 
 Als Framework für Machine Learning werden wir TensorFlow nutzen.
+
+
 
 -->
 <!-- 
@@ -100,7 +102,18 @@ Folien: https://bit.ly/amd-summit-2022-ml
     </textarea>
 			</section>
 
-			
+      <section data-markdown>
+				<textarea data-template>
+### Roter Faden			
+
+_In diesem Workshop sehen wir uns anhand eines durchgängigen Code-Beispiels in Java an_
+- Warum sind verschachtelte ifs oft nicht genug?
+- Welche Möglichkeiten gibt es, ein Stück Java-Code mit einem Machine Learning Modell zu ersetzen?
+- Wie erzeugt man ein derartiges Modell und woran kann man ablesen, ob es gut ist?
+- Was sind die besonderen Herausforderungen eines Machine Learning Modells in Produktion?
+</textarea>
+</section>
+
 <section data-markdown>
   <textarea data-template>
 ### Wer ist Olli
@@ -140,7 +153,7 @@ Head of AI@OpenKnowledge
 1. Klassische Regeln
 1. Lösung mit Machine Learning (ML)
 1. ML als Monolith?
-1. Ein ML Modell in Java integrieren
+1. Prodkutiver Betrieb
 <!-- 1. Optionale Bonus Inspiration zum Abschluss: 5 ML Konzepte in 5 Minuten -->
 </textarea>
 </section>
@@ -153,7 +166,7 @@ Head of AI@OpenKnowledge
 1. Klassische Regeln
 1. Lösung mit Machine Learning (ML)
 1. ML als Monolith?
-1. Ein ML Modell in Java integrieren
+1. Prodkutiver Betrieb
 </textarea>
 </section>
 
@@ -197,7 +210,7 @@ https://djcordhose.github.io/ml-resources/html/calculator.html</a></small>
 1. _Klassische Regeln_
 1. Lösung mit Machine Learning (ML)
 1. ML als Monolith?
-1. Ein ML Modell in Java integrieren
+1. Prodkutiver Betrieb
 </textarea>
 </section>
 
@@ -234,9 +247,40 @@ _Das Beispiel_
 Optional
 1. Ändert die einzulesende Datei auf `insurance-customers-risk-1500-test.csv`
 1. Wie verändert sich der Score?
-1. Was könnte sich hier verändert haben?
+1. Wie interpretierst du die Veränderung des Scores?
 	</textarea>
 </section>
+
+<section data-markdown>
+	<textarea data-template>
+### Reflektion
+
+## Ist das eigentlich eine gute Lösung?
+
+### Was könnten die Schwierigkeiten sein?
+
+</textarea>
+</section>
+
+<section data-markdown class="fragments">
+	<textarea data-template>
+### Mögliche Schwierigkeiten
+
+* Zumindest haben wir eine Metrik
+  * Aber ist das eigentlich die beste Lösung?
+* Bewertet ihr sonst eure Geschäftslogik?
+  * Welche Art von Geschäftslogiken kennt ihr?  
+* Wirkt das Vorgehen sturktuiert?
+* Was machen wir wenn die Welt sich ändert?
+* Woher wissen wir, *dass* die Welt sich relevant ändert?
+* Könnt ihr euch Probleme vorstellen, die gar nicht mit (von Menschen geschriebenen) Regeln zu lösen sind?
+  * Bilder
+  * Textverständnis
+  * Hochdimensionale Probleme
+
+</textarea>
+</section>
+
 
 <section data-markdown>
 	<textarea data-template>
@@ -246,8 +290,34 @@ Optional
 1. Klassische Regeln
 1. _Lösung mit Machine Learning (ML)_
 1. ML als Monolith?
-1. Ein ML Modell in Java integrieren
+1. Prodkutiver Betrieb
 </textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+### Was ist Machine Learning?    
+
+_Ein Ansatz zur Entwicklung von Software, bei dem die Software nicht von Hand geschrieben wird, 
+sondern die Maschine auf der Grundlage der gegebenen Beispiele und der gegebenen Rahmenbedingungen herausfindet, 
+was zu tun ist_
+
+</textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+### Ist diese KI Teufelszeug?
+
+<img src='img/sw2-clem.png' style="height: 250px">
+
+<small>
+    
+https://twitter.com/ClementDelangue/status/1536514359450652674
+
+</small>
+
+	</textarea>
 </section>
 
 <section data-markdown>
@@ -277,23 +347,24 @@ https://vimeo.com/272696002
 	</textarea>
 </section>
 
+
 <section data-markdown>
 	<textarea data-template>
-### Ist diese KI Teufelszeug?
+### Wann macht ML Sinn?
 
-<img src='img/sw2-clem.png' style="height: 250px">
+_Die Lösung des vorliegenden Problems ist unbekannt oder schwer zu spezifizieren_
 
-<small>
-    
-https://twitter.com/ClementDelangue/status/1536514359450652674
+Und
 
-</small>
-
-	</textarea>
+* Es gibt eine klare, einfache Eingabe und bestenfalls auch Ausgabe 
+* Wir haben passende Paare von Eingaben und bestenfalls auch Ausgabe
+* Es gibt Muster in der Eingabe, die zur Vorhersage verwendet werden können
+* Die Lösung des Problems kann Fehler oder Unsicherheiten tolerieren
+* Wir sind bereit und in der Lage, in einer initialen Phase Experimente mit offenem Ausgang durchzuführen
+</textarea>
 </section>
 
 
-<!-- 
 <section data-markdown>
     <textarea data-template>
 ### Machine Learning können in Phasen strukturiert werden
@@ -316,7 +387,13 @@ funktionsfähiges Modell entwickelt.
   * einem funktionsfähigen Modell mit dem man in Phase II übergeht oder
   * dem Verwerfen des Ansatzes
 
-	</section> -->
+	</section>
+
+<section data-markdown>
+  <textarea data-template>
+## Und wie machen wir das nun?    
+  </textarea>
+</section>
 
 <section data-markdown>
 ### Neuronale Netzwerke sind ein mächtiges Mittel für ML	
@@ -327,23 +404,6 @@ tools, libraries and community resources that lets researchers push the state-of
 build and deploy ML powered applications._
 
 https://www.tensorflow.org/
-</section>
-
-<section data-markdown>
-    <textarea data-template>
-## Deployment ist ein Schwerpunkt
-
-<img src='img/tf-deploy.png'>
-
-<small>
-
-* https://www.tensorflow.org/tfx/guide/serving
-* https://www.tensorflow.org/lite/api_docs
-* https://www.tensorflow.org/js
-
-</small>
-
-</textarea>
 </section>
 
 <section data-markdown>
@@ -465,7 +525,7 @@ https://colab.research.google.com/github/DJCordhose/insurance-ml/blob/main/works
 1. Klassische Regeln
 1. Lösung mit Machine Learning (ML)
 1. _ML als Monolith?_
-1. Ein ML Modell in Java integrieren
+1. Prodkutiver Betrieb
 </textarea>
 </section>
 
@@ -487,7 +547,7 @@ https://twitter.com/nkoumchatzky/status/1525904101619417095
 
 * Modelle so zähmen / trainieren, dass sie überhaupt funktionieren
 * Debuggen
-* In-/Output koideren
+* In-/Output kodieren
 * Fallback für invalide Input- oder Output-Bereiche
 * Automatisierte Tests
 
@@ -517,7 +577,38 @@ https://twitter.com/nkoumchatzky/status/1525904101619417095
 1. Klassische Regeln
 1. Lösung mit Machine Learning (ML)
 1. ML als Monolith?
-1. _Ein ML Modell in Java integrieren_
+1. _Prodkutiver Betrieb_
+</textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+### Wie bringt man denn ein Modell in Produktion???
+
+|   | Quelle | Vorgehen | Artefakt für die Produktion |
+|---|---|---|---|
+| *Traditionelle Entwicklung* | Modell | Regeln | Programm |
+| *Maschinelles Lernen* | Daten und Priors | ML-Algorithmus | *Modell* |
+|   |   |   |
+
+</textarea>
+</section>
+
+
+<section data-markdown>
+  <textarea data-template>
+## Deployment ist ein Schwerpunkt von TensorFlow
+
+<img src='img/tf-deploy.png'>
+
+<small>
+
+* https://www.tensorflow.org/tfx/guide/serving
+* https://www.tensorflow.org/lite/api_docs
+* https://www.tensorflow.org/js
+
+</small>
+
 </textarea>
 </section>
 
@@ -936,7 +1027,7 @@ https://colab.research.google.com/github/DJCordhose/ml-resources/blob/main/noteb
 	<textarea data-template>
 ### Was ist hier passiert? 
 
-*Die Welt steht nicht still - Model und Welt laufen auseinander, aus 70%  Genauigkeit werden 65%*
+*Die Welt steht nicht still - Model und Welt laufen auseinander, aus 70% Genauigkeit werden 65%*
 
 * Elektroautos finden weitere Verbreitung
 * potente Elektroautos haben allgemein deutlich geringere Höchstgeschwindigkeit 
