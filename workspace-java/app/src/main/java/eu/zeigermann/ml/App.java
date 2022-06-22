@@ -122,24 +122,19 @@ public class App {
 
     // TODO: YOUR RULES HERE
     public Prediction predictFromRule(DataSet dataSet) {
-        var prediction = Prediction.fromPredictionClass(Prediction.GREEN);
         if (dataSet.age() > 70) {
-            prediction = Prediction.fromPredictionClass(Prediction.RED);
-            return prediction;
+            return Prediction.fromPredictionClass(Prediction.RED);
         }
         if (dataSet.age() < 35 && dataSet.maxSpeed() < 115) {
-            prediction = Prediction.fromPredictionClass(Prediction.YELLOW);
-            return prediction;
+            return Prediction.fromPredictionClass(Prediction.YELLOW);
         }
         if (dataSet.age() < 50 && dataSet.age() > 25 && dataSet.maxSpeed() > 140) {
-            prediction = Prediction.fromPredictionClass(Prediction.RED);
-            return prediction;
+            return Prediction.fromPredictionClass(Prediction.RED);
         }
         if (dataSet.age() < 35) {
-            prediction = Prediction.fromPredictionClass(Prediction.RED);
-            return prediction;
+            return Prediction.fromPredictionClass(Prediction.RED);
         }
-        return prediction;
+        return Prediction.fromPredictionClass(Prediction.GREEN);
     }
 
     public List<Prediction> predictFromLocalModel(List<DataSet> dataSets) {

@@ -1,0 +1,605 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=10.0, user-scalable=yes">
+
+	<title>ML Java</title>
+
+	<link rel="stylesheet" href="revealjs/reveal.js/dist/reset.css" />
+    <link rel="stylesheet" href="revealjs/reveal.js/dist/reveal.css" />
+    <link rel="stylesheet" href="revealjs/reveal.js/dist/theme/white.css" />
+
+    <!-- Theme used for syntax highlighted code -->
+	<!-- <link rel="stylesheet" href="revealjs/reveal.js/plugin/highlight/monokai.css"> -->
+	<link rel="stylesheet" href="revealjs/reveal.js/plugin/highlight/zenburn.css">
+    <link rel="stylesheet" href="revealjs/highlight-js-github-theme.css" />
+    <link rel="stylesheet" href="revealjs/styles.css" />
+
+</head>
+
+<body style="background-color: whitesmoke;">
+	<div class="reveal">
+		<div class="slides">
+
+<!-- <section data-markdown class="local preparation hide">
+</section> -->
+
+
+<!-- 
+Java Forum Nord: https://javaforumnord.de/site/2022/
+https://jax.de/big-data-machine-learning/machine-learning-mit-java/
+
+Machine Learning mit Java
+
+Java ist die vorherrschende Sprache bei der Entwicklung von Geschäftsanwendungen, aber Machine Learning Anwendungen
+werden meist mit Python entwickelt. Daraus resultiert die Frage: wie macht man als Java-Entwickler Machine Learning? Und
+auch: wann ist das sinnvoll und wie ersetzt man evtl. bestehende Code mit einem solchen Modell und wie bindet man dieses
+in die bestehende Anwendung ein?
+
+In diesem Vortrag sehen wir uns anhand eines durchgängigen Code-Beispiels in Java an
+- Warum sind verschachtelte ifs oft nicht genug?
+- Welche Möglichkeiten gibt es, ein Stück Java-Code mit einem Machine Learning Modell zu ersetzen?
+- Wie erzeugt man ein derartiges Modell und woran kann man ablesen, ob es gut ist?
+- Was sind die besonderen Herausforderungen eines Machine Learning Modells in Produktion?
+
+Als Framework für Machine Learning werden wir TensorFlow nutzen.
+
+-->
+
+
+<section data-markdown class="todo">
+- Links auf Java Forum Nord  
+- bit.ly
+- Nach dem Talk: Kopieren und Lessons-Learned für WJAX
+</section>
+
+
+  <section data-markdown>
+				<textarea data-template>
+# Machine Learning mit Java
+
+Java Forum Nord, 2022, https://javaforumnord.de/site/2022/
+
+Oliver Zeigermann
+oliver.zeigermann@openknowledge.de
+
+Folien: https://bit.ly/xxx
+
+    </textarea>
+			</section>
+
+      <!-- <section data-markdown>
+				<textarea data-template>
+### Roter Faden			
+
+_In diesem Talk sehen wir uns anhand eines durchgängigen Code-Beispiels in Java an_
+- Warum sind verschachtelte ifs oft nicht genug?
+- Welche Möglichkeiten gibt es, ein Stück Java-Code mit einem Machine Learning Modell zu ersetzen?
+- Wie erzeugt man ein derartiges Modell und woran kann man ablesen, ob es gut ist?
+- Was sind die besonderen Herausforderungen eines Machine Learning Modells in Produktion?
+</textarea>
+</section>
+ -->
+<section data-markdown>
+  <textarea data-template>
+### Wer ist Olli
+
+<div style="display: flex;">
+<div style="flex: 50%;">
+  <a href='https://oreilly.de/produkt/machine-learning-kurz-gut-2/'>
+  <img src='img/ml-buch-v2.jpg' height="400">
+  </a>
+</div>
+<div style="flex: 50%; font-size: x-large;">
+  <img src='img/olli-opa.jpeg'>
+</div>
+</div>
+<p>
+<a target="_blank" href="mailto:oliver.zeigermann@openknowledge.de">Oliver Zeigermann</a>:
+Head of AI@OpenKnowledge
+</p>    
+</textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+# Agenda
+
+1. Unsere Beispielanwendung
+1. Klassische Regeln
+1. Lösung mit Machine Learning (ML)
+1. Prodkutiver Betrieb
+</textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+# Agenda
+
+1. _Unsere Beispielanwendung_
+1. Klassische Regeln
+1. Lösung mit Machine Learning (ML)
+1. Prodkutiver Betrieb
+</textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+## Unser Beispiel: Vorhersage von Risiken
+
+* Wir sind CTO einer hochinnovativen Kfz-Versicherungsgesellschaft
+* Anders als andere Versicherungsgesellschaften bestimmen wir den Tarif anhand der geschätzen Anzahl von Unfällen pro Kunde
+* Zielsetzung: Wie viele Unfälle werden die potenziellen Kunden haben?
+
+<img src='img/pixabay/accident-151668_1280.png' style="height: 230px">
+</textarea>
+</section>
+
+<section>
+	<h3>Klassifizierung basierend auf bekannten Daten</h3>
+	<img src="img/insurance-new/train-data.png" height="500px" class="fragment">
+</section>
+
+
+<section data-markdown>
+	<textarea data-template>
+### Vorhersage von Risiken für potenzielle Kunden
+
+<a href='html/calculator.html'>
+<img src='img/calculator.png' height="400">
+</a>
+<p><small>
+<a href='html/calculator.html' target="_blank">
+https://djcordhose.github.io/ml-resources/html/calculator.html</a></small>
+</small></p>
+</textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+# Agenda
+
+1. Unsere Beispielanwendung
+1. _Klassische Regeln_
+1. Lösung mit Machine Learning (ML)
+1. ML als Monolith?
+1. Prodkutiver Betrieb
+</textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+<img src='img/classic-development.jpg' style="height: 600px;">
+</textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+### Anforderungen
+
+<img src='img/insurance-new/train-data-rules.png' style="height: 600px;">
+</textarea>
+</section>
+
+
+<section data-markdown>
+	<textarea data-template>
+### Regeln im Code
+
+```
+public Prediction predictFromRule(DataSet dataSet) {
+  if (dataSet.age() > 70) {
+      return Prediction.fromPredictionClass(Prediction.RED);
+  }
+  if (dataSet.age() < 35 && dataSet.maxSpeed() < 115) {
+      return Prediction.fromPredictionClass(Prediction.YELLOW);
+  }
+  if (dataSet.age() < 50 && dataSet.age() > 25 && dataSet.maxSpeed() > 140) {
+      return Prediction.fromPredictionClass(Prediction.RED);
+  }
+  if (dataSet.age() < 35) {
+      return Prediction.fromPredictionClass(Prediction.RED);
+  }
+  return Prediction.fromPredictionClass(Prediction.GREEN);
+}
+```
+
+</textarea>
+</section>
+
+
+<section data-markdown class="fragments">
+	<textarea data-template>
+### Mögliche Schwierigkeiten
+
+* Zumindest haben wir eine Metrik
+  * Aber ist das eigentlich die beste Lösung?
+* Bewertet ihr sonst eure Geschäftslogik?
+  * Welche Art von Geschäftslogiken kennt ihr?  
+* Wirkt das Vorgehen sturktuiert?
+* Was machen wir wenn die Welt sich ändert?
+* Woher wissen wir, *dass* die Welt sich relevant ändert?
+* Könnt ihr euch Probleme vorstellen, die gar nicht mit (von Menschen geschriebenen) Regeln zu lösen sind?
+  * Bilder
+  * Textverständnis
+  * Hochdimensionale Probleme
+
+</textarea>
+</section>
+
+
+<section data-markdown>
+	<textarea data-template>
+# Agenda
+
+1. Unsere Beispielanwendung
+1. Klassische Regeln
+1. _Lösung mit Machine Learning (ML)_
+1. Prodkutiver Betrieb
+</textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+### Was ist Machine Learning?    
+
+_Ein Ansatz zur Entwicklung von Software, bei dem die Software nicht von Hand geschrieben wird, 
+sondern die Maschine auf der Grundlage der gegebenen Beispiele und der gegebenen Rahmenbedingungen herausfindet, 
+was zu tun ist_
+
+</textarea>
+</section>
+
+<section data-markdown>
+  <textarea data-template>
+### Artificial Intelligence (AI) vs Machine Learning (ML)
+
+<img src='img/AI.png'>
+
+</textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+### Ist diese KI Teufelszeug?
+
+<img src='img/sw2-clem.png' style="height: 250px">
+
+<small>
+    
+https://twitter.com/ClementDelangue/status/1536514359450652674
+
+</small>
+
+	</textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+<img src='img/supervised-ml.jpg' style="height: 600px;">
+</textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+### Wann macht ML Sinn?
+
+_Die Lösung des vorliegenden Problems ist unbekannt oder schwer zu spezifizieren_
+
+_Und_
+
+* Es gibt eine klare, einfache Eingabe und bestenfalls auch Ausgabe 
+* Wir haben passende Paare von Eingaben und bestenfalls auch Ausgabe
+* Es gibt Muster in der Eingabe, die zur Vorhersage verwendet werden können
+* Die Lösung des Problems kann Fehler oder Unsicherheiten tolerieren
+* Wir sind bereit und in der Lage, in einer initialen Phase Experimente mit offenem Ausgang durchzuführen
+</textarea>
+</section>
+
+<section data-markdown>
+  <textarea data-template>
+## Und wie machen wir das nun?    
+  </textarea>
+</section>
+
+<section data-markdown>
+### Neuronale Netzwerke sind ein mächtiges Mittel für ML	
+## TensorFlow is defacto Standard
+
+_TensorFlow is an end-to-end open source platform for machine learning. It has a comprehensive, flexible ecosystem of
+tools, libraries and community resources that lets researchers push the state-of-the-art in ML and developers easily
+build and deploy ML powered applications._
+
+https://www.tensorflow.org/
+</section>
+
+<section data-markdown>
+## Aber mit welcher Programmiersprache?
+
+### Und wieso ist das eigentlich Python? (Spoiler)
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+### Unterschiedliche Projekte für TensorFlow mit Java
+
+1. https://github.com/tensorflow/tensorflow/blob/master/tensorflow/java/README.md
+   * Alte Version auf Basis von JNI, nur Core für die Ausführung von Modellen
+   * https://www.tensorflow.org/api_docs/java/org/tensorflow/package-summary
+   * Stabil, aber veraltet
+1. https://www.tensorflow.org/jvm
+  * Das aktuelle Projekt
+  * Unterstützt nicht nur Deployment, sondern die volle API inkl. Training
+  * Hat strategische Bedeutung, ist aber noch nicht stabil
+  * Unterprojekt: https://github.com/tensorflow/java-ndarray
+
+</textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+### TensorFlow Java hat seine eigene Version
+
+Stabilitätsgarantien gelten nicht für Java
+
+<img src="img/tf-java-versions.png">
+
+https://github.com/tensorflow/java/#tensorflow-version-support
+</textarea>
+</section>
+
+<section data-markdown class="fragments">
+	<textarea data-template>
+### Aber: Wieso eigentlich Neuronale Netzwerke in Java?        
+
+* Training von Neuronalen Netzen ist eher Scripting
+* Sprachmittel von Java sind nach wie vor umständlich für Scripting
+* Aber: vielleicht reicht eine einfache Integration eines ML-Modells in Java mit Standard-Schnittstellen?
+  * GRPC, REST, MQTT, etc.  
+
+    </textarea>
+</section>
+
+	<section data-markdown>
+		<textarea data-template>
+### Analogie: Build-Tool und ML-Training
+
+* Ein Build-Script macht aus Java-Quellen ein ausführbares Programm
+* Ein Trainings-Script macht aus einer ML-Architektur und Daten ein ausführbares TensorFlow Modell
+* Ein Build-Script schreiben wir auch in Java nicht in Java selbst
+* Entweder nutzen wir eine Script-Sprache (Groovy oder Kotlin)
+* Oder eine noch weiter standadisierte, deklarative Beschreibung (XML)
+</textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+### Python für ML
+
+* Python ist perfekt für Scripting
+* Hat die größte Community in dem Bereich
+* Python hat die besten Bibliotheken und Werkzeuge
+</textarea>
+</section>
+
+<section data-markdown>
+  <textarea data-template>
+### TensorFlow Modell
+
+<img src='img/insurance-new/model.png' style="height: 200px">
+
+</textarea>
+</section>
+
+<section data-markdown>
+  <textarea data-template>
+### Trainingsergebnis
+
+<img src='img/insurance-new/train-data-nn.png'>
+
+ca. 70% der Daten sind in der Klassifikation richtig
+
+</textarea>
+</section>
+
+
+<section data-markdown>
+	<textarea data-template>
+# Agenda
+
+1. Unsere Beispielanwendung
+1. Klassische Regeln
+1. Lösung mit Machine Learning (ML)
+1. Prodkutiver Betrieb
+</textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+# Agenda
+
+1. Unsere Beispielanwendung
+1. Klassische Regeln
+1. Lösung mit Machine Learning (ML)
+1. _Prodkutiver Betrieb_
+</textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+### Wie bringt man denn ein Modell in Produktion???
+
+|   | Quelle | Vorgehen | Artefakt für die Produktion |
+|---|---|---|---|
+| *Traditionelle Entwicklung* | Modell | Regeln | Programm |
+| *Maschinelles Lernen* | Daten und Priors | ML-Algorithmus | *Modell* |
+|   |   |   |
+
+</textarea>
+</section>
+
+
+<section data-markdown>
+  <textarea data-template>
+## Deployment ist ein Schwerpunkt von TensorFlow
+
+<img src='img/tf-deploy.png'>
+
+<small>
+
+* https://www.tensorflow.org/tfx/guide/serving
+* https://www.tensorflow.org/lite/api_docs
+* https://www.tensorflow.org/js
+
+</small>
+
+</textarea>
+</section>
+
+
+<section data-markdown>
+	<textarea data-template>
+### TensorFlow Modelle können als Graph abgespeichert werden
+
+<img src="https://raw.githubusercontent.com/tensorflow/docs/master/site/en/guide/images/intro_to_graphs/two-layer-network.png">
+
+* https://www.tensorflow.org/guide/intro_to_graphs
+* https://www.tensorflow.org/api_docs/python/tf/Graph#as_graph_def 
+</textarea>
+</section>
+
+<section data-markdown class="fragments">
+	<textarea data-template>
+### Warum interessiert uns das?
+
+* Graphen enthalten alles was man zur Ausführung eines Neuronalen Netzes braucht
+* Damit kann man die Python-Welt verlassen
+* Man braucht lediglich eine Umgebung, die die Operationen in dem Graphen ausführen kann
+* So eine Umgebung ist bereits in TensorFlow mit C++ implementiert und auch die Python-Version beruht darauf  
+</textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+### Serving
+
+* Erlauben direkt Ausführung eines Graphen im Server-Betrieb
+* Modell-Server kann lokal unter Linux installiert werden
+* Oder man kann so ein Modell direkt bei GCP deployen
+</textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+### Serving
+
+```
+saved_model_cli show --dir insurance-classifier --all
+```
+
+```
+export TF_CPP_VMODULE=http_server=1
+
+nohup tensorflow_model_server --port=8500 --rest_api_port=8501 \
+  --model_name=insurance --model_base_path=/home/olli/insurance-model  >server.log 2>&1
+```
+
+https://www.tensorflow.org/tfx/guide/serving
+https://www.tensorflow.org/tfx/serving/setup
+</textarea>
+</section>
+
+<section>
+<h3>TensorFlow Modelle können auch direkt aus Java aufgerufen</h3>
+
+<pre>
+    <code data-trim><script type="text/template">
+try (var savedModelBundle = SavedModelBundle.load("insurance-ml/app/classifier", "serve")) {
+
+    var input_matrix = NdArrays.ofFloats(Shape.of(1, 2));
+    input_matrix.set(NdArrays.vectorOf(48.0f, 100.0f), 0);
+    Tensor input_tensor = TFloat32.tensorOf(input_matrix);
+    Map<String, Tensor> inputTensorMap = new HashMap<>();
+    inputTensorMap.put("input", input_tensor);
+
+    var myFunction = savedModelBundle.function("serving_default");
+    Map<String, Tensor> outputTensorMap = myFunction.call(inputTensorMap);
+    var prediction = outputTensorMap.get("output");
+
+    // overly complicated way to get the prediction, but so far found no better way
+    var probas = prediction.asRawTensor().data().asFloats();
+    float redProba = probas.getFloat(0);
+    float yellowProba = probas.getFloat(1);
+    float greenProba = probas.getFloat(2);
+}
+        
+</script></code>
+</pre>
+</section>
+
+	<section data-markdown class="fragments">
+		<textarea data-template>
+### Woher weiß man, dass man ein neues Modell in Produktion braucht?
+
+1. Mindestens einmal im Jahr, damit man überhaupt noch weiß wie es geht
+1. Wenn die Metrik des Modells nachlässt in Produktion
+1. Dafür braucht man die Ground Truth der Daten aus Produktion
+1. Manchmal bekommt man diese unmittelbar nach der Vorhersage durch die Reaktion eines menschlichen Benutzers
+1. Oft aber auch erst nach nennenswerter Verzögerung 
+1. Wenn sich die Verteilung der Daten der Anfragen deutlich von denen des Trainings unterscheiden 
+
+</textarea>
+	</section>
+
+<section data-markdown class="fragments">
+	<textarea data-template>
+# Zusammenfassung
+
+* ML kann eine Alternative zu Regeln sein wenn diese dynamisch sind
+* Anhand von Daten kann man ein Neuronales Netz trainieren
+* Dabei ist die Allgemeinheit des Modells am wichtigsten
+* Ein ML-Modell steht nicht für sich, es ist immer ein Teil eines größeren Systems
+* Eine Geschäftslogik (egal ob klassisch oder ML basiert) muss sich mit der Welt mitentwickeln
+  * In klassischen Systemen bekommt man oft nicht mit, dass die Geschäftslogik veraltet
+</textarea>
+</section>
+
+			<section data-markdown>
+				<textarea data-template>
+# Vielen Dank
+
+Machine Learning mit Java
+
+Java Forum Nord, 2022, https://javaforumnord.de/site/2022/
+
+Bleibt gern im Kontakt
+
+Oliver Zeigermann
+
+https://www.linkedin.com/in/oliver-zeigermann-34989773/
+
+oliver.zeigermann@openknowledge.de
+
+https://twitter.com/DJCordhose
+
+Folien: https://bit.ly/xxx
+
+    </textarea>
+			</section>
+
+
+		</div>
+	</div>
+
+	<script src="revealjs/reveal.js/dist/reveal.js"></script>
+	<script src="revealjs/reveal.js/plugin/notes/notes.js"></script>
+	<script src="revealjs/reveal.js/plugin/markdown/markdown.js"></script>
+	<script src="revealjs/reveal.js/plugin/highlight/highlight.js"></script>
+	<script src="revealjs/config.js"></script>
+
+
+</body>
+
+</html>
