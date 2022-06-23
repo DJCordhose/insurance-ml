@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=10.0, user-scalable=yes">
 
-	<title>MLOps d2d 2022</title>
+	<title>Workshop: MLOps d2d 2022</title>
 
 	<link rel="stylesheet" href="revealjs/reveal.js/dist/reset.css" />
     <link rel="stylesheet" href="revealjs/reveal.js/dist/reveal.css" />
@@ -133,6 +133,11 @@ ca. 17:00 Uhr: Ende
 Data2Day
 https://www.data2day.de/cfp.php
 
+Workshop
+https://www.data2day.de/veranstaltung-15183-0-mlops-mit-python.html
+
+9:00 - 16:00
+
 MLOps mit Python
 
 Viele Unternehmen haben die Phase des reinen Experimentierens mit Machine Learning hinter sich gelassen und fragen sich
@@ -151,8 +156,27 @@ vorausgesetzt. Alles andere wird - soweit nötig - im Workshop eingeführt.
 Lernziel:
 Teilnehmer sollen anhand eines in sich stimmigen Satzes von Werkzeugen die Konzepte und Ansätze im Bereich MLOps kennen lernen und diskutieren können.
 
--->
+---
 
+Talk: 45 Minuten
+
+https://www.data2day.de/veranstaltung-15048-0-monitoring-von-drift-mit-prometheus-grafana-und-evidently.html
+
+Monitoring von Drift mit Prometheus, Grafana und Evidently
+
+Machine-Learning-Modelle erfordern besondere Maßnahmen beim Monitoring. Die Vorhersagekraft des Modells ist dabei
+besonders wichtig, aber oft nicht direkt beobachtbar.
+
+In diesem Live-Demo ohne Folien sehen wir uns eine Machine Learning Anwendung an, die mit einem bestimmten Modell in
+Produktion gegangen ist. Das Model basiert auf TensorFlow und wir mit einem Flask über Docker serviert. In simulierten
+Anfragen detektieren wir einen Drift, der einen Alarm in Grafana auslöst. Diesen interpretieren wir und entscheiden, ob
+er kritisch und was die passende Maßnahme ist.
+
+
+Die Teilnehmenden bekommen einen Eindruck von einem realistischen Setup für das Monitoring von Drift. Es wird erklärt,
+warum das so wichtig ist und wie man eine passende Maßnahme ableitet
+
+-->
  
 
 <!-- <section data-markdown class="local preparation hide">
@@ -192,6 +216,67 @@ Hardest part is having a dataset that reflects reality. Time delays, simple dism
 
 <section data-markdown class="todo">
 	<textarea data-template>
+### Talk herausziehen		
+</textarea>
+</section>
+
+
+<section data-markdown class="todo">
+	<textarea data-template>
+### Prometheus@Soundcloud, Antritts-Blogpost
+https://developers.soundcloud.com/blog/prometheus-monitoring-at-soundcloud
+</textarea>
+</section>
+
+
+<section data-markdown class="todo">
+	<textarea data-template>
+### Alert Manager von Prometheus nutzen
+
+https://github.com/prometheus/alertmanager
+</textarea>
+</section>
+
+
+<section data-markdown class="todo">
+	<textarea data-template>
+### Metrics for Data Drift Detection
+https://twitter.com/EmeliDral/status/1539510180609761280
+https://evidentlyai.com/blog/data-drift-detection-large-datasets
+</textarea>
+</section>
+
+<section data-markdown class="todo">
+	<textarea data-template>
+
+Emeli Dral (@EmeliDral) twitterte um 7:52 AM on Do., Juni 09, 2022:
+Finally published the ML monitoring tutorial I gave at the Stanford CS 329S course!
+
+📚 How to set up ML monitoring
+📊 How to build dashboards
+🏗 How to automate the checks
+
+Blog: https://t.co/8Y4grc7koo
+
+Video: https://t.co/gIkkOnFISL
+
+Thanks to @chipro for inviting me! https://t.co/jDt5crDxwo
+(https://twitter.com/EmeliDral/status/1534775296372658176?t=xbxaT1E7Aw3lK8Lg1x3-oQ&s=03) 
+</textarea>
+</section>
+
+<section data-markdown class="todo">
+	<textarea data-template>
+
+Shreya Shankar (@sh_reya) twitterte um 3:29 AM on Mi., Juni 22, 2022:
+Honestly: sometimes I feel defeated because ML observability is so hard. All facets are hard -- detecting, diagnosing, reacting to bugs. We don't have realtime ground truth labels (except recsys) so we don't know asap when performance goes down. Lots of $$ left on the table (1/6)
+(https://twitter.com/sh_reya/status/1539420163480489984?t=mk7_0Zu_FwFMag24QHHjSg&s=03) 
+</textarea>
+</section>
+
+
+<section data-markdown class="todo">
+	<textarea data-template>
 ## Statistik		
 ### Checken, ob was spannendes dabei ist
 https://www.isi-web.org/events
@@ -222,7 +307,8 @@ https://github.com/trion-development/workshop-monitoring-prometheus-grafana
 * 
 
 Offen
-* Wie binden wir Scripte ein?
+* CI/CD
+  * Wie binden wir Scripte ein?
 * Daten? DVC?
 * Feature Store?
 </textarea>
