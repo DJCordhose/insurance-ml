@@ -176,6 +176,83 @@ er kritisch und was die passende Maßnahme ist.
 Die Teilnehmenden bekommen einen Eindruck von einem realistischen Setup für das Monitoring von Drift. Es wird erklärt,
 warum das so wichtig ist und wie man eine passende Maßnahme ableitet
 
+---
+
+Aus: https://arxiv.org/abs/2007.06299
+The machine learning lifecycle extends beyond the deployment stage. Monitoring deployed models is crucial for 
+continued provision of high quality machine learning enabled services. 
+Key areas include model performance and data monitoring, detecting outliers and data drift using statistical techniques, 
+and providing explanations of historic predictions. We discuss the challenges to successful implementation of solutions 
+in each of these areas with some recent examples of production ready solutions using open source tools.
+
+
+---
+
+OOP
+
+Titel: MLOps - wie bringt man ein Machine Learning Modell in Produktion und hält es dort?
+
+MLOps beschäftigt sich mit dem Thema, ein Machine Learning Modell in Produktion zu bringen und es dort erfolgreich zu betreiben.
+
+Ein Machine Learning Modell läuft fast immer als Teil eines komplexeren Software Systems. 
+Und so ist die die erste Herausforderung ist, das vermeintlich fertige Modell in in ein solches System zu integrieren.
+Für die Produktion müssen Metriken erarbeitet werden, die die Performanz des Modells auch in Zukunft bewerten können.
+Da es häufig (zumindest zeitnah) keine gesicherten Erkenntnisse über die Qualität der Vorhersage gibt, müssen Platzhalter dafür gefunden werden.
+Ebenso muss überlegt werden, wie man die Ursache für die Verschlechterung der Vorhersagequalität eigentlich gemacht werden sollte und wie man 
+
+die für einzelne Beispiele 
+
+Sobald das Modell in Produktion ist, muss es auf eine 
+
+
+
+
+https://en.wikipedia.org/wiki/MLOps
+
+
+---
+
+https://qconsf.com/track/oct2022/mlops
+
+
+
+Talk: Drift Detection in MLOps
+
+MLOps deals with the topic of bringing a machine learning model into production and keeping it there.
+
+
+
+problem of detecting and handling drift in machine learning models.
+
+Bringing a machine learning model into production and making it stay there is a complex task.
+
+Once your model is in production you need to monitor it for degrading performance. 
+Since many applications do not provide immediate feedback (or none at all) on the prediction quality, 
+
+you need to provide a way to
+
+you need to monitor it for drift.
+
+In this talk I will look at existing tools and approaches independent of any solution provider from the perspective of a practitioner.
+
+
+In this talk we will look at https://evidentlyai.com/ and https://github.com/SeldonIO/alibi-detect
+
+Once a drift has been detected, we will use the alibi-detect library to provide a detailed explanation of the drift.
+
+Eventually, we will act on the explanation and provide a solution based on serverity and the context of the drift.
+
+
+Oliver Zeigermann is Head Of AI at Open Knowledge, a leading provider of machine learning services. 
+He is an O’Reilly book author and the author of a Manning video course. Oliver has been a speaker at various conferences 
+including ODSC West, TensorFlow world, and MLConf. 
+His main interest is in the intersection between traditional software engineering and machine learning.
+
+What would be the 3-4 main actionable takeaways you would like your audience to remember and to use after your talk?
+1. DevOps for machine learning has special requirements
+2. Drift of various types is a problem not only of machine learning, but all heuristic business code
+3. Detecting, evaluating and acting upon drift is the most critical part of the machine learning lifecycle 
+
 -->
  
 
@@ -280,8 +357,11 @@ https://github.com/prometheus/alertmanager
 <section data-markdown class="todo">
 	<textarea data-template>
 ### Metrics for Data Drift Detection
-https://twitter.com/EmeliDral/status/1539510180609761280
-https://evidentlyai.com/blog/data-drift-detection-large-datasets
+
+Erstmal in Notebook ausprobieren
+
+* https://twitter.com/EmeliDral/status/1539510180609761280
+* https://evidentlyai.com/blog/data-drift-detection-large-datasets
 </textarea>
 </section>
 
