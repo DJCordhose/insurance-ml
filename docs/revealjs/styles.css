@@ -86,3 +86,16 @@ col-1 {
 .col-2 {
   flex: 2;
 }
+
+/* https://intranet.openknowledge.de/plugins/servlet/mobile?contentId=18612939#content/view/18612939
+  https://intranet.openknowledge.de/pages/viewpage.action?pageId=16157867
+  https://openknowledgede.sharepoint.com/:p:/s/slides/EYWbMPz2ejhBprBrP8BYGxsBA3BrPNhDxJBrTXXvHi3-ZQ?e=jMZihi
+    */
+body:after {
+    content: url(../img/ok/logo.png) ;
+    position: fixed;
+    bottom: 60px;
+    left: -1100px;
+    transform: scale(.04);
+    height: 10px;
+}

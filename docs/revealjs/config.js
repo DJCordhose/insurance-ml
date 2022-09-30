@@ -27,6 +27,7 @@ Reveal.initialize({
   // there's a bug with Firefox that does not show
   // the cursor again after is has been hidden, so disable
   hideInactiveCursor: false,
+  transition: 'none', // none/fade/slide/convex/concave/zoom
 
   // Learn about plugins: https://revealjs.com/plugins/
   plugins: [RevealMarkdown, RevealHighlight, RevealNotes],

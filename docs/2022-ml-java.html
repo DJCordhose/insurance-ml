@@ -49,14 +49,14 @@ Als Framework für Machine Learning werden wir TensorFlow nutzen.
 -->
 
 
-<section data-markdown class="todo">
+<!-- <section data-markdown class="todo">
 - Links auf Java Forum Nord  
 - bit.ly
 - Nach dem Talk: Kopieren und Lessons-Learned für WJAX
   - https://jax.de/big-data-machine-learning/machine-learning-mit-java/
-</section>
+</section> -->
 
-<section data-markdown class="todo">
+<!-- <section data-markdown class="todo">
 # WICHTIG  
 Neue Story wie in https://miro.com/app/board/uXjVOikXI-o=/
 * Python ist toll für Dev
@@ -70,7 +70,7 @@ Ablauf
 * Code in Python zeigen
 * Übersetzen in Kotlin: https://github.com/Kotlin/kotlindl#working-with-kotlindl-in-jupyter-notebook
 
-</section>
+</section> -->
   
   <section data-markdown>
 				<textarea data-template>
@@ -81,8 +81,8 @@ Java Forum Nord, 2022, https://javaforumnord.de/site/2022/
 Oliver Zeigermann
 oliver.zeigermann@openknowledge.de
 
-Folien: https://bit.ly/xxx
-https://djcordhose.github.io/insurance-ml/2022-ml-java.html
+Folien: https://bit.ly/ml-java-2022
+<!-- https://djcordhose.github.io/insurance-ml/2022-ml-java.html -->
 
     </textarea>
 			</section>
@@ -99,6 +99,7 @@ _In diesem Talk sehen wir uns anhand eines durchgängigen Code-Beispiels in Java
 </textarea>
 </section>
  -->
+
 <section data-markdown>
   <textarea data-template>
 ### Wer ist Olli
@@ -260,23 +261,59 @@ public Prediction predictFromRule(DataSet dataSet) {
 
 <section data-markdown>
 	<textarea data-template>
-### Was ist Machine Learning?    
+### Machine Learning
 
-_Ein Ansatz zur Entwicklung von Software, bei dem die Software nicht von Hand geschrieben wird, 
-sondern die Maschine auf der Grundlage der gegebenen Beispiele und der gegebenen Rahmenbedingungen herausfindet, 
-was zu tun ist_
+ein Ansatz zur *Entwicklung von Software*, bei dem man nicht von Hand Regeln schreibt, sondern *die Maschine herausfinden lässt*, 
+was zu tun ist 
+
+Grundlage dafür
+* eine *Metrik* für das Maß des Erfolgs
+* *Beispieldaten*
+* *Rahmenbedingungen*
 
 </textarea>
 </section>
 
 <section data-markdown>
-  <textarea data-template>
-### Artificial Intelligence (AI) vs Machine Learning (ML)
+	<textarea data-template>
+### Machine Learning
 
-<img src='img/AI.png'>
-
-</textarea>
+<img src="img/ml-vs-dev-1.png">		
+	</textarea>
 </section>
+
+<section data-markdown>
+	<textarea data-template>
+### Machine Learning
+
+<img src="img/ml-vs-dev-2.png">		
+	</textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+### KI vs Machine Learning vs Deep Learning
+
+<img src="img/KI_ML_Skizzen/Folie12.PNG">		
+	</textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+### KI vs Machine Learning vs Deep Learning
+
+<img src="img/KI_ML_Skizzen/Folie13.PNG">		
+	</textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+### KI vs Machine Learning vs Deep Learning
+
+<img src="img/KI_ML_Skizzen/Folie14.PNG">		
+	</textarea>
+</section>
+
 
 <section data-markdown>
 	<textarea data-template>
@@ -292,6 +329,19 @@ https://twitter.com/ClementDelangue/status/1536514359450652674
 
 	</textarea>
 </section>
+
+<section data-markdown>
+  <textarea data-template>
+### Machine Learning
+
+* KI ist keine Magie
+* KI ist eher "künftig Informatik"
+* Machine Learning is die zur Zeit wichtigste Technik im Bereich KI
+* Machine Learning ist eine alternative Art, Software zu entwickeln
+* KI/ML ist Digitalisierung 2.0
+</textarea>
+</section>
+
 
 <section data-markdown>
 	<textarea data-template>
@@ -379,7 +429,7 @@ https://github.com/tensorflow/java/#tensorflow-version-support
     </textarea>
 </section>
 
-	<section data-markdown>
+	<section data-markdown class="fragments">
 		<textarea data-template>
 ### Analogie: Build-Tool und ML-Training
 
@@ -387,7 +437,7 @@ https://github.com/tensorflow/java/#tensorflow-version-support
 * Ein Trainings-Script macht aus einer ML-Architektur und Daten ein ausführbares TensorFlow Modell
 * Ein Build-Script schreiben wir auch in Java nicht in Java selbst
 * Entweder nutzen wir eine Script-Sprache (Groovy oder Kotlin)
-* Oder eine noch weiter standadisierte, deklarative Beschreibung (XML)
+* Oder eine noch weiter standardisierte, deklarative Beschreibung (XML)
 </textarea>
 </section>
 
@@ -396,6 +446,8 @@ https://github.com/tensorflow/java/#tensorflow-version-support
 ### Python für ML
 
 * Python ist perfekt für Scripting
+* Typen optional
+* Keine Kompilation
 * Hat die größte Community in dem Bereich
 * Python hat die besten Bibliotheken und Werkzeuge
 </textarea>
@@ -498,38 +550,8 @@ ca. 70% der Daten sind in der Klassifikation richtig
 </textarea>
 </section>
 
-<section data-markdown>
-	<textarea data-template>
-### Serving
-
-* Erlauben direkt Ausführung eines Graphen im Server-Betrieb
-* Modell-Server kann lokal unter Linux installiert werden
-* Oder man kann so ein Modell direkt bei GCP deployen
-</textarea>
-</section>
-
-<section data-markdown>
-	<textarea data-template>
-### Serving
-
-```
-saved_model_cli show --dir insurance-classifier --all
-```
-
-```
-export TF_CPP_VMODULE=http_server=1
-
-nohup tensorflow_model_server --port=8500 --rest_api_port=8501 \
-  --model_name=insurance --model_base_path=/home/olli/insurance-model  >server.log 2>&1
-```
-
-https://www.tensorflow.org/tfx/guide/serving
-https://www.tensorflow.org/tfx/serving/setup
-</textarea>
-</section>
-
 <section>
-<h3>TensorFlow Modelle können auch direkt aus Java aufgerufen</h3>
+<h3>TensorFlow Modelle können direkt aus Java aufgerufen</h3>
 
 <pre>
     <code data-trim><script type="text/template">
@@ -556,19 +578,67 @@ try (var savedModelBundle = SavedModelBundle.load("insurance-ml/app/classifier",
 </pre>
 </section>
 
-	<section data-markdown class="fragments">
-		<textarea data-template>
-### Woher weiß man, dass man ein neues Modell in Produktion braucht?
 
-1. Mindestens einmal im Jahr, damit man überhaupt noch weiß wie es geht
-1. Wenn die Metrik des Modells nachlässt in Produktion
-1. Dafür braucht man die Ground Truth der Daten aus Produktion
-1. Manchmal bekommt man diese unmittelbar nach der Vorhersage durch die Reaktion eines menschlichen Benutzers
-1. Oft aber auch erst nach nennenswerter Verzögerung 
-1. Wenn sich die Verteilung der Daten der Anfragen deutlich von denen des Trainings unterscheiden 
+<section data-markdown>
+	<textarea data-template>
+### Oder über TensorFlow serving
+
+* Erlauben direkt Ausführung eines Graphen im Server-Betrieb
+* Modell-Server kann lokal unter Linux installiert werden
+* Oder man kann so ein Modell direkt bei GCP deployen
+
+https://www.tensorflow.org/tfx/guide/serving
+https://www.tensorflow.org/tfx/serving/setup
 
 </textarea>
-	</section>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+### Demo: Serving
+
+```
+saved_model_cli show --dir insurance-classifier --all
+```
+
+```
+export TF_CPP_VMODULE=http_server=1
+
+nohup tensorflow_model_server --port=8500 --rest_api_port=8501 \
+  --model_name=insurance --model_base_path=/home/olli/insurance-model  >server.log 2>&1
+```
+
+</textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+### Realistischer ist das Deployment eines kompletten Serivces 
+
+<img src="img/Typical_Deployment_of_a_Machine_Learning_Service.jpg">
+</textarea>
+</section>
+
+<section data-markdown class="fragments">
+	<textarea data-template>
+### Alternative Story
+
+* Python ist toll für Dev
+* Python bringt sich schwer in Prod
+  * Entweder Python Server in Prod oder: Python schwierig für Prod, nix Typ
+  * Python Code nochmal in Prod JVM Sprache neu schreiben: Wir haben nicht das in Prod, was wir entwickelt haben
+* Java ist Scheiße für Dev
+* Kotlin könnte mit KotlinDL sweet spot sein
+
+<small>https://github.com/Kotlin/kotlindl
+<br>
+https://blog.jetbrains.com/kotlin/2020/12/deep-learning-with-kotlin-introducing-kotlindl-alpha/
+<br>
+https://github.com/Kotlin/kotlindl#working-with-kotlindl-in-jupyter-notebook
+</small>
+
+</textarea>
+</section>
 
 <section data-markdown class="fragments">
 	<textarea data-template>
@@ -578,8 +648,7 @@ try (var savedModelBundle = SavedModelBundle.load("insurance-ml/app/classifier",
 * Anhand von Daten kann man ein Neuronales Netz trainieren
 * Dabei ist die Allgemeinheit des Modells am wichtigsten
 * Ein ML-Modell steht nicht für sich, es ist immer ein Teil eines größeren Systems
-* Eine Geschäftslogik (egal ob klassisch oder ML basiert) muss sich mit der Welt mitentwickeln
-  * In klassischen Systemen bekommt man oft nicht mit, dass die Geschäftslogik veraltet
+* Kotlin könnte sich für uns Java-Entwickler zum Sweet-Spot entwickeln
 </textarea>
 </section>
 
@@ -601,7 +670,7 @@ oliver.zeigermann@openknowledge.de
 
 https://twitter.com/DJCordhose
 
-Folien: https://bit.ly/xxx
+Folien: https://bit.ly/ml-java-2022
 
     </textarea>
 			</section>
