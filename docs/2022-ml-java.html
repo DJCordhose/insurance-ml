@@ -23,12 +23,14 @@
 	<div class="reveal">
 		<div class="slides">
 
-<!-- <section data-markdown class="local preparation hide">
-</section> -->
+<section data-markdown class="local preparation hide">
+* Demos vorbereiten / einmal durchspielen   
+</section>
 
 
 <!-- 
 Java Forum Nord: https://javaforumnord.de/site/2022/
+https://javaforumnord.de/site/2022/page/sessions
 https://jax.de/big-data-machine-learning/machine-learning-mit-java/
 
 Machine Learning mit Java
@@ -54,6 +56,7 @@ Als Framework für Machine Learning werden wir TensorFlow nutzen.
 - bit.ly
 - Nach dem Talk: Kopieren und Lessons-Learned für WJAX
   - https://jax.de/big-data-machine-learning/machine-learning-mit-java/
+  - außerdem: 60 Minuten anstatt 45
 </section> -->
 
 <!-- <section data-markdown class="todo">
@@ -99,7 +102,6 @@ _In diesem Talk sehen wir uns anhand eines durchgängigen Code-Beispiels in Java
 </textarea>
 </section>
  -->
-
 <section data-markdown>
   <textarea data-template>
 ### Wer ist Olli
@@ -165,6 +167,8 @@ Head of AI@OpenKnowledge
 	<textarea data-template>
 ### Vorhersage von Risiken für potenzielle Kunden
 
+Als Hilfsmittel für Sachbearbeiter oder sogar online Check denkbar
+
 <a href='html/calculator.html'>
 <img src='img/calculator.png' height="400">
 </a>
@@ -204,7 +208,7 @@ https://djcordhose.github.io/ml-resources/html/calculator.html</a></small>
 
 <section data-markdown>
 	<textarea data-template>
-### Regeln im Code
+### Diese Anforderungen im Code
 
 ```
 public Prediction predictFromRule(DataSet dataSet) {
@@ -227,8 +231,25 @@ public Prediction predictFromRule(DataSet dataSet) {
 </textarea>
 </section>
 
+<section data-markdown>
+	<textarea data-template>
+### Demo und Metrik
 
-<section data-markdown class="fragments">
+Code verstehen und ausführen
+1. Im Verzeichnis `workspace-java` ist ein Java-Projekt vorbereitet
+1. In `workspace-java/app/src/main/java/eu/zeigermann/ml/App.java` gibt es ein Code-Gerüst
+1. `./gradlew run --args="../../data/insurance-customers-risk-1500.csv"` (`gradle.bat` auf Windows) starten das Projekt und gibt den Anteil richtiger Vorhersagen aus
+1. `App.predictFromRules` wandelt eine Liste von Datensätzen in Predictions um
+
+Fragen
+1. Welchen Anteil der uns bekannten Daten treffen wir richtig?
+1. Ist das ein guter Wert?
+1. Wie gut sind wir wohl auf nicht bekannten Daten?
+	</textarea>
+</section>
+
+
+<!-- <section data-markdown class="fragments">
 	<textarea data-template>
 ### Mögliche Schwierigkeiten
 
@@ -236,7 +257,7 @@ public Prediction predictFromRule(DataSet dataSet) {
   * Aber ist das eigentlich die beste Lösung?
 * Bewertet ihr sonst eure Geschäftslogik?
   * Welche Art von Geschäftslogiken kennt ihr?  
-* Wirkt das Vorgehen sturktuiert?
+* Wirkt das Vorgehen strukturiert?
 * Was machen wir wenn die Welt sich ändert?
 * Woher wissen wir, *dass* die Welt sich relevant ändert?
 * Könnt ihr euch Probleme vorstellen, die gar nicht mit (von Menschen geschriebenen) Regeln zu lösen sind?
@@ -245,6 +266,65 @@ public Prediction predictFromRule(DataSet dataSet) {
   * Hochdimensionale Probleme
 
 </textarea>
+</section>
+ -->
+<section data-markdown class="fragments">
+  <textarea data-template>
+### Wir haben jetzt eine Lösung, aber
+
+* Ist das die beste Lösung bzw. überhaupt eine "gute" Lösung?
+* Wollen wir das jedes Mal machen wenn die Daten sich ändern? 
+  * Es gibt sicher 100 verschiedene Stile, das zu machen. 
+  * Was ist mit der Kontinuität?
+* Wie ändern wir den Code? 
+  * Inkrementell dazu? (Neue "Anforderung" von der Fachabteilung) 
+  * Komplett neu?
+  * Wie tief verschachteln?
+  * Wie testen wir das?
+</textarea>
+</section>
+
+<section data-markdown>
+  <textarea data-template>
+### Was ist mit höheren Dimensionen?
+
+<div class="container">
+  <div class="col">
+    <img src="img/causal-insurance/features.png">
+  </div>
+  <div class="col">
+    <img src="img/causal-insurance/corr.png">
+  </div>
+</div>
+
+*Wir sind gut darin in 2d zu denken, 3d wird schon schwieriger, danach sind die meisten von uns komplett raus*
+
+</textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+## Drift
+### Die Welt verändert sich, Business Logik muss sich mit anpassen
+
+* _Covariate / Input / Data drift_: Fahrer werden immer Älter
+* _Prior / Label / Prediction drift_: wir sehen immer mehr gute Einschätzungen
+* _Concept / Model drift_: Autos bekommen immer mehr Hilfssysteme, die Eigenschaften der Fahrer werden immer unwichtiger für die Einschätzung
+
+<img src="https://docs.seldon.io/projects/alibi-detect/en/stable/_images/bg_2d_drift.png" style="height: 100%;">
+
+<small>https://docs.seldon.io/projects/alibi-detect/en/stable/cd/background.html#what-is-drift
+</small>
+</textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+## Vielleicht überlassen wir so eine also Aufgabe lieber dem Computer?    
+
+* Wir stellen wieder Daten als Basis für die Einschätzung bereit
+* Danach müssen wir seine Arbeit anhand von gewünschten Eigenschaften der Lösung testen (Property based testing)
+  </textarea>
 </section>
 
 
@@ -342,14 +422,7 @@ https://twitter.com/ClementDelangue/status/1536514359450652674
 </textarea>
 </section>
 
-
-<section data-markdown>
-	<textarea data-template>
-<img src='img/supervised-ml.jpg' style="height: 600px;">
-</textarea>
-</section>
-
-<section data-markdown>
+<!-- <section data-markdown>
 	<textarea data-template>
 ### Wann macht ML Sinn?
 
@@ -364,12 +437,19 @@ _Und_
 * Wir sind bereit und in der Lage, in einer initialen Phase Experimente mit offenem Ausgang durchzuführen
 </textarea>
 </section>
-
+ -->
 <section data-markdown>
   <textarea data-template>
 ## Und wie machen wir das nun?    
   </textarea>
 </section>
+
+<section data-markdown>
+	<textarea data-template>
+<img src='img/supervised-ml.jpg' style="height: 600px;">
+</textarea>
+</section>
+
 
 <section data-markdown>
 ### Neuronale Netzwerke sind ein mächtiges Mittel für ML	
@@ -385,7 +465,7 @@ https://www.tensorflow.org/
 <section data-markdown>
 ## Aber mit welcher Programmiersprache?
 
-### Und wieso ist das eigentlich Python? (Spoiler)
+<!-- ### Und wieso ist das eigentlich Python? (Spoiler) -->
 </section>
 
 <section data-markdown>
@@ -417,7 +497,15 @@ https://github.com/tensorflow/java/#tensorflow-version-support
 </textarea>
 </section>
 
-<section data-markdown class="fragments">
+<section data-markdown>
+	<textarea data-template>
+## Umfrage
+### Wer nutzt Java als Build-Tool (und nicht Maven oder Gradle?)   
+  </textarea>
+</section>
+
+
+<!-- <section data-markdown class="fragments">
 	<textarea data-template>
 ### Aber: Wieso eigentlich Neuronale Netzwerke in Java?        
 
@@ -427,7 +515,7 @@ https://github.com/tensorflow/java/#tensorflow-version-support
   * GRPC, REST, MQTT, etc.  
 
     </textarea>
-</section>
+</section> -->
 
 	<section data-markdown class="fragments">
 		<textarea data-template>
@@ -463,6 +551,57 @@ https://github.com/tensorflow/java/#tensorflow-version-support
 </section>
 
 <section data-markdown>
+	<textarea data-template>
+### TensorFlow Code
+
+die Architektur aus der vorherigen Folie in diesem Stil umsetzen
+
+```
+model = tf.keras.Sequential()
+
+# input
+model.add(InputLayer(name='input', input_shape=(num_features,)))
+
+# hidden layers
+model.add(Dense(100, name='hidden1'))
+...
+
+# output
+model.add(Dense(name='output', units=3, activation='softmax'))
+
+```
+
+das Training konfigurieren
+```
+model.compile(loss='sparse_categorical_crossentropy',
+             optimizer='adam',
+             metrics=['accuracy'])
+```
+
+den Trainingsprozess starten und tracken
+```
+history = model.fit(X_train, y_train,
+                    validation_data=(X_val, y_val))
+```
+
+</textarea>
+</section>
+
+<section data-markdown>
+  <textarea data-template>
+### Der Verlauf des Trainings
+
+<img src='img/insurance-new/training.png'>
+
+<small>
+
+https://colab.research.google.com/github/DJCordhose/insurance-ml/blob/main/workspace-java/insurance_ml.ipynb
+</small>
+</textarea>
+</section>
+
+
+<section data-markdown>
   <textarea data-template>
 ### Trainingsergebnis
 
@@ -473,17 +612,6 @@ ca. 70% der Daten sind in der Klassifikation richtig
 </textarea>
 </section>
 
-
-<section data-markdown>
-	<textarea data-template>
-# Agenda
-
-1. Unsere Beispielanwendung
-1. Klassische Regeln
-1. Lösung mit Machine Learning (ML)
-1. Produktiver Betrieb
-</textarea>
-</section>
 
 <section data-markdown>
 	<textarea data-template>
@@ -550,7 +678,8 @@ ca. 70% der Daten sind in der Klassifikation richtig
 </textarea>
 </section>
 
-<section>
+<section data-markdown>
+	<textarea data-template>
 <h3>TensorFlow Modelle können direkt aus Java aufgerufen</h3>
 
 <pre>
@@ -576,12 +705,15 @@ try (var savedModelBundle = SavedModelBundle.load("insurance-ml/app/classifier",
         
 </script></code>
 </pre>
+
+Demo wieder über `workspace-java/app/src/main/java/eu/zeigermann/ml/App.java`
+</textarea>
 </section>
 
 
 <section data-markdown>
 	<textarea data-template>
-### Oder über TensorFlow serving
+### Oder über TensorFlow Serving
 
 * Erlauben direkt Ausführung eines Graphen im Server-Betrieb
 * Modell-Server kann lokal unter Linux installiert werden
@@ -598,7 +730,7 @@ https://www.tensorflow.org/tfx/serving/setup
 ### Demo: Serving
 
 ```
-saved_model_cli show --dir insurance-classifier --all
+saved_model_cli show --dir insurance-classifier/1 --all
 ```
 
 ```
@@ -608,6 +740,12 @@ nohup tensorflow_model_server --port=8500 --rest_api_port=8501 \
   --model_name=insurance --model_base_path=/home/olli/insurance-model  >server.log 2>&1
 ```
 
+```
+curl -d '{"instances": [[50.0, 122.0], [48, 100], [30, 150]]}' -X POST http://localhost:8501/v1/models/insurance:predict
+```
+
+Demo auch wieder über `workspace-java/app/src/main/java/eu/zeigermann/ml/App.java`
+
 </textarea>
 </section>
 
@@ -616,19 +754,24 @@ nohup tensorflow_model_server --port=8500 --rest_api_port=8501 \
 ### Realistischer ist das Deployment eines kompletten Serivces 
 
 <img src="img/Typical_Deployment_of_a_Machine_Learning_Service.jpg">
+
+Neues Problem: wir haben in Adapter Code einmal in Python und einmal in Java 
 </textarea>
 </section>
 
 <section data-markdown class="fragments">
 	<textarea data-template>
-### Alternative Story
+### Alternative Story für die Zukunft
 
 * Python ist toll für Dev
 * Python bringt sich schwer in Prod
-  * Entweder Python Server in Prod oder: Python schwierig für Prod, nix Typ
+  * Entweder Python Server in Prod (Python schwierig für Prod, nix Typ) oder: 
   * Python Code nochmal in Prod JVM Sprache neu schreiben: Wir haben nicht das in Prod, was wir entwickelt haben
-* Java ist Scheiße für Dev
+* Java ist Scheiße für ML Dev
 * Kotlin könnte mit KotlinDL sweet spot sein
+  * Code in KotlinDL ist für jemanden, der TensorFlow/Keras kennt direkt lesbar
+  * Notebook Betrieb ist möglich, aber vielleicht gar nicht notwendig
+* Im Moment hat das aber noch wenig Verbreitung
 
 <small>https://github.com/Kotlin/kotlindl
 <br>
@@ -646,7 +789,6 @@ https://github.com/Kotlin/kotlindl#working-with-kotlindl-in-jupyter-notebook
 
 * ML kann eine Alternative zu Regeln sein wenn diese dynamisch sind
 * Anhand von Daten kann man ein Neuronales Netz trainieren
-* Dabei ist die Allgemeinheit des Modells am wichtigsten
 * Ein ML-Modell steht nicht für sich, es ist immer ein Teil eines größeren Systems
 * Kotlin könnte sich für uns Java-Entwickler zum Sweet-Spot entwickeln
 </textarea>
