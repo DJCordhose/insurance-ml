@@ -52,11 +52,10 @@ Als Framework für Machine Learning werden wir TensorFlow nutzen.
 
 
 <!-- <section data-markdown class="todo">
-- Links auf Java Forum Nord  
-- bit.ly
 - Nach dem Talk: Kopieren und Lessons-Learned für WJAX
   - https://jax.de/big-data-machine-learning/machine-learning-mit-java/
   - außerdem: 60 Minuten anstatt 45
+  - wieder alle gekürzten Folien dazu nehmen
 </section> -->
 
 <!-- <section data-markdown class="todo">
@@ -157,12 +156,6 @@ Head of AI@OpenKnowledge
 </textarea>
 </section>
 
-<section>
-	<h3>Klassifizierung basierend auf bekannten Daten</h3>
-	<img src="img/insurance-new/train-data.png" height="500px" class="fragment">
-</section>
-
-
 <section data-markdown>
 	<textarea data-template>
 ### Vorhersage von Risiken für potenzielle Kunden
@@ -195,6 +188,11 @@ https://djcordhose.github.io/ml-resources/html/calculator.html</a></small>
 	<textarea data-template>
 <img src='img/classic-development.jpg' style="height: 600px;">
 </textarea>
+</section>
+
+<section>
+	<h3>Domänenwissen = bekannte Daten</h3>
+	<img src="img/insurance-new/train-data.png" height="500px" class="fragment">
 </section>
 
 <section data-markdown>
@@ -339,7 +337,7 @@ Fragen
 </textarea>
 </section>
 
-<section data-markdown>
+<!-- <section data-markdown>
 	<textarea data-template>
 ### Machine Learning
 
@@ -353,7 +351,7 @@ Grundlage dafür
 
 </textarea>
 </section>
-
+ -->
 <section data-markdown>
 	<textarea data-template>
 ### Machine Learning
@@ -370,7 +368,7 @@ Grundlage dafür
 	</textarea>
 </section>
 
-<section data-markdown>
+<!-- <section data-markdown>
 	<textarea data-template>
 ### KI vs Machine Learning vs Deep Learning
 
@@ -420,7 +418,7 @@ https://twitter.com/ClementDelangue/status/1536514359450652674
 * Machine Learning ist eine alternative Art, Software zu entwickeln
 * KI/ML ist Digitalisierung 2.0
 </textarea>
-</section>
+</section> -->
 
 <!-- <section data-markdown>
 	<textarea data-template>
@@ -450,16 +448,30 @@ _Und_
 </textarea>
 </section>
 
+<section data-markdown>
+	<textarea data-template>
+### Mögliche Bibliotheken
+
+* Klassisches Machine Learning: https://scikit-learn.org
+* High Level Neural Networks / Deep Learning
+  * https://www.tensorflow.org
+    * Platzhirsch im industriellen Umfeld, Schwerpunkt auf Produktion
+  * https://keras.io/
+* Low Level Neural networks
+  * https://pytorch.org/
+    * Platzhirsch im akademischen Umfeld, hat häufig die ersten Implementierungen neuer Ideen
+  * https://github.com/google/jax
+</textarea>
+</section>
 
 <section data-markdown>
-### Neuronale Netzwerke sind ein mächtiges Mittel für ML	
-## TensorFlow is defacto Standard
+	<textarea data-template>
+### Wir nehmen TensorFlow
 
-_TensorFlow is an end-to-end open source platform for machine learning. It has a comprehensive, flexible ecosystem of
-tools, libraries and community resources that lets researchers push the state-of-the-art in ML and developers easily
-build and deploy ML powered applications._
-
-https://www.tensorflow.org/
+* Unser Problem ist sicher auch mit klassischen Methoden ausreichend lösbar
+* Deep Learning ist in dieser Situation mit Kanonen auf Spatzen schießen
+* Neuronale Netzwerke mit TensorFlow haben aber eine besonders gute Story für Produktion 
+  </textarea>
 </section>
 
 <section data-markdown>
@@ -470,37 +482,8 @@ https://www.tensorflow.org/
 
 <section data-markdown>
 	<textarea data-template>
-### Unterschiedliche Projekte für TensorFlow mit Java
-
-1. https://github.com/tensorflow/tensorflow/blob/master/tensorflow/java/README.md
-   * Alte Version auf Basis von JNI, nur Core für die Ausführung von Modellen
-   * https://www.tensorflow.org/api_docs/java/org/tensorflow/package-summary
-   * Stabil, aber veraltet
-1. https://www.tensorflow.org/jvm
-  * Das aktuelle Projekt
-  * Unterstützt nicht nur Deployment, sondern die volle API inkl. Training
-  * Hat strategische Bedeutung, ist aber noch nicht stabil
-  * Unterprojekt: https://github.com/tensorflow/java-ndarray
-
-</textarea>
-</section>
-
-<section data-markdown>
-	<textarea data-template>
-### TensorFlow Java hat seine eigene Version
-
-Stabilitätsgarantien gelten nicht für Java
-
-<img src="img/tf-java-versions.png">
-
-https://github.com/tensorflow/java/#tensorflow-version-support
-</textarea>
-</section>
-
-<section data-markdown>
-	<textarea data-template>
 ## Umfrage
-### Wer nutzt Java als Build-Tool (und nicht Maven oder Gradle?)   
+### Wer nutzt Java als Build-Tool (und nicht Maven oder Gradle)?   
   </textarea>
 </section>
 
@@ -542,19 +525,10 @@ https://github.com/tensorflow/java/#tensorflow-version-support
 </section>
 
 <section data-markdown>
-  <textarea data-template>
-### TensorFlow Modell
-
-<img src='img/insurance-new/model.png' style="height: 200px">
-
-</textarea>
-</section>
-
-<section data-markdown>
 	<textarea data-template>
 ### TensorFlow Code
 
-die Architektur aus der vorherigen Folie in diesem Stil umsetzen
+die Architektur mit 3 hidden Layers
 
 ```
 model = tf.keras.Sequential()
@@ -564,7 +538,7 @@ model.add(InputLayer(name='input', input_shape=(num_features,)))
 
 # hidden layers
 model.add(Dense(100, name='hidden1'))
-...
+# ... komplettes Modell auf der nächsten Folie
 
 # output
 model.add(Dense(name='output', units=3, activation='softmax'))
@@ -583,6 +557,15 @@ den Trainingsprozess starten und tracken
 history = model.fit(X_train, y_train,
                     validation_data=(X_val, y_val))
 ```
+
+</textarea>
+</section>
+
+<section data-markdown>
+  <textarea data-template>
+### Komplettes TensorFlow Modell
+
+<img src='img/insurance-new/model.png' style="height: 200px">
 
 </textarea>
 </section>
@@ -675,12 +658,41 @@ ca. 70% der Daten sind in der Klassifikation richtig
 * Damit kann man die Python-Welt verlassen
 * Man braucht lediglich eine Umgebung, die die Operationen in dem Graphen ausführen kann
 * So eine Umgebung ist bereits in TensorFlow mit C++ implementiert und auch die Python-Version beruht darauf  
+* *kann aus Java aufgerufen werden*
 </textarea>
 </section>
 
 <section data-markdown>
 	<textarea data-template>
-<h3>TensorFlow Modelle können direkt aus Java aufgerufen</h3>
+### TensorFlow mit Java
+
+1. https://www.tensorflow.org/jvm
+   * Das aktuelle Projekt
+   * Unterstützt nicht nur Deployment, sondern die volle API inkl. Training
+   * Hat strategische Bedeutung, ist aber noch nicht ganz stabil
+   * Unterprojekt: https://github.com/tensorflow/java-ndarray
+1. https://www.tensorflow.org/install/lang_java_legacy
+   * Veraltete Version auf Basis von JNI, nur Core für die Ausführung von Modellen
+
+</textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+### TensorFlow Java hat seine eigene Version
+
+Stabilitätsgarantien gelten nicht für Java
+
+<img src="img/tf-java-versions.png">
+
+https://github.com/tensorflow/java/#tensorflow-version-support
+</textarea>
+</section>
+
+
+<section data-markdown>
+	<textarea data-template>
+<h3>TensorFlow Modelle können direkt aus Java aufgerufen werden</h3>
 
 <pre>
     <code data-trim><script type="text/template">
