@@ -235,7 +235,7 @@ record DataSet(int age, int maxSpeed, int milesPerYear) { }
 </textarea>
 </section>
 
-<section data-markdown>
+<!-- <section data-markdown>
 	<textarea data-template>
 ### Demo und Metrik
 
@@ -251,7 +251,7 @@ Fragen
 1. Wie gut sind wir wohl auf nicht bekannten Daten?
 	</textarea>
 </section>
-
+ -->
 
 <!-- <section data-markdown class="fragments">
 	<textarea data-template>
@@ -788,7 +788,7 @@ try (var savedModelBundle = SavedModelBundle.load("insurance-ml/app/classifier",
 </script></code>
 </pre>
 
-Demo wieder über `workspace-java/app/src/main/java/eu/zeigermann/ml/App.java`
+<!-- Demo wieder über `workspace-java/app/src/main/java/eu/zeigermann/ml/App.java` -->
 </textarea>
 </section>
 
@@ -809,7 +809,7 @@ https://www.tensorflow.org/tfx/serving/setup
 
 <section data-markdown>
 	<textarea data-template>
-### Demo: Serving
+### Serving
 
 ```
 saved_model_cli show --dir insurance-classifier/1 --all
@@ -826,14 +826,14 @@ nohup tensorflow_model_server --port=8500 --rest_api_port=8501 \
 curl -d '{"instances": [[50.0, 122.0], [48, 100], [30, 150]]}' -X POST http://localhost:8501/v1/models/insurance:predict
 ```
 
-Demo auch wieder über `workspace-java/app/src/main/java/eu/zeigermann/ml/App.java`
+<!-- Demo auch wieder über `workspace-java/app/src/main/java/eu/zeigermann/ml/App.java` -->
 
 </textarea>
 </section>
 
 <section data-markdown>
 	<textarea data-template>
-### Realistischer ist das Deployment eines kompletten Serivces 
+### Realistischer ist das Deployment eines kompletten Services 
 
 <img src="img/Typical_Deployment_of_a_Machine_Learning_Service.jpg">
 
