@@ -23,9 +23,9 @@
 	<div class="reveal">
 		<div class="slides">
 
-<section data-markdown class="local preparation hide">
+<!-- <section data-markdown class="local preparation hide">
 * Demos vorbereiten / einmal durchspielen   
-</section>
+</section> -->
 
 
 <!-- 
@@ -85,6 +85,7 @@ oliver.zeigermann@openknowledge.de
 
 Folien: https://bit.ly/ml-java-2022
 <!-- https://djcordhose.github.io/insurance-ml/2022-ml-java.html -->
+Projekt: https://github.com/DJCordhose/insurance-ml
 
     </textarea>
 			</section>
@@ -222,9 +223,14 @@ public Prediction predictFromRule(DataSet dataSet) {
   if (dataSet.age() < 35) {
       return Prediction.fromPredictionClass(Prediction.RED);
   }
-  return Prediction.fromPredictionClass(Prediction.GREEN);
+  return Prediction.fromPredictionClass(Prediction.BLUE);
 }
 ```
+
+```
+record DataSet(int age, int maxSpeed, int milesPerYear) { }
+```
+
 
 </textarea>
 </section>
@@ -265,7 +271,7 @@ Fragen
 
 </textarea>
 </section>
- -->
+
 <section data-markdown class="fragments">
   <textarea data-template>
 ### Wir haben jetzt eine Lösung, aber
@@ -279,6 +285,15 @@ Fragen
   * Komplett neu?
   * Wie tief verschachteln?
   * Wie testen wir das?
+</textarea>
+</section>
+
+
+ -->
+
+ <section data-markdown class="fragments">
+  <textarea data-template>
+## Wir haben jetzt eine Lösung, aber...
 </textarea>
 </section>
 
@@ -313,6 +328,23 @@ Fragen
 
 <small>https://docs.seldon.io/projects/alibi-detect/en/stable/cd/background.html#what-is-drift
 </small>
+</textarea>
+</section>
+
+<section data-markdown class="fragments">
+  <textarea data-template>
+### Wie reagieren wir auf eine Veränderung der Domäne?
+
+Wie ändern wir den Code?
+
+* Inkrementell dazu? 
+  * Neue "Anforderung" von der Fachabteilung 
+  * Wie tief verschachteln?
+* Komplett neu?
+  * Es gibt sicher 100 verschiedene Stile, das zu machen. 
+  * Was ist mit der Kontinuität?
+* Wie testen wir das?
+* *Und: Hand aufs Herz, bekommen wir das eigentlich mit wenn unser Vorhersage-Code nicht mehr gut funktioniert?*
 </textarea>
 </section>
 
@@ -420,7 +452,7 @@ https://twitter.com/ClementDelangue/status/1536514359450652674
 </textarea>
 </section> -->
 
-<!-- <section data-markdown>
+<section data-markdown class="fragments">
 	<textarea data-template>
 ### Wann macht ML Sinn?
 
@@ -435,43 +467,24 @@ _Und_
 * Wir sind bereit und in der Lage, in einer initialen Phase Experimente mit offenem Ausgang durchzuführen
 </textarea>
 </section>
- -->
+
+<section data-markdown>
+  <textarea data-template>
+## Machine Learning passt also zu unserer Problemstellung    
+  </textarea>
+</section>
+
 <section data-markdown>
   <textarea data-template>
 ## Und wie machen wir das nun?    
   </textarea>
 </section>
 
+
 <section data-markdown>
 	<textarea data-template>
 <img src='img/supervised-ml.jpg' style="height: 600px;">
 </textarea>
-</section>
-
-<section data-markdown>
-	<textarea data-template>
-### Mögliche Bibliotheken
-
-* Klassisches Machine Learning: https://scikit-learn.org
-* High Level Neural Networks / Deep Learning
-  * https://www.tensorflow.org
-    * Platzhirsch im industriellen Umfeld, Schwerpunkt auf Produktion
-  * https://keras.io/
-* Low Level Neural networks
-  * https://pytorch.org/
-    * Platzhirsch im akademischen Umfeld, hat häufig die ersten Implementierungen neuer Ideen
-  * https://github.com/google/jax
-</textarea>
-</section>
-
-<section data-markdown>
-	<textarea data-template>
-### Wir nehmen TensorFlow
-
-* Unser Problem ist sicher auch mit klassischen Methoden ausreichend lösbar
-* Deep Learning ist in dieser Situation mit Kanonen auf Spatzen schießen
-* Neuronale Netzwerke mit TensorFlow haben aber eine besonders gute Story für Produktion 
-  </textarea>
 </section>
 
 <section data-markdown>
@@ -506,7 +519,7 @@ _Und_
 
 * Ein Build-Script macht aus Java-Quellen ein ausführbares Programm
 * Ein Trainings-Script macht aus einer ML-Architektur und Daten ein ausführbares TensorFlow Modell
-* Ein Build-Script schreiben wir auch in Java nicht in Java selbst
+* Ein Build-Script schreiben wir auch für Java nicht in Java selbst
 * Entweder nutzen wir eine Script-Sprache (Groovy oder Kotlin)
 * Oder eine noch weiter standardisierte, deklarative Beschreibung (XML)
 </textarea>
@@ -526,10 +539,38 @@ _Und_
 
 <section data-markdown>
 	<textarea data-template>
+### Mögliche Bibliotheken
+
+* Klassisches Machine Learning: https://scikit-learn.org
+* High Level Neural Networks / Deep Learning
+  * https://www.tensorflow.org
+    * Platzhirsch im industriellen Umfeld, Schwerpunkt auf Produktion
+  * https://keras.io/
+* Low Level Neural networks
+  * https://pytorch.org/
+    * Platzhirsch im akademischen Umfeld, hat häufig die ersten Implementierungen neuer Ideen
+  * https://github.com/google/jax
+
+Das ist alles *Python basiert*  
+</textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+### Wir nehmen TensorFlow
+
+* Unser Problem ist sicher auch mit klassischen Methoden ausreichend lösbar
+* Deep Learning ist in dieser Situation mit Kanonen auf Spatzen schießen
+* Neuronale Netzwerke mit TensorFlow haben aber eine besonders gute Story für Produktion 
+* Mit der High-Level Keras API hat man eine wirklich gute Abstraktion gefunden (mehr dazu später)
+  </textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
 ### TensorFlow Code mit Python
 
-die Architektur mit 3 hidden Layers
-
+Architektur des neuronalen Netzwerks
 ```
 model = tf.keras.Sequential()
 
@@ -552,12 +593,6 @@ model.compile(loss='sparse_categorical_crossentropy',
              metrics=['accuracy'])
 ```
 
-den Trainingsprozess starten und tracken
-```
-history = model.fit(X_train, y_train,
-                    validation_data=(X_val, y_val))
-```
-
 </textarea>
 </section>
 
@@ -567,12 +602,19 @@ history = model.fit(X_train, y_train,
 
 <img src='img/insurance-new/model.png' style="height: 200px">
 
+3 Hidden Layers langen für jedes tabellarische Problem, die Größe der Layers ist Alchemie 
 </textarea>
 </section>
 
 <section data-markdown>
   <textarea data-template>
 ### Der Verlauf des Trainings
+
+```
+history = model.fit(X_train, y_train,
+                    validation_data=(X_val, y_val))
+```
+
 
 <img src='img/insurance-new/training.png'>
 
@@ -595,6 +637,32 @@ ca. 70% der Daten sind in der Klassifikation richtig
 </textarea>
 </section>
 
+<section data-markdown>
+	<textarea data-template>
+### Vergleich mit händisch erstellten Regeln
+
+<img src='img/insurance-new/train-data-rules.png'>
+
+ca. 60% der Daten sind in der Klassifikation richtig
+
+</textarea>
+</section>
+
+<section data-markdown class="fragments">
+	<textarea data-template>
+### Die Ergebnisse sehen sogar ziemlich ähnlich aus, aber...
+
+* nur ca. 60% der Daten sind in der Klassifikation richtig
+  * das würden wir durch fine-tuning der Regeln verbessern können, aber
+  * höchstwahrscheinlich auf Kosten der Generalisierung
+* das Machine Learning Modell könnte fast 100% auf Trainingsdaten erreichen
+  * 70% sind schon optimiert für Generalisierung
+* ML bietet einen klaren Prozess für die Aktualisierung des Modells bei geänderter Datenlage
+* wenn datenbasiert gearbeitet wird, ist ML oft die erste Wahl
+
+</textarea>
+</section>
+
 
 <section data-markdown>
 	<textarea data-template>
@@ -607,7 +675,7 @@ ca. 70% der Daten sind in der Klassifikation richtig
 </textarea>
 </section>
 
-<section data-markdown>
+<!-- <section data-markdown>
 	<textarea data-template>
 ### Wie bringt man denn ein Modell in Produktion???
 
@@ -619,24 +687,7 @@ ca. 70% der Daten sind in der Klassifikation richtig
 
 </textarea>
 </section>
-
-
-<section data-markdown>
-  <textarea data-template>
-## Deployment ist ein Schwerpunkt von TensorFlow
-
-<img src='img/tf-deploy.png'>
-
-<small>
-
-* https://www.tensorflow.org/tfx/guide/serving
-* https://www.tensorflow.org/lite/api_docs
-* https://www.tensorflow.org/js
-
-</small>
-
-</textarea>
-</section>
+ -->
 
 
 <section data-markdown>
@@ -658,9 +709,27 @@ ca. 70% der Daten sind in der Klassifikation richtig
 * Damit kann man die Python-Welt verlassen
 * Man braucht lediglich eine Umgebung, die die Operationen in dem Graphen ausführen kann
 * So eine Umgebung ist bereits in TensorFlow mit C++ implementiert und auch die Python-Version beruht darauf  
-* *kann aus Java aufgerufen werden*
+* *kann u.a. aus Java aufgerufen werden*
 </textarea>
 </section>
+
+<section data-markdown>
+  <textarea data-template>
+## Deployment ist ein Schwerpunkt von TensorFlow
+
+<img src='img/tf-deploy.png'>
+
+<small>
+
+* https://www.tensorflow.org/tfx/guide/serving
+* https://www.tensorflow.org/lite/api_docs
+* https://www.tensorflow.org/js
+
+</small>
+
+</textarea>
+</section>
+
 
 <section data-markdown>
 	<textarea data-template>
@@ -678,7 +747,7 @@ ca. 70% der Daten sind in der Klassifikation richtig
 </textarea>
 </section>
 
-<section data-markdown>
+<!-- <section data-markdown>
 	<textarea data-template>
 ### TensorFlow Java hat seine eigene Version
 
@@ -689,7 +758,7 @@ Stabilitätsgarantien gelten nicht für Java
 https://github.com/tensorflow/java/#tensorflow-version-support
 </textarea>
 </section>
-
+ -->
 
 <section data-markdown>
 	<textarea data-template>
@@ -777,14 +846,14 @@ Neues Problem: wir haben in Adapter Code einmal in Python und einmal in Java
 ### Alternative Story für die Zukunft
 
 * Python ist toll für Dev
-* Python bringt sich schwer in Prod
+* Python bringt sich aber schwer in Prod
   * Entweder Python Server in Prod (Python schwierig für Prod, nix Typ) oder: 
   * Python Code nochmal in Prod JVM Sprache neu schreiben: Wir haben nicht das in Prod, was wir entwickelt haben
-* Java ist Scheiße für ML Dev
+* Java ist ist nicht gut für ML Dev
 * Kotlin könnte mit KotlinDL sweet spot sein
   * Code in KotlinDL ist für jemanden, der TensorFlow/Keras kennt direkt lesbar
   * Notebook Betrieb ist möglich, aber vielleicht gar nicht notwendig
-* Im Moment hat das aber noch wenig Verbreitung
+* *Im Moment hat das aber noch wenig Verbreitung*
 
 <small>https://github.com/Kotlin/kotlindl
 <br>
@@ -800,9 +869,12 @@ https://github.com/Kotlin/kotlindl#working-with-kotlindl-in-jupyter-notebook
 	<textarea data-template>
 # Zusammenfassung
 
-* ML kann eine Alternative zu Regeln sein wenn diese dynamisch sind
-* Anhand von Daten kann man ein Neuronales Netz trainieren
-* Ein ML-Modell steht nicht für sich, es ist immer ein Teil eines größeren Systems
+* Machine Learning ist keine Magie, sondern einfach nur ein alternativer Ansatz zur Software-Entwicklung
+* Software-Entwickler können diese Technik beherrschen und in ihrem Werkzeugkasten haben
+* wenn datenbasiert gearbeitet wird, ist ML oft die erste Wahl
+* Das Training von einem ML Modell hat einen ähnlichen Charakter wie ein Build-Script
+* Java eignet sich nicht gut als Sprache für ein Trainingsscript
+* Allerdings sind TensorFlow Modelle problemlos in einen Java/JVM Umfeld in Produktion zu bringen
 * Kotlin könnte sich für uns Java-Entwickler zum Sweet-Spot entwickeln
 </textarea>
 </section>
