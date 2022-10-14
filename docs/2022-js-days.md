@@ -31,9 +31,15 @@ API trainieren und als Teil einer JS-Anwendung integrieren.
 Es sind keine Vorkenntnisse nötig und zur Teilnahme wird lediglich
 eine beliebige IDE zur Entwicklung von JavaScript benötigt.
 
-## Ablauf
+## Vorbereitung 
 
-### Prep: Das hier ausdrucken
+* Das hier ausdrucken
+* Training einmal durchspielen
+  * Advanced Features zeigen beim Training
+  * Auswertung
+* 2. Teil einmal durchgehen  
+
+## Ablauf
 
 ### Intro
 
