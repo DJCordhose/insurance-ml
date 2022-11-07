@@ -57,7 +57,7 @@ oliver.zeigermann@openknowledge.de
 
 Folien: https://bit.ly/wjax-2022-ml-java
 <!-- https://djcordhose.github.io/insurance-ml/2022-wjax-ml-java.html -->
-Projekt: https://github.com/DJCordhose/insurance-ml
+<!-- Projekt: https://github.com/DJCordhose/insurance-ml -->
 
     </textarea>
 			</section>
@@ -85,12 +85,21 @@ Head of AI@OpenKnowledge
 
 <section data-markdown>
 	<textarea data-template>
+# Sprecht mit mir
+
+Die erste *sinnvolle* Frage gewinnt ein Exemplar meines ML-Buchs
+</textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
 # Agenda
 
 1. Unsere Beispielanwendung
 1. Klassische Regeln
 1. Lösung mit Machine Learning (ML)
 1. Produktiver Betrieb
+1. Ein alternatives Szenario
 </textarea>
 </section>
 
@@ -102,6 +111,7 @@ Head of AI@OpenKnowledge
 1. Klassische Regeln
 1. Lösung mit Machine Learning (ML)
 1. Produktiver Betrieb
+1. Ein alternatives Szenario
 </textarea>
 </section>
 
@@ -140,8 +150,8 @@ https://djcordhose.github.io/ml-resources/html/calculator.html</a></small>
 1. Unsere Beispielanwendung
 1. _Klassische Regeln_
 1. Lösung mit Machine Learning (ML)
-1. ML als Monolith?
 1. Produktiver Betrieb
+1. Ein alternatives Szenario
 </textarea>
 </section>
 
@@ -282,6 +292,7 @@ Wie ändern wir den Code?
 1. Klassische Regeln
 1. _Lösung mit Machine Learning (ML)_
 1. Produktiver Betrieb
+1. Ein alternatives Szenario
 </textarea>
 </section>
 
@@ -601,6 +612,7 @@ ca. 60% der Daten sind in der Klassifikation richtig
 1. Klassische Regeln
 1. Lösung mit Machine Learning (ML)
 1. _Produktiver Betrieb_
+1. Ein alternatives Szenario
 </textarea>
 </section>
 
@@ -616,8 +628,6 @@ ca. 60% der Daten sind in der Klassifikation richtig
 
 </textarea>
 </section>
-
-
 
 <section data-markdown>
 	<textarea data-template>
@@ -732,9 +742,22 @@ curl -d '{"instances": [[50.0, 122.0], [48, 100], [30, 150]]}' -X POST http://lo
 
 <section data-markdown>
 	<textarea data-template>
+# Agenda
+
+1. Unsere Beispielanwendung
+1. Klassische Regeln
+1. Lösung mit Machine Learning (ML)
+1. Produktiver Betrieb
+1. _Ein alternatives Szenario_
+</textarea>
+</section>
+
+
+<section data-markdown>
+	<textarea data-template>
 ### Realistischer ist das Deployment eines kompletten Services 
 
-<img src="img/Typical_Deployment_of_a_Machine_Learning_Service.jpg">
+<img src="img/Typical_Deployment_of_a_Machine_Learning_Service.PNG">
 
 Neues Problem: wir haben in Adapter Code einmal in Python und einmal in Java 
 </textarea>
@@ -746,13 +769,12 @@ Neues Problem: wir haben in Adapter Code einmal in Python und einmal in Java
 
 * Python ist toll für Dev
 * Python bringt sich aber schwer in Prod
-  * Entweder Python Server in Prod (Python schwierig für Prod, nix Typ) oder: 
+  * Entweder Python Server in Prod (Python schwierig für Prod, z.B. keine statische Typisierung) oder: 
   * Python Code nochmal in Prod JVM Sprache neu schreiben: Wir haben nicht das in Prod, was wir entwickelt haben
 * Java ist ist nicht gut für ML Dev
 * Kotlin könnte mit KotlinDL sweet spot sein
   * Code in KotlinDL ist für jemanden, der TensorFlow/Keras kennt direkt lesbar
   * Notebook Betrieb ist möglich, aber vielleicht gar nicht notwendig
-* *Im Moment hat das aber noch wenig Verbreitung*
 
 <small>https://github.com/Kotlin/kotlindl
 <br>
@@ -760,6 +782,63 @@ https://blog.jetbrains.com/kotlin/2020/12/deep-learning-with-kotlin-introducing-
 <br>
 https://github.com/Kotlin/kotlindl#working-with-kotlindl-in-jupyter-notebook
 </small>
+
+</textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+### KotlinDL Code
+
+Architektur des neuronalen Netzwerks
+```
+val model = Sequential.of(
+    Input(28, 28, 1),
+    Dense(
+      100,
+      name="hidden1"
+    ),
+    Dense(
+      name="output"
+      outputSize = 3,
+      activation = Activations.Softmax
+  )
+)
+
+```
+
+das Training konfigurieren und durchführen
+```
+model.use {
+  it.compile(
+      optimizer = Adam(),
+      loss = Losses.SOFT_MAX_CROSS_ENTROPY_WITH_LOGITS,
+      metric = Metrics.ACCURACY
+  )
+
+  it.fit(
+      dataset = train
+  )
+}
+```
+
+https://kotlin.github.io/kotlindl/
+</textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+### Kann man KotlinDL jetzt schon nutzen?
+
+* NVIDIA GPU support
+* Ist kompatibel mit Keras, man kann Keras Modelle 
+  * laden,
+  * zur Vorhersage nutzen und
+  * weiter trainieren
+* Viele vordefinierte Architekturen: https://kotlin.github.io/kotlindl/api/org.jetbrains.kotlinx.dl.api.core.model/index.html  
+* aktuelle Version (Stand November 2022): 0.4.0
+* Es werden nur eine Untermenge alles Layers aus Keras unterstützt: https://github.com/Kotlin/kotlindl#limitations
+* *Im Moment noch wenig Verbreitung*
 
 </textarea>
 </section>
