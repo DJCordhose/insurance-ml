@@ -50,6 +50,8 @@ Als Framework für Machine Learning werden wir TensorFlow nutzen.
 				<textarea data-template>
 # Machine Learning mit Java
 
+## Warum eigentlich Machine Learning und wie macht man das in einem Java-Projekt?
+
 WJAX, 2022, https://jax.de/big-data-machine-learning/machine-learning-mit-java/
 
 Oliver Zeigermann
@@ -67,18 +69,18 @@ Folien: https://bit.ly/wjax-2022-ml-java
 ### Wer ist Olli
 
 <div style="display: flex;">
-<div style="flex: 50%;">
+<!-- <div style="flex: 50%;">
   <a href='https://oreilly.de/produkt/machine-learning-kurz-gut-2/'>
   <img src='img/ml-buch-v2.jpg' height="400">
   </a>
-</div>
+</div> -->
 <div style="flex: 50%; font-size: x-large;">
   <img src='img/olli-opa.jpeg'>
 </div>
 </div>
 <p>
 <a target="_blank" href="mailto:oliver.zeigermann@openknowledge.de">Oliver Zeigermann</a>:
-Head of AI@OpenKnowledge
+Head of AI@OpenKnowledge, Machine Learning Stratege
 </p>    
 </textarea>
 </section>
@@ -87,7 +89,11 @@ Head of AI@OpenKnowledge
 	<textarea data-template>
 # Sprecht mit mir
 
-Die erste *sinnvolle* Frage gewinnt ein Exemplar meines ML-Buchs
+<a href='https://oreilly.de/produkt/machine-learning-kurz-gut-2/'>
+  <img src='img/ml-buch-v2.jpg' height="400">
+  </a>
+
+Die erste *sinnvolle* Frage vor Ort gewinnt ein Exemplar meines ML-Buchs
 </textarea>
 </section>
 
@@ -157,6 +163,12 @@ https://djcordhose.github.io/ml-resources/html/calculator.html</a></small>
 
 <section data-markdown>
 	<textarea data-template>
+## Wie geht man da heran?    
+  </textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
 <img src='img/classic-development.jpg' style="height: 600px;">
 </textarea>
 </section>
@@ -168,7 +180,7 @@ https://djcordhose.github.io/ml-resources/html/calculator.html</a></small>
 
 <section data-markdown>
 	<textarea data-template>
-### Anforderungen
+### Spezifikation
 
 <img src='img/insurance-new/train-data-rules.png' style="height: 600px;">
 </textarea>
@@ -177,7 +189,11 @@ https://djcordhose.github.io/ml-resources/html/calculator.html</a></small>
 
 <section data-markdown>
 	<textarea data-template>
-### Diese Anforderungen im Code
+### Diese Spezifikation als Code
+
+```
+record DataSet(int age, int maxSpeed, int milesPerYear) { }
+```
 
 ```
 public Prediction predictFromRule(DataSet dataSet) {
@@ -195,10 +211,6 @@ public Prediction predictFromRule(DataSet dataSet) {
   }
   return Prediction.fromPredictionClass(Prediction.BLUE);
 }
-```
-
-```
-record DataSet(int age, int maxSpeed, int milesPerYear) { }
 ```
 
 
@@ -231,13 +243,9 @@ record DataSet(int age, int maxSpeed, int milesPerYear) { }
 
 <section data-markdown>
 	<textarea data-template>
-<img src="img/verfall-1.PNG">    
-  </textarea>
-</section>
+### Die Welt ist nicht statisch
 
-<section data-markdown>
-	<textarea data-template>
-<img src="img/verfall-2.PNG">    
+<img src="img/verfall-1.PNG">    
   </textarea>
 </section>
 
@@ -257,6 +265,14 @@ record DataSet(int age, int maxSpeed, int milesPerYear) { }
 </textarea>
 </section>
 
+<section data-markdown>
+	<textarea data-template>
+### Die Welt ist nicht statisch
+
+<img src="img/verfall-2.PNG">    
+  </textarea>
+</section>
+
 <section data-markdown class="fragments">
   <textarea data-template>
 ### Wie reagieren wir auf eine Veränderung der Domäne?
@@ -267,7 +283,7 @@ Wie ändern wir den Code?
   * Neue "Anforderung" von der Fachabteilung 
   * Wie tief verschachteln?
 * Komplett neu?
-  * Es gibt sicher 100 verschiedene Stile, das zu machen. 
+  * Es gibt sicher 100 verschiedene Stile, das zu machen
   * Was ist mit der Kontinuität?
 * Wie testen wir das?
 * *Und: Hand aufs Herz, bekommen wir das eigentlich mit wenn unser Vorhersage-Code nicht mehr gut funktioniert?*
@@ -342,7 +358,7 @@ https://twitter.com/ClementDelangue/status/1536514359450652674
 	</textarea>
 </section>
 
-<section data-markdown>
+<!-- <section data-markdown>
   <textarea data-template>
 ### Machine Learning
 
@@ -352,7 +368,7 @@ https://twitter.com/ClementDelangue/status/1536514359450652674
 * Machine Learning ist eine alternative Art, Software zu entwickeln
 * KI/ML ist Digitalisierung 2.0
 </textarea>
-</section>
+</section> -->
 
 <section data-markdown class="fragments">
 	<textarea data-template>
@@ -362,11 +378,12 @@ _Die Lösung des vorliegenden Problems ist unbekannt oder schwer zu spezifiziere
 
 _Und_
 
-* Es gibt eine klare, einfache Eingabe und bestenfalls auch Ausgabe 
-* Wir haben passende Paare von Eingaben und bestenfalls auch Ausgabe
-* Es gibt Muster in der Eingabe, die zur Vorhersage verwendet werden können
-* Die Lösung des Problems kann Fehler oder Unsicherheiten tolerieren
-* Wir sind bereit und in der Lage, in einer initialen Phase Experimente mit offenem Ausgang durchzuführen
+* Es gibt eine klare, einfache *Eingabe* und bestenfalls auch Ausgabe 
+* Wir haben *passende Paare* von Eingaben und bestenfalls auch Ausgabe
+* Es gibt *Muster* in der Eingabe, die zur Vorhersage verwendet werden können
+* Die Lösung des Problems kann *Fehler oder Unsicherheiten* tolerieren ...
+  * oder wir können das Problem so umdefinieren, dass dies möglich ist
+<!-- * Wir sind bereit und in der Lage, in einer initialen Phase *Experimente mit offenem Ausgang* durchzuführen -->
 </textarea>
 </section>
 
@@ -618,11 +635,11 @@ ca. 60% der Daten sind in der Klassifikation richtig
 
 <section data-markdown>
 	<textarea data-template>
-### Wie bringt man denn ein Modell in Produktion???
+### Was bringen wir überhaupt in Produktion?
 
 |   | Quelle | Vorgehen | Artefakt für die Produktion |
 |---|---|---|---|
-| *Traditionelle Entwicklung* | Modell | Regeln | Programm |
+| *Traditionelle Entwicklung* | Spezifikation | Regeln | Programm |
 | *Maschinelles Lernen* | Daten und Priors | ML-Algorithmus | *Modell* |
 |   |   |   |
 
@@ -759,22 +776,38 @@ curl -d '{"instances": [[50.0, 122.0], [48, 100], [30, 150]]}' -X POST http://lo
 
 <img src="img/Typical_Deployment_of_a_Machine_Learning_Service.PNG">
 
-Neues Problem: wir haben in Adapter Code einmal in Python und einmal in Java 
+Zumindest unschön: wir haben in Adapter Code einmal in Python und einmal in Java 
 </textarea>
 </section>
 
 <section data-markdown class="fragments">
 	<textarea data-template>
-### Alternative Story für die Zukunft
+### Was ist die Herausforderung?
 
 * Python ist toll für Dev
-* Python bringt sich aber schwer in Prod
-  * Entweder Python Server in Prod (Python schwierig für Prod, z.B. keine statische Typisierung) oder: 
-  * Python Code nochmal in Prod JVM Sprache neu schreiben: Wir haben nicht das in Prod, was wir entwickelt haben
-* Java ist ist nicht gut für ML Dev
+* Python bringt sich aber schwer in Prod, denn
+* Entweder Python Server in Prod, aber nicht ideal, weil
+  * keine statische Typisierung
+  * wir mögen ohnehin Java lieber 
+* oder: Python Code nochmal in Prod JVM Sprache neu schreiben 
+  * wir haben nicht das in Prod, was wir entwickelt haben
+  * dennoch erstaunlich typische Lösung
+</small>
+
+</textarea>
+</section>
+
+
+<section data-markdown class="fragments">
+	<textarea data-template>
+### Alternative Story für die Zukunft
+
+* Java ist aber auch nicht gut für ML Dev
+* Script-Character für Dev ist wünschenswert
+* Kotlin kann Script artig endwickelt werden
 * Kotlin könnte mit KotlinDL sweet spot sein
-  * Code in KotlinDL ist für jemanden, der TensorFlow/Keras kennt direkt lesbar
-  * Notebook Betrieb ist möglich, aber vielleicht gar nicht notwendig
+* Code in KotlinDL ist für jemanden, der TensorFlow/Keras kennt direkt lesbar
+* Notebook Betrieb ist möglich, aber vielleicht gar nicht notwendig
 
 <small>https://github.com/Kotlin/kotlindl
 <br>
@@ -826,7 +859,7 @@ https://kotlin.github.io/kotlindl/
 </textarea>
 </section>
 
-<section data-markdown>
+<section data-markdown class="fragments">
 	<textarea data-template>
 ### Kann man KotlinDL jetzt schon nutzen?
 
@@ -837,7 +870,7 @@ https://kotlin.github.io/kotlindl/
   * weiter trainieren
 * Viele vordefinierte Architekturen: https://kotlin.github.io/kotlindl/api/org.jetbrains.kotlinx.dl.api.core.model/index.html  
 * aktuelle Version (Stand November 2022): 0.4.0
-* Es werden nur eine Untermenge alles Layers aus Keras unterstützt: https://github.com/Kotlin/kotlindl#limitations
+* Es werden nur eine Untermenge aller Layers aus Keras unterstützt: https://github.com/Kotlin/kotlindl#limitations
 * *Im Moment noch wenig Verbreitung*
 
 </textarea>
