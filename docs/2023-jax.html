@@ -1,0 +1,1010 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=10.0, user-scalable=yes">
+
+	<title>ML Java</title>
+
+	<link rel="stylesheet" href="revealjs/reveal.js/dist/reset.css" />
+    <link rel="stylesheet" href="revealjs/reveal.js/dist/reveal.css" />
+    <link rel="stylesheet" href="revealjs/reveal.js/dist/theme/white.css" />
+
+    <!-- Theme used for syntax highlighted code -->
+	<!-- <link rel="stylesheet" href="revealjs/reveal.js/plugin/highlight/monokai.css"> -->
+	<link rel="stylesheet" href="revealjs/reveal.js/plugin/highlight/zenburn.css">
+    <link rel="stylesheet" href="revealjs/highlight-js-github-theme.css" />
+    <link rel="stylesheet" href="revealjs/styles.css" />
+
+</head>
+
+<body style="background-color: whitesmoke;">
+	<div class="reveal">
+		<div class="slides">
+
+<!-- 
+Machine Learning in Java Projekten für JAX
+
+Links
+* Mahout: https://mahout.apache.org/
+* Pmml: Wir setzen Machine Learning aktiv ein. Nutzen im Wesentlichen Boosting Trees. Diese werden mit XGBOOST in R trainiert und in unserer Java Umgebung per PMML bekannt gemacht
+* https://github.com/jpmml/r2pmml
+* https://github.com/jpmml/sklearn2pmml
+* https://github.com/jpmml/jpmml-evaluator
+* https://dmg.org/pmml/v4-4-1/GeneralStructure.html
+* https://en.wikipedia.org/wiki/Predictive_Model_Markup_Language
+* https://spark.apache.org/docs/latest/ml-guide.html
+* https://spark.apache.org/mllib/
+* https://www.knime.com/downloads/download-knime
+* TensorFlow
+* Server Betrieb
+* https://github.com/dmlc/xgboost
+
+
+V1
+
+Abstract
+Java ist die vorherrschende Sprache bei der Entwicklung von Geschäftsanwendungen, aber Machine-Learning-Anwendungen
+werden meist mit Python entwickelt. Daraus resultiert die Frage: "Wie macht man als Java-Entwickler Machine Learning?
+
+In dieser Session verschaffen wir uns einen Überblick über die gängigen Ansätze, Machine Learning in Java Projekten
+einzusetzen. Besonders verbreitet ist dabei, mit einer anderen Sprache zu trainieren, aber das trainierte Modell in
+einem Java-Umfeld in Produktion zu bringen. Dazu gehören die Themen
+- PMML
+- Sklearn
+- TensorFlow
+- XGBoost
+
+Wir kommen aber auch auf die Außenseiter zu sprechen, bei denen direkt mit Java trainiert wird. Diese sind leider häufig
+entweder noch nicht bei Version 1.0 oder deprecated oder gar beides. Dabei sind
+- KNIME
+- Mahout
+- KotlinDL
+- MLlib
+- TensorFlow Java
+- Deeplearning4j
+
+---
+
+Überarbeitete Version V2:
+
+
+Auch als Enterprise-Entwickler kommt man immer häufiger mit Machine Learning in Berührung. Allerdings gibt es an eine
+Enterprise-Anwendung ebenso wie an eine Machine Learning Anwendung besondere Anforderungen. Daraus ergeben sich die
+Fragestellungen wie "Wie macht man als Java-Entwickler Machine Learning?" und "Was muss man wissen und welche
+Kompetenzen muss man sich erarbeiten?"
+
+Passend dazu verschaffen wir uns in dieser Session einen Überblick über die gängigen Ansätze, Machine Learning in Java
+Projekten einzusetzen. Wir sehen uns auch an, wie ein typisches Machine Learning Projekt abläuft, welche Rollen
+beteiligt sind und wo man besonders als Enterprise-Entwickler gefragt ist.
+
+Dieser Talk ist sowohl technisch, als auch methodisch. Wir werden uns neben Prozess und Rollen auch die passenden
+Werkzeuge wie PMML, Sklearn, TensorFlow und XGBoost ansehen.
+
+Story
+- PMML: Format für Java
+- Sklearn, XGBoost: Als Server oder auch als PMML
+- TensorFlow: Java interface, über JS, über Server oder TensorFlow-Serving
+
+
+---
+
+Copilot, Codex und Co: werden wir jetzt alle arbeitslos?
+
+Die Revolution der großen Sprachmodelle macht auch bei uns Entwicklern nicht halt. 
+Services wie der Github Copilot versprechen eine Unterstützung bei der Entwicklung, die alles bisher dagewesene in den Schatten stellen. 
+
+Die Möglichkeiten reichen von Code-Completion, über passende Kommentare zum Code (und auch anders herum)
+ bis hin zu Übersetzungen von einer Programmiersprache in eine andere. 
+
+In dieser Session werde ich interaktiv anhand von Code-Beispielen hauptsächlich den Github Copilot vorstellen. 
+Die Eigenschaften und Erkenntnisse sind aber größtenteils auch auf andere Ansätze übertragbar. 
+Dabei besprechen wir auch wie diese Technik funktioniert und welche Probleme sich daraus ergeben. 
+Wir diskutieren auch, ob eine solche Entwicklung die Notwendigkeit von Entwicklern generell infrage stellt oder wie sich unsere Arbeit dadurch verändern wird.  
+
+Material
+
+Patrick Mineault (@patrickmineault) twitterte um 8:23 PM on So., Nov. 13, 2022:
+I'm using Github copilot like a private tutor to learn Haskell. Here it is telling me how to translate Python dicts to Haskell's maps. And of course it knows how to build a Markdown table. Pretty close to magic 🪄✨ https://t.co/3g88z9EQnV
+(https://twitter.com/patrickmineault/status/1591874392279351297?t=g9M8C0kqDHIc0VF_d090ug&s=03) 
+
+
+-->
+
+
+  <section data-markdown>
+				<textarea data-template>
+# Machine Learning mit Java
+
+## Warum eigentlich Machine Learning und wie macht man das in einem Java-Projekt?
+
+WJAX, 2022, https://jax.de/big-data-machine-learning/machine-learning-mit-java/
+
+Oliver Zeigermann
+oliver.zeigermann@openknowledge.de
+
+Folien: https://bit.ly/wjax-2022-ml-java
+<!-- https://djcordhose.github.io/insurance-ml/2022-wjax-ml-java.html -->
+<!-- Projekt: https://github.com/DJCordhose/insurance-ml -->
+
+    </textarea>
+			</section>
+
+<section data-markdown>
+  <textarea data-template>
+### Wer ist Olli
+
+<div style="display: flex;">
+<!-- <div style="flex: 50%;">
+  <a href='https://oreilly.de/produkt/machine-learning-kurz-gut-2/'>
+  <img src='img/ml-buch-v2.jpg' height="400">
+  </a>
+</div> -->
+<div style="flex: 50%; font-size: x-large;">
+  <img src='img/olli-opa.jpeg'>
+</div>
+</div>
+<p>
+<a target="_blank" href="mailto:oliver.zeigermann@openknowledge.de">Oliver Zeigermann</a>:
+Head of AI@OpenKnowledge, Machine Learning Stratege
+</p>    
+</textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+# Sprecht mit mir
+
+<a href='https://oreilly.de/produkt/machine-learning-kurz-gut-2/'>
+  <img src='img/ml-buch-v2.jpg' height="400">
+  </a>
+
+Die erste *sinnvolle* Frage vor Ort gewinnt ein Exemplar meines ML-Buchs
+</textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+# Agenda
+
+1. Unsere Beispielanwendung
+1. Klassische Regeln
+1. Lösung mit Machine Learning (ML)
+1. Produktiver Betrieb
+1. Ein alternatives Szenario
+</textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+# Agenda
+
+1. _Unsere Beispielanwendung_
+1. Klassische Regeln
+1. Lösung mit Machine Learning (ML)
+1. Produktiver Betrieb
+1. Ein alternatives Szenario
+</textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+## Unser Beispiel: Vorhersage von Risiken
+
+* Wir sind CTO einer hochinnovativen Kfz-Versicherungsgesellschaft
+* Anders als andere Versicherungsgesellschaften bestimmen wir den Tarif anhand der geschätzen Anzahl von Unfällen pro Kunde
+* Zielsetzung: Wie viele Unfälle werden die potenziellen Kunden haben?
+
+<img src='img/pixabay/accident-151668_1280.png' style="height: 230px">
+</textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+### Vorhersage von Risiken für potenzielle Kunden
+
+Als Hilfsmittel für Sachbearbeiter oder sogar online Check denkbar
+
+<a href='html/calculator.html'>
+<img src='img/calculator.png' height="400">
+</a>
+<p><small>
+<a href='html/calculator.html' target="_blank">
+https://djcordhose.github.io/ml-resources/html/calculator.html</a></small>
+</small></p>
+</textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+# Agenda
+
+1. Unsere Beispielanwendung
+1. _Klassische Regeln_
+1. Lösung mit Machine Learning (ML)
+1. Produktiver Betrieb
+1. Ein alternatives Szenario
+</textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+## Wie geht man da heran?    
+  </textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+<img src='img/classic-development.jpg' style="height: 600px;">
+</textarea>
+</section>
+
+<section>
+	<h3>Domänenwissen = bekannte Daten</h3>
+	<img src="img/insurance-new/train-data.png" height="500px" class="fragment">
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+### Spezifikation
+
+<img src='img/insurance-new/train-data-rules.png' style="height: 600px;">
+</textarea>
+</section>
+
+
+<section data-markdown>
+	<textarea data-template>
+### Diese Spezifikation als Code
+
+```
+record DataSet(int age, int maxSpeed, int milesPerYear) { }
+```
+
+```
+public Prediction predictFromRule(DataSet dataSet) {
+  if (dataSet.age() > 70) {
+      return Prediction.fromPredictionClass(Prediction.RED);
+  }
+  if (dataSet.age() < 35 && dataSet.maxSpeed() < 115) {
+      return Prediction.fromPredictionClass(Prediction.YELLOW);
+  }
+  if (dataSet.age() < 50 && dataSet.age() > 25 && dataSet.maxSpeed() > 140) {
+      return Prediction.fromPredictionClass(Prediction.RED);
+  }
+  if (dataSet.age() < 35) {
+      return Prediction.fromPredictionClass(Prediction.RED);
+  }
+  return Prediction.fromPredictionClass(Prediction.BLUE);
+}
+```
+
+
+</textarea>
+</section>
+
+ <section data-markdown class="fragments">
+  <textarea data-template>
+## Wir haben jetzt eine Lösung, aber...
+</textarea>
+</section>
+
+<section data-markdown>
+  <textarea data-template>
+### Was ist mit höheren Dimensionen?
+
+<div class="container">
+  <div class="col">
+    <img src="img/causal-insurance/features.png">
+  </div>
+  <div class="col">
+    <img src="img/causal-insurance/corr.png">
+  </div>
+</div>
+
+*Wir sind gut darin in 2d zu denken, 3d wird schon schwieriger, danach sind die meisten von uns komplett raus*
+
+</textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+### Die Welt ist nicht statisch
+
+<img src="img/verfall-1.PNG">    
+  </textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+## Drift
+### Die Welt verändert sich, Business Logik muss sich mit anpassen
+
+* _Covariate / Input / Data drift_: Fahrer werden immer Älter
+* _Prior / Label / Prediction drift_: wir sehen immer mehr gute Einschätzungen
+* _Concept / Model drift_: Autos bekommen immer mehr Hilfssysteme, die Eigenschaften der Fahrer werden immer unwichtiger für die Einschätzung
+
+<img src="https://docs.seldon.io/projects/alibi-detect/en/stable/_images/bg_2d_drift.png" style="height: 100%;">
+
+<small>https://docs.seldon.io/projects/alibi-detect/en/stable/cd/background.html#what-is-drift
+</small>
+</textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+### Die Welt ist nicht statisch
+
+<img src="img/verfall-2.PNG">    
+  </textarea>
+</section>
+
+<section data-markdown class="fragments">
+  <textarea data-template>
+### Wie reagieren wir auf eine Veränderung der Domäne?
+
+Wie ändern wir den Code?
+
+* Inkrementell dazu? 
+  * Neue "Anforderung" von der Fachabteilung 
+  * Wie tief verschachteln?
+* Komplett neu?
+  * Es gibt sicher 100 verschiedene Stile, das zu machen
+  * Was ist mit der Kontinuität?
+* Wie testen wir das?
+* *Und: Hand aufs Herz, bekommen wir das eigentlich mit wenn unser Vorhersage-Code nicht mehr gut funktioniert?*
+</textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+## Vielleicht überlassen wir so eine also Aufgabe lieber dem Computer?    
+
+* Wir stellen wieder Daten als Basis für die Einschätzung bereit
+* Danach müssen wir seine Arbeit anhand von gewünschten Eigenschaften der Lösung testen (Property based testing)
+  </textarea>
+</section>
+
+
+<section data-markdown>
+	<textarea data-template>
+# Agenda
+
+1. Unsere Beispielanwendung
+1. Klassische Regeln
+1. _Lösung mit Machine Learning (ML)_
+1. Produktiver Betrieb
+1. Ein alternatives Szenario
+</textarea>
+</section>
+
+<!-- <section data-markdown>
+	<textarea data-template>
+### Machine Learning
+
+ein Ansatz zur *Entwicklung von Software*, bei dem man nicht von Hand Regeln schreibt, sondern *die Maschine herausfinden lässt*, 
+was zu tun ist 
+
+Grundlage dafür
+* eine *Metrik* für das Maß des Erfolgs
+* *Beispieldaten*
+* *Rahmenbedingungen*
+
+</textarea>
+</section>
+ -->
+<section data-markdown>
+	<textarea data-template>
+### Machine Learning
+
+<img src="img/ml-vs-dev-1.png">		
+	</textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+### Machine Learning
+
+<img src="img/ml-vs-dev-2.png">		
+	</textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+### Ist diese KI Teufelszeug?
+
+<img src='img/sw2-clem.png' style="height: 250px">
+
+<small>
+    
+https://twitter.com/ClementDelangue/status/1536514359450652674
+
+</small>
+
+	</textarea>
+</section>
+
+<!-- <section data-markdown>
+  <textarea data-template>
+### Machine Learning
+
+* KI ist keine Magie
+* KI ist eher "künftig Informatik"
+* Machine Learning is die zur Zeit wichtigste Technik im Bereich KI
+* Machine Learning ist eine alternative Art, Software zu entwickeln
+* KI/ML ist Digitalisierung 2.0
+</textarea>
+</section> -->
+
+<section data-markdown class="fragments">
+	<textarea data-template>
+### Wann macht ML Sinn?
+
+_Die Lösung des vorliegenden Problems ist unbekannt oder schwer zu spezifizieren_
+
+_Und_
+
+* Es gibt eine klare, einfache *Eingabe* und bestenfalls auch Ausgabe 
+* Wir haben *passende Paare* von Eingaben und bestenfalls auch Ausgabe
+* Es gibt *Muster* in der Eingabe, die zur Vorhersage verwendet werden können
+* Die Lösung des Problems kann *Fehler oder Unsicherheiten* tolerieren ...
+  * oder wir können das Problem so umdefinieren, dass dies möglich ist
+<!-- * Wir sind bereit und in der Lage, in einer initialen Phase *Experimente mit offenem Ausgang* durchzuführen -->
+</textarea>
+</section>
+
+<section data-markdown>
+  <textarea data-template>
+## Machine Learning passt also zu unserer Problemstellung    
+  </textarea>
+</section>
+
+<section data-markdown>
+  <textarea data-template>
+## Und wie machen wir das nun?    
+  </textarea>
+</section>
+
+
+<section data-markdown>
+	<textarea data-template>
+<img src='img/supervised-ml.jpg' style="height: 600px;">
+</textarea>
+</section>
+
+<section data-markdown>
+## Aber mit welcher Programmiersprache?
+
+<!-- ### Und wieso ist das eigentlich Python? (Spoiler) -->
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+### TensorFlow mit Java
+
+1. https://www.tensorflow.org/jvm
+   * Das aktuelle Projekt
+   * Unterstützt nicht nur Deployment, sondern die volle API inkl. Training
+   * Aber keine High-Level Keras API
+   * Hat strategische Bedeutung, ist aber noch nicht ganz stabil
+   * Unterprojekt: https://github.com/tensorflow/java-ndarray
+1. https://www.tensorflow.org/install/lang_java_legacy
+   * Veraltete Version auf Basis von JNI, nur Core für die Ausführung von Modellen
+
+</textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+### TensorFlow Java hat seine eigene Version
+
+Stabilitätsgarantien gelten nicht für Java
+
+<img src="img/tf-java-versions.png">
+
+https://github.com/tensorflow/java/#tensorflow-version-support
+</textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+### Ganz ehrlich...
+
+</textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+### das mit Java zum trainieren von Neuronalen Netzwerken können wir vergessen
+
+</textarea>
+</section>
+
+
+<section data-markdown>
+	<textarea data-template>
+### Aber, das macht auch gar nichts...
+
+</textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+## Umfrage
+### Wer nutzt Java als Build-Tool (und nicht Maven oder Gradle)?   
+  </textarea>
+</section>
+
+
+	<section data-markdown class="fragments">
+		<textarea data-template>
+### Analogie: Build-Tool und ML-Training
+
+* Ein Build-Script macht aus Java-Quellen ein ausführbares Programm
+* Ein Trainings-Script macht aus einer ML-Architektur und Daten ein ausführbares TensorFlow Modell
+* Ein Build-Script schreiben wir auch für Java nicht in Java selbst
+* Entweder nutzen wir eine Script-Sprache (Groovy oder Kotlin)
+* Oder eine noch weiter standardisierte, deklarative Beschreibung (XML)
+</textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+### Python für ML
+
+* Python ist perfekt für Scripting
+* Typen optional
+* Keine Kompilation
+* Hat die größte Community in dem Bereich
+* Python hat die besten Bibliotheken und Werkzeuge
+</textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+### Mögliche Bibliotheken
+
+* Klassisches Machine Learning: https://scikit-learn.org
+* High Level Neural Networks / Deep Learning
+  * https://www.tensorflow.org
+    * Platzhirsch im industriellen Umfeld, Schwerpunkt auf Produktion
+  * https://keras.io/
+* Low Level Neural networks
+  * https://pytorch.org/
+    * Platzhirsch im akademischen Umfeld, hat häufig die ersten Implementierungen neuer Ideen
+  * https://github.com/google/jax
+
+Das ist alles *Python basiert*  
+</textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+### Wir nehmen TensorFlow
+
+* Unser Problem ist sicher auch mit klassischen Methoden ausreichend lösbar
+* Deep Learning ist in dieser Situation mit Kanonen auf Spatzen schießen
+* Neuronale Netzwerke mit TensorFlow haben aber eine besonders gute Story für Produktion 
+* Mit der High-Level Keras API hat man eine wirklich gute Abstraktion gefunden (mehr dazu später)
+  </textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+### TensorFlow Code mit Python
+
+Architektur des neuronalen Netzwerks
+```
+model = tf.keras.Sequential()
+
+# input
+model.add(InputLayer(name='input', input_shape=(num_features,)))
+
+# hidden layers
+model.add(Dense(100, name='hidden1'))
+# ... komplettes Modell auf der nächsten Folie
+
+# output
+model.add(Dense(name='output', units=3, activation='softmax'))
+
+```
+
+das Training konfigurieren
+```
+model.compile(loss='sparse_categorical_crossentropy',
+             optimizer='adam',
+             metrics=['accuracy'])
+```
+
+</textarea>
+</section>
+
+<section data-markdown>
+  <textarea data-template>
+### Komplettes TensorFlow Modell
+
+<img src='img/insurance-new/model.png' style="height: 200px">
+
+3 Hidden Layers langen für jedes tabellarische Problem, die Größe der Layers ist Alchemie 
+</textarea>
+</section>
+
+<section data-markdown>
+  <textarea data-template>
+### Der Verlauf des Trainings
+
+```
+history = model.fit(X_train, y_train,
+                    validation_data=(X_val, y_val))
+```
+
+
+<img src='img/insurance-new/training.png'>
+
+<small>
+
+https://colab.research.google.com/github/DJCordhose/insurance-ml/blob/main/workspace-java/insurance_ml.ipynb
+</small>
+</textarea>
+</section>
+
+
+<section data-markdown>
+  <textarea data-template>
+### Trainingsergebnis
+
+<img src='img/insurance-new/train-data-nn.png'>
+
+ca. 70% der Daten sind in der Klassifikation richtig
+
+</textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+### Vergleich mit händisch erstellten Regeln
+
+<img src='img/insurance-new/train-data-rules.png'>
+
+ca. 60% der Daten sind in der Klassifikation richtig
+
+</textarea>
+</section>
+
+<section data-markdown class="fragments">
+	<textarea data-template>
+### Die Ergebnisse sehen sogar ziemlich ähnlich aus, aber...
+
+* nur ca. 60% der Daten sind in der Klassifikation richtig
+  * das würden wir durch fine-tuning der Regeln verbessern können, aber
+  * höchstwahrscheinlich auf Kosten der Generalisierung
+* das Machine Learning Modell könnte fast 100% auf Trainingsdaten erreichen
+  * 70% sind schon optimiert für Generalisierung
+* ML bietet einen klaren Prozess für die Aktualisierung des Modells bei geänderter Datenlage
+* wenn datenbasiert gearbeitet wird, ist ML oft die erste Wahl
+
+</textarea>
+</section>
+
+
+<section data-markdown>
+	<textarea data-template>
+# Agenda
+
+1. Unsere Beispielanwendung
+1. Klassische Regeln
+1. Lösung mit Machine Learning (ML)
+1. _Produktiver Betrieb_
+1. Ein alternatives Szenario
+</textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+### Was bringen wir überhaupt in Produktion?
+
+|   | Quelle | Vorgehen | Artefakt für die Produktion |
+|---|---|---|---|
+| *Traditionelle Entwicklung* | Spezifikation | Regeln | Programm |
+| *Maschinelles Lernen* | Daten und Priors | ML-Algorithmus | *Modell* |
+|   |   |   |
+
+</textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+### TensorFlow Modelle können als Graph abgespeichert werden
+
+<img src="https://raw.githubusercontent.com/tensorflow/docs/master/site/en/guide/images/intro_to_graphs/two-layer-network.png">
+
+* https://www.tensorflow.org/guide/intro_to_graphs
+* https://www.tensorflow.org/api_docs/python/tf/Graph#as_graph_def 
+</textarea>
+</section>
+
+<section data-markdown class="fragments">
+	<textarea data-template>
+### Warum interessiert uns das?
+
+* Graphen enthalten alles was man zur Ausführung eines Neuronalen Netzes braucht
+* Damit kann man die Python-Welt verlassen
+* Man braucht lediglich eine Umgebung, die die Operationen in dem Graphen ausführen kann
+* So eine Umgebung ist bereits in TensorFlow mit C++ implementiert und auch die Python-Version beruht darauf  
+* *kann u.a. aus Java aufgerufen werden*
+</textarea>
+</section>
+
+<section data-markdown>
+  <textarea data-template>
+## Deployment ist ein Schwerpunkt von TensorFlow
+
+<img src='img/tf-deploy.png'>
+
+<small>
+
+* https://www.tensorflow.org/tfx/guide/serving
+* https://www.tensorflow.org/lite/api_docs
+* https://www.tensorflow.org/js
+
+</small>
+
+</textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+<h3>TensorFlow Modelle können direkt aus Java aufgerufen werden</h3>
+
+<pre>
+    <code data-trim><script type="text/template">
+try (var savedModelBundle = SavedModelBundle.load("insurance-ml/app/classifier", "serve")) {
+
+    var input_matrix = NdArrays.ofFloats(Shape.of(1, 2));
+    input_matrix.set(NdArrays.vectorOf(48.0f, 100.0f), 0);
+    Tensor input_tensor = TFloat32.tensorOf(input_matrix);
+    Map<String, Tensor> inputTensorMap = new HashMap<>();
+    inputTensorMap.put("input", input_tensor);
+
+    var myFunction = savedModelBundle.function("serving_default");
+    Map<String, Tensor> outputTensorMap = myFunction.call(inputTensorMap);
+    var prediction = outputTensorMap.get("output");
+
+    // overly complicated way to get the prediction, but so far found no better way
+    var probas = prediction.asRawTensor().data().asFloats();
+    float redProba = probas.getFloat(0);
+    float yellowProba = probas.getFloat(1);
+    float greenProba = probas.getFloat(2);
+}
+        
+</script></code>
+</pre>
+
+<!-- Demo wieder über `workspace-java/app/src/main/java/eu/zeigermann/ml/App.java` -->
+</textarea>
+</section>
+
+
+<section data-markdown>
+	<textarea data-template>
+### Oder über TensorFlow Serving
+
+* Erlauben direkt Ausführung eines Graphen im Server-Betrieb
+* Modell-Server kann lokal unter Linux installiert werden
+* Oder man kann so ein Modell direkt bei GCP deployen
+
+https://www.tensorflow.org/tfx/guide/serving
+https://www.tensorflow.org/tfx/serving/setup
+
+</textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+### Serving
+
+```
+saved_model_cli show --dir insurance-classifier/1 --all
+```
+
+```
+export TF_CPP_VMODULE=http_server=1
+
+nohup tensorflow_model_server --port=8500 --rest_api_port=8501 \
+  --model_name=insurance --model_base_path=/home/olli/insurance-model  >server.log 2>&1
+```
+
+```
+curl -d '{"instances": [[50.0, 122.0], [48, 100], [30, 150]]}' -X POST http://localhost:8501/v1/models/insurance:predict
+```
+
+<!-- Demo auch wieder über `workspace-java/app/src/main/java/eu/zeigermann/ml/App.java` -->
+
+</textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+# Agenda
+
+1. Unsere Beispielanwendung
+1. Klassische Regeln
+1. Lösung mit Machine Learning (ML)
+1. Produktiver Betrieb
+1. _Ein alternatives Szenario_
+</textarea>
+</section>
+
+
+<section data-markdown>
+	<textarea data-template>
+### Realistischer ist das Deployment eines kompletten Services 
+
+<img src="img/Typical_Deployment_of_a_Machine_Learning_Service.PNG">
+
+Zumindest unschön: wir haben in Adapter Code einmal in Python und einmal in Java 
+</textarea>
+</section>
+
+<section data-markdown class="fragments">
+	<textarea data-template>
+### Was ist die Herausforderung?
+
+* Python ist toll für Dev
+* Python bringt sich aber schwer in Prod, denn
+* Entweder Python Server in Prod, aber nicht ideal, weil
+  * keine statische Typisierung
+  * wir mögen ohnehin Java lieber 
+* oder: Python Code nochmal in Prod JVM Sprache neu schreiben 
+  * wir haben nicht das in Prod, was wir entwickelt haben
+  * dennoch erstaunlich typische Lösung
+</small>
+
+</textarea>
+</section>
+
+
+<section data-markdown class="fragments">
+	<textarea data-template>
+### Alternative Story für die Zukunft
+
+* Java ist aber auch nicht gut für ML Dev
+* Script-Character für Dev ist wünschenswert
+* Kotlin kann Script artig endwickelt werden
+* Kotlin könnte mit KotlinDL sweet spot sein
+* Code in KotlinDL ist für jemanden, der TensorFlow/Keras kennt direkt lesbar
+* Notebook Betrieb ist möglich, aber vielleicht gar nicht notwendig
+
+<small>https://github.com/Kotlin/kotlindl
+<br>
+https://blog.jetbrains.com/kotlin/2020/12/deep-learning-with-kotlin-introducing-kotlindl-alpha/
+<br>
+https://github.com/Kotlin/kotlindl#working-with-kotlindl-in-jupyter-notebook
+</small>
+
+</textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+### KotlinDL Code
+
+Architektur des neuronalen Netzwerks
+```
+val model = Sequential.of(
+    Input(28, 28, 1),
+    Dense(
+      100,
+      name="hidden1"
+    ),
+    Dense(
+      name="output"
+      outputSize = 3,
+      activation = Activations.Softmax
+  )
+)
+
+```
+
+das Training konfigurieren und durchführen
+```
+model.use {
+  it.compile(
+      optimizer = Adam(),
+      loss = Losses.SOFT_MAX_CROSS_ENTROPY_WITH_LOGITS,
+      metric = Metrics.ACCURACY
+  )
+
+  it.fit(
+      dataset = train
+  )
+}
+```
+
+https://kotlin.github.io/kotlindl/
+</textarea>
+</section>
+
+<section data-markdown class="fragments">
+	<textarea data-template>
+### Kann man KotlinDL jetzt schon nutzen?
+
+* NVIDIA GPU support
+* Ist kompatibel mit Keras, man kann Keras Modelle 
+  * laden,
+  * zur Vorhersage nutzen und
+  * weiter trainieren
+* Viele vordefinierte Architekturen: https://kotlin.github.io/kotlindl/api/org.jetbrains.kotlinx.dl.api.core.model/index.html  
+* aktuelle Version (Stand November 2022): 0.4.0
+* Es werden nur eine Untermenge aller Layers aus Keras unterstützt: https://github.com/Kotlin/kotlindl#limitations
+* *Im Moment noch wenig Verbreitung*
+
+</textarea>
+</section>
+
+<section data-markdown class="fragments">
+	<textarea data-template>
+# Zusammenfassung
+
+* Machine Learning ist keine Magie, sondern einfach nur ein alternativer Ansatz zur Software-Entwicklung
+* Software-Entwickler können diese Technik beherrschen und in ihrem Werkzeugkasten haben
+* wenn datenbasiert gearbeitet wird, ist ML oft die erste Wahl
+* Das Training von einem ML Modell hat einen ähnlichen Charakter wie ein Build-Script
+* Java eignet sich nicht gut als Sprache für ein Trainingsscript
+* Allerdings sind TensorFlow Modelle problemlos in einen Java/JVM Umfeld in Produktion zu bringen
+* Kotlin könnte sich für uns Java-Entwickler zum Sweet-Spot entwickeln
+</textarea>
+</section>
+
+<section data-markdown>
+	<textarea data-template>
+## Was sind mögliche Anwendungen?
+### Hier und heute bei der WJAX
+
+<img src="img/abcd-wjax-2022.png" style="height: 100%">
+
+https://jax.de/big-data-machine-learning/welcher-machine-learning-typ-passt-zu-deinem-projekt/
+
+</textarea>
+</section>
+
+
+
+			<section data-markdown>
+				<textarea data-template>
+# Vielen Dank
+
+Machine Learning mit Java
+
+WJAX, 2022, https://jax.de/big-data-machine-learning/machine-learning-mit-java/
+
+Bleibt gern im Kontakt
+
+Oliver Zeigermann
+
+https://www.linkedin.com/in/oliver-zeigermann-34989773/
+
+oliver.zeigermann@openknowledge.de
+
+https://twitter.com/DJCordhose
+
+Folien: https://bit.ly/wjax-2022-ml-java
+
+    </textarea>
+			</section>
+
+
+		</div>
+	</div>
+
+	<script src="revealjs/reveal.js/dist/reveal.js"></script>
+	<script src="revealjs/reveal.js/plugin/notes/notes.js"></script>
+	<script src="revealjs/reveal.js/plugin/markdown/markdown.js"></script>
+	<script src="revealjs/reveal.js/plugin/highlight/highlight.js"></script>
+	<script src="revealjs/config.js"></script>
+
+
+</body>
+
+</html>
